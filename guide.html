@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Augmento Mori — Facilitation Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d0a10;--parchment:#f0ecf5;--g1:#e84060;--g2:#c83090;--g3:#7040b8;--gap:88px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--parchment);line-height:1.72;}
+svg.defs{position:absolute;width:0;height:0;overflow:hidden;}
+
+/* DISCLAIMER */
+.disclaimer{background:rgba(112,64,184,.1);border:1px solid rgba(112,64,184,.3);border-radius:0;padding:18px 44px;text-align:center;}
+.disclaimer-text{font-size:.74rem;font-weight:300;color:rgba(240,236,245,.45);line-height:1.8;max-width:760px;margin:0 auto;}
+.disclaimer-text strong{color:rgba(160,120,220,.8);font-weight:500;}
+
+/* COVER */
+.cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 40px;position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(200,48,144,.18) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 40% at 80% 80%,rgba(112,64,184,.12) 0%,transparent 60%),
+             radial-gradient(ellipse 40% 30% at 20% 70%,rgba(232,64,96,.1) 0%,transparent 60%);}
+.cover-orn{width:140px;height:140px;margin-bottom:36px;position:relative;z-index:1;}
+.cover-eyebrow{font-size:.68rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:rgba(232,84,122,.8);margin-bottom:16px;position:relative;z-index:1;}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:600;line-height:1.05;
+  background:linear-gradient(135deg,#f0ecf5 0%,#e84060 38%,#c83090 68%,#f0ecf5 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px;position:relative;z-index:1;}
+.cover-sub{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.45rem);font-style:italic;color:rgba(240,236,245,.58);margin-bottom:40px;position:relative;z-index:1;}
+.cover-tagline{font-size:.85rem;font-weight:300;letter-spacing:.05em;color:rgba(240,236,245,.36);max-width:460px;line-height:1.85;position:relative;z-index:1;}
+.cover-vline{width:1px;height:64px;background:linear-gradient(to bottom,transparent,rgba(232,84,122,.5),transparent);margin:44px auto 0;}
+
+/* PAGE */
+.page{max-width:920px;margin:0 auto;padding:0 44px;}
+
+/* TOC */
+.toc{padding:64px 44px;max-width:920px;margin:0 auto;}
+.toc-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:600;color:var(--parchment);margin-bottom:36px;padding-bottom:14px;border-bottom:1px solid rgba(232,84,122,.2);}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 48px;}
+.toc-item{display:flex;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid rgba(240,236,245,.05);}
+.toc-num{font-size:.63rem;font-weight:700;letter-spacing:.2em;color:rgba(232,84,122,.62);min-width:22px;}
+.toc-label{font-size:.88rem;font-weight:300;color:rgba(240,236,245,.68);}
+.toc-dots{flex:1;border-bottom:1px dotted rgba(240,236,245,.1);margin-bottom:3px;}
+
+/* DIVIDERS */
+.div{display:flex;align-items:center;gap:18px;margin:var(--gap) 0 44px;}
+.div-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(232,84,122,.28),transparent);}
+
+/* SECTION */
+.eyebrow{font-size:.63rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:rgba(232,84,122,.68);margin-bottom:10px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4vw,2.9rem);font-weight:600;line-height:1.1;color:var(--parchment);margin-bottom:22px;}
+.sec-title em{font-style:italic;background:linear-gradient(135deg,#e84060,#c83090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.intro{font-size:1.05rem;font-weight:300;color:rgba(240,236,245,.74);max-width:680px;margin-bottom:42px;line-height:1.85;}
+.body{font-size:.95rem;font-weight:300;color:rgba(240,236,245,.67);line-height:1.88;margin-bottom:22px;max-width:700px;}
+.body strong{color:var(--parchment);font-weight:500;}
+.body em{color:rgba(240,236,245,.84);font-style:italic;}
+
+/* PULL QUOTE */
+.pq{border-left:2px solid;border-image:linear-gradient(to bottom,#e84060,#c83090) 1;
+  padding:22px 36px;margin:40px 0;
+  font-family:'Playfair Display',serif;font-size:1.16rem;font-style:italic;color:rgba(240,236,245,.84);line-height:1.68;}
+.pq cite{display:block;margin-top:14px;font-family:'Outfit',sans-serif;font-style:normal;font-size:.66rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,84,122,.62);}
+
+/* ANAM CARA CALLOUT */
+.anam{background:linear-gradient(135deg,rgba(200,48,144,.08) 0%,rgba(112,64,184,.08) 100%);
+  border:1px solid rgba(200,48,144,.2);border-radius:12px;padding:28px 32px;margin:36px 0;}
+.anam-label{font-size:.65rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(200,48,144,.8);margin-bottom:10px;}
+.anam-body{font-size:.91rem;font-weight:300;color:rgba(240,236,245,.7);line-height:1.82;}
+.anam-body strong{color:var(--parchment);font-weight:500;}
+
+/* STATS */
+.stats{display:flex;flex-wrap:wrap;gap:22px;margin:36px 0;}
+.stat-box{background:rgba(240,236,245,.04);border:1px solid rgba(240,236,245,.09);border-radius:12px;padding:22px 28px;min-width:150px;flex:1;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:600;line-height:1;
+  background:linear-gradient(135deg,#e84060,#c83090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.stat-label{font-size:.74rem;font-weight:300;color:rgba(240,236,245,.52);line-height:1.55;}
+
+/* CARDS */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin:32px 0;}
+.cgrid3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+.icard{background:rgba(240,236,245,.04);border:1px solid rgba(240,236,245,.09);border-radius:12px;padding:24px;}
+.icard-icon{margin-bottom:14px;opacity:.85;}
+.icard-title{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,84,122,.78);margin-bottom:8px;}
+.icard-body{font-size:.86rem;font-weight:300;color:rgba(240,236,245,.63);line-height:1.72;}
+
+/* DECK BADGES */
+.decks{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0;}
+.deck{display:flex;align-items:center;gap:10px;padding:9px 18px;border-radius:40px;border:1px solid rgba(240,236,245,.1);font-size:.82rem;font-weight:400;color:rgba(240,236,245,.7);}
+.deck.ref{border-color:rgba(200,48,144,.35);background:rgba(200,48,144,.08);}
+.deck.leg{border-color:rgba(232,64,96,.35);background:rgba(232,64,96,.08);}
+.deck.rit{border-color:rgba(112,48,192,.35);background:rgba(112,48,192,.08);}
+.deck.com{border-color:rgba(64,80,176,.35);background:rgba(64,80,176,.08);}
+.deck.bod{border-color:rgba(232,90,122,.35);background:rgba(232,90,122,.08);}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:22px;margin:32px 0;}
+.step{display:grid;grid-template-columns:58px 1fr;gap:20px;align-items:start;}
+.step-n{width:58px;height:58px;border-radius:50%;border:1px solid rgba(232,84,122,.28);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:600;color:rgba(232,84,122,.78);flex-shrink:0;}
+.step-t{font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,84,122,.78);margin-bottom:5px;}
+.step-b{font-size:.9rem;font-weight:300;color:rgba(240,236,245,.65);line-height:1.78;}
+
+/* PRINCIPLES */
+.principles{display:grid;gap:18px;margin:32px 0;}
+.principle{display:grid;grid-template-columns:3px 1fr;gap:22px;}
+.p-bar{border-radius:4px;background:linear-gradient(to bottom,#e84060,#c83090);}
+.p-title{font-size:.74rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(232,84,122,.82);margin-bottom:6px;}
+.p-body{font-size:.9rem;font-weight:300;color:rgba(240,236,245,.64);line-height:1.78;}
+
+/* NOTEBOX */
+.notebox{background:rgba(112,64,184,.09);border:1px solid rgba(112,64,184,.26);border-radius:10px;padding:22px 26px;margin:28px 0;}
+.notebox-t{font-size:.67rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(160,120,220,.88);margin-bottom:9px;}
+.notebox-b{font-size:.88rem;font-weight:300;color:rgba(240,236,245,.62);line-height:1.75;}
+
+/* MBS */
+.mbs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0;}
+.mbs-col{background:rgba(240,236,245,.04);border:1px solid rgba(240,236,245,.09);border-radius:10px;padding:20px;}
+.mbs-label{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,84,122,.72);margin-bottom:10px;}
+.mbs-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{font-size:.73rem;font-weight:300;color:rgba(240,236,245,.52);background:rgba(240,236,245,.05);border:1px solid rgba(240,236,245,.1);border-radius:20px;padding:4px 11px;}
+
+/* MODES OF PLAY */
+.mode-block{border:1px solid rgba(240,236,245,.09);border-radius:14px;padding:32px;margin-bottom:28px;}
+.mode-block.solo{border-color:rgba(232,84,122,.2);background:rgba(232,84,122,.04);}
+.mode-block.duo{border-color:rgba(200,48,144,.2);background:rgba(200,48,144,.04);}
+.mode-block.group{border-color:rgba(112,48,192,.2);background:rgba(112,48,192,.04);}
+.mode-block.hospice{border-color:rgba(64,80,176,.22);background:rgba(64,80,176,.05);}
+.mode-header{display:flex;align-items:center;gap:18px;margin-bottom:20px;}
+.mode-icon{width:52px;height:52px;flex-shrink:0;opacity:.9;}
+.mode-label{font-size:.65rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(232,84,122,.7);margin-bottom:4px;}
+.mode-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;color:var(--parchment);}
+.mode-body{font-size:.9rem;font-weight:300;color:rgba(240,236,245,.64);line-height:1.82;margin-bottom:14px;}
+.mode-body strong{color:var(--parchment);font-weight:500;}
+.mode-tips{margin-top:20px;display:flex;flex-direction:column;gap:12px;}
+.mode-tip{display:grid;grid-template-columns:3px 1fr;gap:0 16px;font-size:.88rem;font-weight:300;color:rgba(240,236,245,.62);line-height:1.72;}
+.mode-tip-bar{background:linear-gradient(to bottom,rgba(232,84,122,.5),rgba(200,48,144,.3));border-radius:2px;margin-top:4px;}
+.mode-tip strong{color:var(--parchment);font-weight:500;display:block;margin-bottom:2px;}
+
+/* LANGUAGE BLOCKS */
+.lang{margin-bottom:64px;padding-bottom:52px;border-bottom:1px solid rgba(240,236,245,.07);}
+.lang:last-child{border-bottom:none;}
+.lang-inner{display:block;}
+.lang-main{}
+.lang-head{display:flex;align-items:center;gap:22px;margin-bottom:22px;}
+.lang-flag{width:52px;height:52px;border-radius:50%;background:rgba(240,236,245,.05);border:1px solid rgba(240,236,245,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lang-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;color:var(--parchment);line-height:1.1;}
+.lang-native{font-size:.77rem;font-weight:300;color:rgba(240,236,245,.38);letter-spacing:.04em;margin-top:2px;}
+.lang-pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;}
+.pill{font-size:.67rem;font-weight:500;letter-spacing:.11em;padding:4px 12px;border-radius:20px;text-transform:uppercase;}
+.pill-r{background:rgba(232,84,122,.09);border:1px solid rgba(232,84,122,.2);color:rgba(232,84,122,.82);}
+.pill-p{background:rgba(112,48,192,.09);border:1px solid rgba(112,48,192,.2);color:rgba(160,120,220,.88);}
+.pill-b{background:rgba(64,80,176,.09);border:1px solid rgba(64,80,176,.2);color:rgba(120,140,220,.88);}
+.lang-body{font-size:.9rem;font-weight:300;color:rgba(240,236,245,.65);line-height:1.86;margin-bottom:14px;}
+.lang-words{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0;}
+.lword{background:rgba(240,236,245,.04);border:1px solid rgba(240,236,245,.09);border-radius:8px;padding:8px 14px;}
+.lword-n{font-size:.98rem;font-weight:400;color:var(--parchment);}
+.lword-g{font-size:.66rem;font-weight:300;color:rgba(240,236,245,.4);margin-top:2px;letter-spacing:.04em;}
+.card-ex{background:rgba(240,236,245,.03);border:1px solid rgba(240,236,245,.07);border-radius:8px;padding:14px 18px;margin-top:12px;}
+.card-ex-label{font-size:.61rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,236,245,.28);margin-bottom:6px;}
+.card-ex-text{font-size:.87rem;font-weight:300;color:rgba(240,236,245,.58);line-height:1.7;font-style:italic;}
+.lang-note{background:rgba(232,84,122,.06);border-left:2px solid rgba(232,84,122,.38);border-radius:0 8px 8px 0;padding:14px 18px;margin-top:14px;font-size:.85rem;font-weight:300;color:rgba(240,236,245,.62);line-height:1.72;}
+.lang-note strong{color:rgba(232,84,122,.88);font-weight:500;}
+
+/* TABLE */
+.gtable{width:100%;border-collapse:collapse;margin:28px 0;font-size:.86rem;}
+.gtable th{font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,84,122,.7);padding:10px 16px;border-bottom:1px solid rgba(232,84,122,.17);text-align:left;}
+.gtable td{padding:12px 16px;border-bottom:1px solid rgba(240,236,245,.05);color:rgba(240,236,245,.63);font-weight:300;vertical-align:top;line-height:1.65;}
+.gtable tr:last-child td{border-bottom:none;}
+.gtable td:first-child{color:var(--parchment);font-weight:400;}
+
+/* FOOTER */
+.footer{margin-top:var(--gap);padding:64px 44px;text-align:center;border-top:1px solid rgba(240,236,245,.07);}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-style:italic;background:linear-gradient(135deg,#e84060,#c83090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.footer-tag{font-size:.7rem;font-weight:300;letter-spacing:.12em;color:rgba(240,236,245,.26);}
+.footer-credits{font-size:.75rem;font-weight:300;color:rgba(240,236,245,.26);margin-top:26px;line-height:2;}
+
+@media(max-width:680px){
+  .page,.toc{padding:0 20px;}
+  .step{grid-template-columns:44px 1fr;}
+  .mbs,.lang-inner{grid-template-columns:1fr;}
+  .toc-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- GRADIENT DEFS -->
+<svg class="defs" aria-hidden="true">
+<defs>
+<linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" stop-color="#e84060"/>
+  <stop offset="100%" stop-color="#c83090"/>
+</linearGradient>
+</defs>
+</svg>
+
+<!-- DISCLAIMER BANNER -->
+<div class="disclaimer">
+  <p class="disclaimer-text"><strong>Important Notice:</strong> Augmento Mori is a reflective design intervention and educational tool, not a clinical service. It is not a substitute for professional mental health care, grief counseling, palliative medicine, or end-of-life clinical support. Facilitators are not therapists or medical providers unless independently credentialed as such. When working with individuals in active dying, terminal illness, or acute grief, always operate within scope and in collaboration with qualified clinical and spiritual care professionals. If a participant is in crisis, contact appropriate emergency or mental health services. By using this guide, facilitators accept responsibility for the wellbeing of their participants and for working within the ethical and professional boundaries of their own training and context.</p>
+</div>
+
+<!-- COVER -->
+<div class="cover">
+
+  <!-- CHAMELEON LINE ART -- matching game header exactly, scaled up -->
+  <svg class="cover-orn" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="cham-c" x1="0" y1="0" x2="140" y2="140" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"   stop-color="#e84060"/>
+        <stop offset="40%"  stop-color="#c83090"/>
+        <stop offset="80%"  stop-color="#7030c0"/>
+        <stop offset="100%" stop-color="#4020b0"/>
+      </linearGradient>
+      <linearGradient id="cham-gl" x1="0" y1="0" x2="140" y2="140" gradientUnits="userSpaceOnUse">
+        <stop offset="0%"  stop-color="#e84060" stop-opacity="0.13"/>
+        <stop offset="100%" stop-color="#7030c0" stop-opacity="0.05"/>
+      </linearGradient>
+    </defs>
+    <!-- framing rings -->
+    <circle cx="70" cy="70" r="65" stroke="url(#cham-c)" stroke-width=".7" opacity=".18"/>
+    <circle cx="70" cy="70" r="56" stroke="url(#cham-c)" stroke-width=".5" opacity=".1"/>
+    <circle cx="70" cy="70" r="62" fill="url(#cham-gl)"/>
+    <!-- branch -->
+    <path d="M13 103 Q45 99 82 106 Q113 112 131 108" stroke="url(#cham-c)" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.38"/>
+    <!-- rear foot -->
+    <path d="M54 103 L50 111 M54 103 L55 112 M54 103 L61 110" stroke="url(#cham-c)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <!-- front foot -->
+    <path d="M84 102 L80 110 M84 102 L85 111 M84 102 L90 109" stroke="url(#cham-c)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <!-- body -->
+    <path d="M50 101 C45 86 43 72 50 61 C57 51 72 46 84 50 C97 54 103 68 99 82 C95 93 83 101 70 103 C64 104 54 104 50 101 Z" stroke="url(#cham-c)" stroke-width="1.8" fill="none" opacity="0.9"/>
+    <!-- dorsal spines -->
+    <path d="M84 50 L87 43 M90 54 L95 48 M96 62 L101 57 M98 70 L103 67" stroke="url(#cham-c)" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.68"/>
+    <!-- head casque -->
+    <path d="M50 61 C48 54 45 47 50 41 C54 35 61 32 68 35 C74 37 76 44 74 50 C72 56 64 59 57 59 Z" stroke="url(#cham-c)" stroke-width="1.8" fill="none" opacity="0.95"/>
+    <!-- casque spines -->
+    <path d="M54 39 L51 32 M61 35 L59 29 M68 35 L68 29" stroke="url(#cham-c)" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.62"/>
+    <!-- eye outer ring -->
+    <circle cx="57" cy="47" r="10" stroke="url(#cham-c)" stroke-width="1.5" fill="none" opacity="0.95"/>
+    <circle cx="57" cy="47" r="4.5" stroke="url(#cham-c)" stroke-width="1.1" fill="none" opacity="0.7"/>
+    <circle cx="57" cy="47" r="1.7" fill="url(#cham-c)" opacity="0.9"/>
+    <!-- nostril -->
+    <circle cx="48" cy="55" r="1.4" fill="url(#cham-c)" opacity="0.5"/>
+    <!-- curled tail -->
+    <path d="M50 101 C41 103 29 98 25 90 C21 82 23 74 29 70 C33 68 39 70 39 75 C39 79 36 82 34 81" stroke="url(#cham-c)" stroke-width="1.7" stroke-linecap="round" fill="none" opacity="0.9"/>
+    <!-- scale texture -->
+    <path d="M63 68 Q67 64 71 68" stroke="url(#cham-c)" stroke-width="0.9" fill="none" opacity="0.26"/>
+    <path d="M70 80 Q74 76 78 80" stroke="url(#cham-c)" stroke-width="0.9" fill="none" opacity="0.26"/>
+    <path d="M59 84 Q63 80 67 84" stroke="url(#cham-c)" stroke-width="0.9" fill="none" opacity="0.26"/>
+    <path d="M77 62 Q81 59 85 62" stroke="url(#cham-c)" stroke-width="0.9" fill="none" opacity="0.2"/>
+    <!-- tongue -->
+    <path d="M46 54 L25 45" stroke="url(#cham-c)" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.58"/>
+    <circle cx="24" cy="44.5" r="2.6" fill="url(#cham-c)" opacity="0.58"/>
+    <!-- corner dots -->
+    <circle cx="13" cy="13" r="1.8" fill="url(#cham-c)" opacity=".3"/>
+    <circle cx="127" cy="13" r="1.8" fill="url(#cham-c)" opacity=".3"/>
+    <circle cx="127" cy="127" r="1.8" fill="url(#cham-c)" opacity=".3"/>
+    <circle cx="13" cy="127" r="1.8" fill="url(#cham-c)" opacity=".3"/>
+  </svg>
+
+  <p class="cover-eyebrow">Mona M. Hamdy &nbsp;&middot;&nbsp; SCAD Design for Sustainability &nbsp;&middot;&nbsp; 2026</p>
+  <h1 class="cover-title">Augmento Mori</h1>
+  <p class="cover-sub">A Facilitator's Guide to Mortality Reflection</p>
+  <p class="cover-tagline">How to hold space for the conversations that matter most<br>across eight languages, eight cultures, and every kind of life</p>
+  <div class="cover-vline"></div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <div class="toc-grid">
+    <div class="toc-item"><span class="toc-num">01</span><span class="toc-label">What is Augmento Mori</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">06</span><span class="toc-label">Cultural Sensitivity and Language</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">02</span><span class="toc-label">The Research Behind the Game</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">07</span><span class="toc-label">Eight Language Editions</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">03</span><span class="toc-label">The Five Decks</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">08</span><span class="toc-label">Modes of Play</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">04</span><span class="toc-label">How to Facilitate</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">09</span><span class="toc-label">Facilitator Self-Care</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">05</span><span class="toc-label">The Library of Reflections and MBS</span><span class="toc-dots"></span></div>
+    <div class="toc-item"><span class="toc-num">10</span><span class="toc-label">Quick Reference</span><span class="toc-dots"></span></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══ 01. WHAT IS AUGMENTO MORI ══════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><path d="M24 40L24 22" stroke="url(#gg)" stroke-width="1.4" stroke-linecap="round"/><path d="M24 28C18 24 12 26 10 32C16 34 22 31 24 28Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/><path d="M24 22C28 16 36 16 38 10C32 10 26 14 24 22Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section One</p>
+<h2 class="sec-title">What is <em>Augmento Mori</em></h2>
+<p class="intro">A structured card game for mortality reflection -- not a therapy tool, not a parlor trick, but a designed experience for holding the most essential human conversation.</p>
+
+<p class="body">The name is Latin: <em>augmento</em> -- to increase, enhance, magnify. <em>Mori</em> -- to die. Where the medieval <em>memento mori</em> urged passive remembrance of death, Augmento Mori asks us to actively design our relationship with it. To magnify what it means to live and die well.</p>
+
+<p class="body">The game was developed as the central design intervention of an M.F.A. thesis in Design for Sustainability at the Savannah College of Art and Design (2026), grounded in three years of primary research across four stakeholder cohorts: general community members, medical and palliative care providers, deathcare professionals, and caregivers. It is informed by the Lancet Commission on the Value of Death (2022), Allan Kellehear's Public Health Palliative Care framework, and evidence from over sixty survey respondents whose voices shaped every card.</p>
+
+<div class="anam">
+  <div class="anam-label">Anam Cara Foundation</div>
+  <div class="anam-body">This guide is also informed by the <strong>Anam Cara death doula apprenticeship</strong>, a two-year intensive training in which Mona M. Hamdy participated. <em>Anam Cara</em> is an Irish phrase meaning "soul friend" -- a concept rooted in the Celtic spiritual tradition of intimate, accompaniment-based care for the dying. The Anam Cara method teaches that dying is not a medical event to be managed but a sacred threshold to be witnessed with full presence, compassion, and without agenda. Its practices -- including active dying presence, sacred space creation, conscious breathing accompaniment, and legacy witness work -- are woven throughout this facilitation guide wherever they are most relevant. These teachings have informed the game's approach to holding space, the hospice mode of play, and the understanding that a facilitator is not an expert in someone else's death, but a companion alongside it.</div>
+</div>
+
+<div class="pq">
+  "Death, dying, loss, and caregiving are not just medical issues, but societal ones. The people who know and love make up what matters most for those undergoing the experiences of death."
+  <cite>-- Allan Kellehear, Public Health Palliative Care (2018)</cite>
+</div>
+
+<p class="body">42 cards. 8 languages. 5 thematic decks. One purpose: to lower the wall between people and the conversation that most shapes how they live.</p>
+
+
+<!-- ══ 02. THE RESEARCH ════════════════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><rect x="12" y="10" width="24" height="30" rx="2" stroke="url(#gg)" stroke-width="1.4"/><line x1="18" y1="19" x2="30" y2="19" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round" opacity=".7"/><line x1="18" y1="25" x2="30" y2="25" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round" opacity=".7"/><line x1="18" y1="31" x2="26" y2="31" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round" opacity=".5"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Two</p>
+<h2 class="sec-title">The Research <em>Behind the Game</em></h2>
+<p class="intro">Every card prompt emerged from research. These are not philosophical exercises -- they are the questions the data asked.</p>
+
+<div class="stats">
+  <div class="stat-box"><div class="stat-num">82%</div><div class="stat-label">agreed that society is too distant from death as a natural process</div></div>
+  <div class="stat-box"><div class="stat-num">85%</div><div class="stat-label">believed that open discussion of death reduces fear</div></div>
+  <div class="stat-box"><div class="stat-num">76%</div><div class="stat-label">wanted to die at home -- yet most die in hospitals</div></div>
+  <div class="stat-box"><div class="stat-num">88%</div><div class="stat-label">wanted comfort-focused care over life extension at end of life</div></div>
+</div>
+
+<p class="body">This is the paradox at the heart of the research: people <em>intellectually accept</em> death as natural and prioritize comfort over intervention -- yet most avoid death conversations entirely. Families described "skirting around the issue" and becoming "distant" after a death. Medical professionals noted that families are "generally not open to honest conversations about limited prognosis."</p>
+
+<p class="body">The game was designed precisely for this gap. It does not require participants to have had difficult deaths in their families, to hold particular spiritual beliefs, or to have thought carefully about mortality before. It creates a <strong>structured occasion for what most people already want to say but haven't.</strong></p>
+
+<p class="body">Research also included the <em>Dancing for Della</em> workshop, which documented structural inequities in palliative care access for Black American communities: historical mistrust of the medical system, late hospice referrals, and the critical role of faith communities in death education. These findings directly shaped the Gullah Geechee language edition and the Community deck.</p>
+
+<div class="pq">
+  "Tell me why we are doing what we are doing. Show me how it's connected and important and more of what death means besides grandma is an angel now."
+  <cite>-- Sensorial study participant, Augmento Mori Research (2025)</cite>
+</div>
+
+
+<!-- ══ 03. THE FIVE DECKS ══════════════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><path d="M10 40L10 10L34 10L38 14L38 40Z" stroke="url(#gg)" stroke-width="1.4" stroke-linejoin="round"/><rect x="16" y="10" width="16" height="12" stroke="url(#gg)" stroke-width="1.2"/><rect x="14" y="26" width="20" height="14" rx="1" stroke="url(#gg)" stroke-width="1.1"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Three</p>
+<h2 class="sec-title">The Five <em>Decks</em></h2>
+<p class="intro">42 cards organized across five thematic domains. Each opens a different dimension of mortality reflection -- from the deeply inward to the communal, from the abstract to the bodily.</p>
+
+<div class="decks">
+  <div class="deck ref"><svg width="20" height="20" viewBox="0 0 48 48" fill="none"><path d="M24 40L24 22" stroke="url(#gg)" stroke-width="1.4" stroke-linecap="round"/><path d="M24 28C18 24 12 26 10 32C16 34 22 31 24 28Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/><path d="M24 22C28 16 36 16 38 10C32 10 26 14 24 22Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/></svg>Reflection &mdash; 10 cards</div>
+  <div class="deck leg"><svg width="20" height="20" viewBox="0 0 48 48" fill="none"><path d="M10 40L10 10L34 10L38 14L38 40Z" stroke="url(#gg)" stroke-width="1.4" stroke-linejoin="round"/><rect x="16" y="10" width="16" height="12" stroke="url(#gg)" stroke-width="1.2"/></svg>Legacy &mdash; 8 cards</div>
+  <div class="deck rit"><svg width="20" height="20" viewBox="0 0 48 48" fill="none"><rect x="19" y="22" width="10" height="20" rx="1.5" stroke="url(#gg)" stroke-width="1.4"/><path d="M24 22C24 18 20 14 24 9C28 14 24 18 24 22Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/></svg>Ritual &mdash; 7 cards</div>
+  <div class="deck com"><svg width="20" height="20" viewBox="0 0 48 48" fill="none"><circle cx="16" cy="20" r="6" stroke="url(#gg)" stroke-width="1.3" opacity=".8"/><circle cx="32" cy="20" r="6" stroke="url(#gg)" stroke-width="1.3" opacity=".8"/><path d="M10 38C10 32 13 28 16 28C19 28 22 32 22 38" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round"/><path d="M26 38C26 32 29 28 32 28C35 28 38 32 38 38" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round"/></svg>Community &mdash; 8 cards</div>
+  <div class="deck bod"><svg width="20" height="20" viewBox="0 0 48 48" fill="none"><path d="M24 38C24 38 8 28 8 18C8 13 12 10 16 10C19 10 22 12 24 15C26 12 29 10 32 10C36 10 40 13 40 18C40 28 24 38 24 38Z" stroke="url(#gg)" stroke-width="1.5" stroke-linejoin="round"/></svg>Body &amp; Earth &mdash; 9 cards</div>
+</div>
+
+<div class="cgrid cgrid3">
+  <div class="icard"><div class="icard-icon"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><path d="M24 40L24 22" stroke="url(#gg)" stroke-width="1.4" stroke-linecap="round"/><path d="M24 28C18 24 12 26 10 32C16 34 22 31 24 28Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/><path d="M24 22C28 16 36 16 38 10C32 10 26 14 24 22Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/></svg></div><div class="icard-title">Reflection</div><div class="icard-body">Personal mortality awareness. What death means to you, what remains unresolved, how you want to live knowing you will die. The most inward deck -- a good entry point for first-time groups.</div></div>
+  <div class="icard"><div class="icard-icon"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><path d="M10 40L10 10L34 10L38 14L38 40Z" stroke="url(#gg)" stroke-width="1.4" stroke-linejoin="round"/><rect x="16" y="10" width="16" height="12" stroke="url(#gg)" stroke-width="1.2"/><rect x="14" y="26" width="20" height="14" rx="1" stroke="url(#gg)" stroke-width="1.1"/></svg></div><div class="icard-title">Legacy</div><div class="icard-body">What we leave behind -- not possessions, but the immaterial: unspoken stories, qualities we hope to pass on, letters unwritten. Often surfaces the deepest emotional responses.</div></div>
+  <div class="icard"><div class="icard-icon"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><rect x="19" y="22" width="10" height="20" rx="1.5" stroke="url(#gg)" stroke-width="1.4"/><path d="M24 22C24 18 20 14 24 9C28 14 24 18 24 22Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/><line x1="14" y1="42" x2="34" y2="42" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg></div><div class="icard-title">Ritual</div><div class="icard-body">Cultural and spiritual practices surrounding death: funerary traditions, anniversaries, ways of honoring the dead. Especially generative in multicultural groups.</div></div>
+  <div class="icard"><div class="icard-icon"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><circle cx="16" cy="20" r="6" stroke="url(#gg)" stroke-width="1.3" opacity=".8"/><circle cx="32" cy="20" r="6" stroke="url(#gg)" stroke-width="1.3" opacity=".8"/><path d="M10 38C10 32 13 28 16 28C19 28 22 32 22 38" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round"/><path d="M26 38C26 32 29 28 32 28C35 28 38 32 38 38" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round"/></svg></div><div class="icard-title">Community</div><div class="icard-body">Who belongs in the room. How we support each other in dying, caregiving, and grief. The most relational deck -- powerful in groups with existing bonds.</div></div>
+  <div class="icard"><div class="icard-icon"><svg width="32" height="32" viewBox="0 0 48 48" fill="none"><path d="M24 38C24 38 8 28 8 18C8 13 12 10 16 10C19 10 22 12 24 15C26 12 29 10 32 10C36 10 40 13 40 18C40 28 24 38 24 38Z" stroke="url(#gg)" stroke-width="1.5" stroke-linejoin="round"/><path d="M20 22C20 20 22 18 24 18C26 18 28 20 28 22" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".45"/></svg></div><div class="icard-title">Body &amp; Earth</div><div class="icard-body">The physical reality of dying: bodily wishes, ecological return, the sensory experience of mortality. The most embodied and direct deck -- use with care in groups new to this work.</div></div>
+</div>
+
+
+<!-- ══ 04. HOW TO FACILITATE ══════════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="12" r="5" stroke="url(#gg)" stroke-width="1.3"/><line x1="24" y1="17" x2="24" y2="32" stroke="url(#gg)" stroke-width="1.4" stroke-linecap="round"/><path d="M14 22L24 26L34 22" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 32L24 38L30 32" stroke="url(#gg)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Four</p>
+<h2 class="sec-title">How to <em>Facilitate</em></h2>
+<p class="intro">Facilitation is not management -- it is presence. Your role is to hold the container, not fill it. The cards do the asking; the group does the knowing.</p>
+
+<div class="anam">
+  <div class="anam-label">Anam Cara Teaching</div>
+  <div class="anam-body">The Anam Cara apprenticeship teaches that the most essential skill of an end-of-life companion is <strong>following, not leading</strong> -- meeting the dying or grieving person exactly where they are, at the pace they set, without agenda or rescue. This same principle governs facilitation of Augmento Mori. You are not here to guide anyone toward a particular insight or emotional destination. You are here to make the space safe enough that whatever needs to arise can arise.</div>
+</div>
+
+<div class="steps">
+  <div class="step"><div class="step-n">1</div><div><div class="step-t">Prepare the Space</div><div class="step-b">Arrange seating in a circle. Dim lighting where possible. Have water, tissues, and silence before you begin. Remove clocks from view. The physical environment communicates care before a single word is spoken. Anam Cara practitioners speak of "making sacred space" -- not through ritual objects necessarily, but through intentionality of presence.</div></div></div>
+  <div class="step"><div class="step-n">2</div><div><div class="step-t">Name the Container</div><div class="step-b">Before drawing the first card, state the agreement aloud: no wrong answers, no advice, no fixing, no pressure to speak. Passing is always available. What is shared in the room stays in the room. This is not therapy -- it is shared inquiry.</div></div></div>
+  <div class="step"><div class="step-n">3</div><div><div class="step-t">Draw and Read Aloud</div><div class="step-b">One person draws a card and reads the prompt aloud -- slowly, twice if needed. Then: silence. Let the question land before anyone speaks. That pause -- even 15 or 20 seconds -- is itself the work. Do not rush it.</div></div></div>
+  <div class="step"><div class="step-n">4</div><div><div class="step-t">Listen Without Agenda</div><div class="step-b">Model receptive listening. No vigorous nodding, no leading responses, no "yes, and." Others speak if they wish. Silence from a participant is not failure -- it is one of the most valid responses available. Protect it fiercely.</div></div></div>
+  <div class="step"><div class="step-n">5</div><div><div class="step-t">Invite Written Reflection</div><div class="step-b">After group sharing, invite each person to write privately in the diary space. The act of writing moves reflection from conversation into something more lasting. This is where the deepest work often happens.</div></div></div>
+  <div class="step"><div class="step-n">6</div><div><div class="step-t">Track Mind, Body, Spirit</div><div class="step-b">After writing, invite participants to notice how the card landed across the three pillars: Mind (how they were thinking), Body (what they felt physically), Spirit (what stirred beneath both). These are not categories to explain -- just to notice. See Section 5.</div></div></div>
+  <div class="step"><div class="step-n">7</div><div><div class="step-t">Close with Intention</div><div class="step-b">End each session with a small closing act: a shared breath, a moment of gratitude, or a single word from each person. Closing rituals signal that something real happened here -- and that the container is being gently, respectfully released. The Anam Cara tradition emphasizes that how we close is as important as how we open.</div></div></div>
+</div>
+
+<div class="notebox">
+  <div class="notebox-t">When Someone Becomes Distressed</div>
+  <div class="notebox-b">Death conversations can surface unexpected grief, trauma, or overwhelm. If someone becomes visibly distressed: slow down, offer quiet presence rather than words, and offer to step outside briefly. Do not rush to fix the feeling -- distress is contact with what is real. In clinical or healthcare settings, have a mental health resource or crisis contact available before the session begins. Facilitators without clinical training should not attempt to provide grief counseling -- companionship and professional referral are your tools.</div>
+</div>
+
+<div class="cgrid">
+  <div class="icard"><div class="icard-title">Session Length</div><div class="icard-body">60 to 90 minutes per session. 4 to 6 cards is a good depth for one sitting. Rushing is the enemy of this work. Better to go deep on two cards than to skim ten.</div></div>
+  <div class="icard"><div class="icard-title">Group Size</div><div class="icard-body">2 to 8 people is ideal. Intimacy diminishes significantly past 10. For larger settings, break into smaller groups with one facilitator each.</div></div>
+  <div class="icard"><div class="icard-title">Returning Sessions</div><div class="icard-body">Multiple sessions over weeks or months deepens the work considerably. Death is not a once-per-lifetime conversation -- each session opens a different layer.</div></div>
+</div>
+
+
+<!-- ══ 05. LIBRARY OF REFLECTIONS + MBS ═══════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><path d="M10 40L10 10L34 10L38 14L38 40Z" stroke="url(#gg)" stroke-width="1.4" stroke-linejoin="round"/><rect x="16" y="10" width="16" height="12" stroke="url(#gg)" stroke-width="1.2"/><line x1="18" y1="28" x2="30" y2="28" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".6"/><line x1="18" y1="32" x2="28" y2="32" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".4"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Five</p>
+<h2 class="sec-title">The Library of Reflections<br><em>and the Mind, Body, Spirit Framework</em></h2>
+<p class="intro">Every entry saved in the diary becomes part of a growing personal archive. Over sessions, it becomes something more than notes: a record of how someone's relationship with death evolved.</p>
+
+<p class="body">The Library of Reflections is the game's long-form companion. Each saved diary entry carries a timestamp, location, and -- when the participant chooses -- a Mind/Body/Spirit signature. Together, these entries form a longitudinal portrait of a person's inner life around mortality.</p>
+
+<p class="body">The library can be exported as CSV for analysis or as plain text for sharing, printing, or incorporating into legacy letters and end-of-life documents. This feature serves as a natural bridge toward <strong>advance care planning</strong> -- the step from reflection to documented wishes that the research showed most people intend but rarely complete.</p>
+
+<div class="mbs">
+  <div class="mbs-col"><div class="mbs-label">Mind</div><div class="mbs-chips"><span class="chip">tender</span><span class="chip">unsettled</span><span class="chip">grateful</span><span class="chip">resistant</span><span class="chip">peaceful</span><span class="chip">grief</span><span class="chip">curious</span><span class="chip">numb</span><span class="chip">clear</span><span class="chip">confused</span></div></div>
+  <div class="mbs-col"><div class="mbs-label">Body</div><div class="mbs-chips"><span class="chip">chest tight</span><span class="chip">warmth</span><span class="chip">tears near</span><span class="chip">expansive</span><span class="chip">breath held</span><span class="chip">heavy</span><span class="chip">grounded</span><span class="chip">raw</span><span class="chip">light</span><span class="chip">still</span></div></div>
+  <div class="mbs-col"><div class="mbs-label">Spirit</div><div class="mbs-chips"><span class="chip">quiet</span><span class="chip">restless</span><span class="chip">open</span><span class="chip">searching</span><span class="chip">connected</span><span class="chip">estranged</span><span class="chip">surrendered</span><span class="chip">held</span><span class="chip">alone</span><span class="chip">vast</span></div></div>
+</div>
+
+<p class="body">Across all eight language editions, the Mind/Body/Spirit labels are translated with cultural nuance. The vocabulary of grief in the body is not identical across cultures, and the game honors that. Participants are encouraged to use the provided words or find their own -- the chips are a starting point, not a limit.</p>
+
+
+<!-- ══ 06. CULTURAL SENSITIVITY AND LANGUAGE ══════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><path d="M24 8C14 8 8 16 8 24C8 32 14 40 24 40C34 40 40 32 40 24C40 16 34 8 24 8Z" stroke="url(#gg)" stroke-width="1.4"/><path d="M8 24L40 24" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".5"/><path d="M24 8C20 16 20 32 24 40" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".5"/><path d="M24 8C28 16 28 32 24 40" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".5"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Six</p>
+<h2 class="sec-title">Cultural Sensitivity <em>and Language</em></h2>
+<p class="intro">Language is not a neutral vessel. The words we use to approach death -- their grammar, their silences, their connotations -- carry entire worlds within them. Meeting people where they are begins with meeting them in their language.</p>
+
+<p class="body">The research behind Augmento Mori surveyed participants across diverse cultural backgrounds. Respondents described rituals spanning the Islamic <em>azza</em>, the Mexican <em>Dia de los Muertos</em>, Ghanaian multi-day celebration burials, Hindu <em>shraddha</em> rites, Gullah Geechee ancestral vigils, Tamil <em>karam</em> ceremonies, and Indigenous beliefs in death as the beginning of a new journey. In nearly every case, the rituals that moved people most were those that made death communal rather than clinical -- witnessed, named, and held together.</p>
+
+<p class="body">The Anam Cara tradition similarly teaches that death is not a private medical event but a communal threshold -- one that ideally involves the presence of trusted companions, both living and perhaps ancestral. This cross-cultural finding reinforces the thesis's core argument: that death has been unnecessarily isolated, and that community, in its many forms, is both the remedy and the design criterion.</p>
+
+<div class="principles">
+  <div class="principle"><div class="p-bar"></div><div><div class="p-title">Fluency Over Literalism</div><div class="p-body">A literal translation often arrives as cold or culturally alien. Each edition privileges the emotional intention of the question over word-for-word equivalence. What is being asked in English as "What do you want to leave behind?" must find its natural form in Twi, in Tamil, in Chinese -- or it lands as nothing.</div></div></div>
+  <div class="principle"><div class="p-bar"></div><div><div class="p-title">Formality and the Second Person</div><div class="p-body">Most languages carry formal and informal registers for "you." Augmento Mori uses the formal register in all editions -- <em>usted</em> in Spanish, <em>ap</em> in Hindi, <em>niiṅkaḷ</em> in Tamil, <em>nin</em> in Mandarin. These are sacred questions. The grammar should honor that.</div></div></div>
+  <div class="principle"><div class="p-bar"></div><div><div class="p-title">Avoidance is Cultural Data</div><div class="p-body">In some cultures, speaking one's own death aloud is considered to invite it. In others, the deceased's name goes unspoken for a year. In others still, death is celebrated with song. These are not obstacles to facilitation -- they are the content of it. A facilitator's job is not to override cultural avoidance but to create enough safety that it can be gently explored.</div></div></div>
+  <div class="principle"><div class="p-bar"></div><div><div class="p-title">The Untranslatable as Invitation</div><div class="p-body">Some of the richest facilitation moments arise when a word in one language has no direct equivalent in another. <em>Mogya</em> (Akan blood-lineage), <em>dhikr al-mawt</em> (Arabic: remembrance of death as spiritual practice), <em>virásat</em> (Hindi: legacy as living inheritance) -- these are not gaps. They are invitations to explore what a culture has named that others haven't.</div></div></div>
+  <div class="principle"><div class="p-bar"></div><div><div class="p-title">Structural Inequity is Not Culturally Neutral</div><div class="p-body">The research found marked differences in palliative care access along racial and economic lines. Black communities in the United States face late hospice referrals, historical medical mistrust, and care systems that frequently ignore cultural and spiritual preferences. Facilitating with Black participants requires acknowledgment of this context, not transcendence of it.</div></div></div>
+</div>
+
+
+<!-- ══ 07. EIGHT LANGUAGE EDITIONS ════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><path d="M24 8C14 8 8 16 8 24C8 32 14 40 24 40C34 40 40 32 40 24C40 16 34 8 24 8Z" stroke="url(#gg)" stroke-width="1.4"/><path d="M8 24L40 24" stroke="url(#gg)" stroke-width="1" opacity=".4"/><circle cx="24" cy="24" r="4" stroke="url(#gg)" stroke-width="1.2" opacity=".6"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Seven</p>
+<h2 class="sec-title">Eight <em>Language Editions</em></h2>
+<p class="intro">Each edition is a cultural homecoming -- not a translation but a transposition of the same essential questions into the emotional and philosophical language of a particular world.</p>
+
+<!-- ENGLISH -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 8C14 8 8 16 8 24C8 32 14 40 24 40C34 40 40 32 40 24C40 16 34 8 24 8Z" stroke="url(#gg)" stroke-width="1.3"/>
+        <path d="M8 24L40 24" stroke="url(#gg)" stroke-width=".9" stroke-linecap="round" opacity=".45"/>
+        <path d="M24 8C20 16 20 32 24 40" stroke="url(#gg)" stroke-width=".9" stroke-linecap="round" opacity=".45"/>
+        <path d="M24 8C28 16 28 32 24 40" stroke="url(#gg)" stroke-width=".9" stroke-linecap="round" opacity=".45"/>
+        <circle cx="24" cy="24" r="3" stroke="url(#gg)" stroke-width="1" opacity=".55"/>
+      </svg></div><div><div class="lang-name">English</div><div class="lang-native">Reference edition &nbsp;&middot;&nbsp; ~1.5 billion speakers</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">Death Positivity Movement</span><span class="pill pill-r">Direct Register</span><span class="pill pill-p">Secular and Pluralist</span><span class="pill pill-b">Lancet Commission Framework</span></div>
+      <div class="lang-body">The English edition addresses a Western cultural paradox: intellectual acceptance of death as natural alongside near-total avoidance of death conversation. Research found that 85% of participants believed open discussion reduces fear -- yet most had not had a serious death conversation with even their closest family members.</div>
+      <div class="lang-body">Key influences include the hospice movement, death cafe culture, advance care planning research, and the Anam Cara tradition of soul-friendship accompaniment. The English edition also draws on the death positivity movement's insistence that naming death is not morbid -- it is an act of courage and love.</div>
+      <div class="card-ex"><div class="card-ex-label">Sample Reflection card</div><div class="card-ex-text">"What do you most want the people you love to know about how you lived -- that they might not already know?"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> English-speaking participants often approach cards intellectually first -- analyzing rather than feeling. Protect silence. If a group intellectualizes repeatedly, try: "Set the analysis down for a moment. What was the first thing you felt when you heard that question?"</div>
+    </div>
+  </div>
+</div>
+
+<!-- SPANISH -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 36C24 28 18 22 24 14C30 22 24 28 24 36Z" stroke="url(#gg)" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M24 34C20 26 12 26 10 18C16 17 22 24 24 34Z" stroke="url(#gg)" stroke-width="1.2" stroke-linejoin="round" opacity=".8"/>
+        <path d="M24 34C28 26 36 26 38 18C32 17 26 24 24 34Z" stroke="url(#gg)" stroke-width="1.2" stroke-linejoin="round" opacity=".8"/>
+        <line x1="24" y1="36" x2="24" y2="42" stroke="url(#gg)" stroke-width="1.3" stroke-linecap="round" opacity=".5"/>
+      </svg></div><div><div class="lang-name">Espanol</div><div class="lang-native">Spanish &nbsp;&middot;&nbsp; ~500 million native speakers</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">Familismo</span><span class="pill pill-r">Dia de los Muertos</span><span class="pill pill-p">Communal Grief</span><span class="pill pill-b">Catholic Ritual</span></div>
+      <div class="lang-body">Written in formal <em>usted</em> register, the Spanish edition draws on <em>familismo</em> -- the centrality of family bonds as the primary unit of meaning -- and the Mesoamerican-Catholic tradition of honoring death as continuation rather than ending. Survey respondents cited the <em>ofrenda</em> and <em>Dia de los Muertos</em> as the death rituals they found most beautiful: "I find ofrendas deeply beautiful. There's something about communing with the dead I find comforting."</div>
+      <div class="lang-body">In Spanish, death is <em>la muerte</em> -- feminine, intimate, grammatically close. The language itself models a different relationship with mortality than English allows.</div>
+      <div class="lang-words">
+        <div class="lword"><div class="lword-n">la muerte</div><div class="lword-g">death (feminine)</div></div>
+        <div class="lword"><div class="lword-n">el duelo</div><div class="lword-g">grief / mourning</div></div>
+        <div class="lword"><div class="lword-n">el legado</div><div class="lword-g">legacy</div></div>
+        <div class="lword"><div class="lword-n">la ofrenda</div><div class="lword-g">altar offering for the dead</div></div>
+        <div class="lword"><div class="lword-n">el alma</div><div class="lword-g">soul</div></div>
+        <div class="lword"><div class="lword-n">el velorio</div><div class="lword-g">wake / vigil</div></div>
+      </div>
+      <div class="card-ex"><div class="card-ex-label">Sample Legacy card</div><div class="card-ex-text">"Que desea dejar atras -- no objetos, sino algo mas dificil de nombrar?"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> Death in many Spanish-speaking families is held communally and visibly. Participants may recognize the game is facilitating what their family already does -- but may have lost as generations disperse. Lean into intergenerational questions and the ache of diaspora distance from ancestral practice.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ARABIC -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30 10C22 12 16 19 16 28C16 36 22 42 30 42C24 40 20 34 20 28C20 20 24 14 30 10Z" stroke="url(#gg)" stroke-width="1.5" stroke-linejoin="round"/>
+        <circle cx="36" cy="14" r="1.5" stroke="url(#gg)" stroke-width="1" opacity=".6"/>
+        <circle cx="38" cy="22" r="1" stroke="url(#gg)" stroke-width=".9" opacity=".4"/>
+        <circle cx="36" cy="30" r=".8" stroke="url(#gg)" stroke-width=".8" opacity=".3"/>
+      </svg></div><div><div class="lang-name">&#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629;</div><div class="lang-native">Arabic &nbsp;&middot;&nbsp; ~400 million speakers &nbsp;&middot;&nbsp; RTL script</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">Islamic Tradition</span><span class="pill pill-r">Azza Gathering</span><span class="pill pill-p">40-Day Remembrance</span><span class="pill pill-b">Dhikr al-Mawt</span></div>
+      <div class="lang-body">Arabic is written right-to-left and the game interface fully supports RTL rendering. The Arabic edition draws on Islamic traditions: the <em>azza</em> (communal condolence gathering), ritual body-washing, the 40-day remembrance cycle, and the understanding of death as a chapter every living being will experience -- like birth. A survey respondent described it: "In Islam we have to wash the body and wrap it for burial. Despite the constant tears, it was the most profound experience I have gone through -- women coming together to cleanse a loved one as gently as we can."</div>
+      <div class="lang-body">The Islamic teaching that <em>dhikr al-mawt</em> -- remembrance of death -- is itself a spiritual practice aligns deeply with the Anam Cara understanding that consciously acknowledging death is not morbid but clarifying. Both traditions teach that the awareness of death is a path toward fuller life.</div>
+      <div class="lang-words">
+        <div class="lword"><div class="lword-n">&#x627;&#x644;&#x645;&#x648;&#x62A;</div><div class="lword-g">al-mawt: death</div></div>
+        <div class="lword"><div class="lword-n">&#x627;&#x644;&#x631;&#x648;&#x62D;</div><div class="lword-g">al-ruh: soul / spirit</div></div>
+        <div class="lword"><div class="lword-n">&#x627;&#x644;&#x639;&#x632;&#x627;&#x621;</div><div class="lword-g">al-azza: condolence gathering</div></div>
+        <div class="lword"><div class="lword-n">&#x627;&#x644;&#x628;&#x631;&#x632;&#x62E;</div><div class="lword-g">al-barzakh: threshold between worlds</div></div>
+        <div class="lword"><div class="lword-n">&#x630;&#x643;&#x631; &#x627;&#x644;&#x645;&#x648;&#x62A;</div><div class="lword-g">dhikr al-mawt: remembering death</div></div>
+      </div>
+      <div class="card-ex"><div class="card-ex-label">Sample Ritual card</div><div class="card-ex-text">"&#x645;&#x627; &#x627;&#x644;&#x637;&#x642;&#x633; &#x627;&#x644;&#x645;&#x631;&#x62A;&#x628;&#x637; &#x628;&#x627;&#x644;&#x648;&#x641;&#x627;&#x629; &#x645;&#x646; &#x62B;&#x642;&#x627;&#x641;&#x62A;&#x643; &#x623;&#x648; &#x645;&#x639;&#x62A;&#x642;&#x62F;&#x627;&#x62A;&#x643; &#x627;&#x644;&#x630;&#x64A; &#x62A;&#x62C;&#x62F;&#x647; &#x630;&#x627; &#x645;&#x639;&#x646;&#x649;&#x61F;"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> Frame facilitation within the Islamic understanding that death preparation is a religious virtue -- <em>i'dad</em>. The game can open space for advance care conversations that feel natural within, rather than in tension with, Islamic tradition. Death is less taboo here; communal practices are rich entry points.</div>
+    </div>
+  </div>
+</div>
+
+<!-- GULLAH GEECHEE -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 20C10 15 14 25 18 20C22 15 26 25 30 20C34 15 38 25 42 20" stroke="url(#gg)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M6 28C10 23 14 33 18 28C22 23 26 33 30 28C34 23 38 33 42 28" stroke="url(#gg)" stroke-width="1.3" stroke-linecap="round" opacity=".65"/>
+        <path d="M6 36C10 31 14 41 18 36C22 31 26 41 30 36C34 31 38 41 42 36" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+      </svg></div><div><div class="lang-name">Gullah Geechee</div><div class="lang-native">Sea Islands Creole &nbsp;&middot;&nbsp; Low Country, US &nbsp;&middot;&nbsp; Endangered</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">African Diaspora</span><span class="pill pill-r">Oral Heritage</span><span class="pill pill-p">Ancestral Presence</span><span class="pill pill-b">Racial Health Equity</span></div>
+      <div class="lang-body">Gullah Geechee is a living Creole language of the Sea Island communities from North Carolina to Florida -- a direct descendant of West African languages blended with English under conditions of enslavement. It carries unbroken threads of ancestral knowledge about death, memory, and community that were never fully severed. Its inclusion in Augmento Mori is an act of cultural repair.</div>
+      <div class="lang-body">The <em>Dancing for Della</em> workshop documented structural inequities in palliative care access for Black American communities: historical mistrust of the medical system, late hospice referrals compared to white patients, and the critical role of churches, barbershops, and trusted community elders in death education. These findings shaped every card in this edition.</div>
+      <div class="lang-words">
+        <div class="lword"><div class="lword-n">gone home</div><div class="lword-g">died (euphemism of return)</div></div>
+        <div class="lword"><div class="lword-n">de ancestor dem</div><div class="lword-g">the ancestors (present tense)</div></div>
+        <div class="lword"><div class="lword-n">kumbaya</div><div class="lword-g">come by here -- invocation</div></div>
+        <div class="lword"><div class="lword-n">sweetgrass</div><div class="lword-g">sacred plant; memory of homeland</div></div>
+        <div class="lword"><div class="lword-n">oonuh</div><div class="lword-g">you all (communal second person)</div></div>
+      </div>
+      <div class="card-ex"><div class="card-ex-label">Sample Community card</div><div class="card-ex-text">"When someone in oonuh community been dyin, what you wishin you coulda do -- an what been holdin you back?"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> The Gullah Geechee edition must be facilitated with attentiveness to the ongoing context of racial health inequity. Do not assume participants from Black communities have equivalent access to palliative care, advance planning resources, or institutional trust. The game can be a bridge -- but only if the facilitator understands the water under it and does not pretend the bridge doesn't need building.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TWI -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 24C20 18 10 16 10 22C10 28 18 28 24 24Z" stroke="url(#gg)" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M24 24C28 18 38 16 38 22C38 28 30 28 24 24Z" stroke="url(#gg)" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M24 24C20 30 12 34 14 38C18 40 24 34 24 24Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round" opacity=".8"/>
+        <path d="M24 24C28 30 36 34 34 38C30 40 24 34 24 24Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round" opacity=".8"/>
+        <line x1="24" y1="20" x2="24" y2="38" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+      </svg></div><div><div class="lang-name">Twi (Akan)</div><div class="lang-native">Akan &nbsp;&middot;&nbsp; Ghana &nbsp;&middot;&nbsp; ~9 million speakers</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">Akan Worldview</span><span class="pill pill-r">Joyful Funeral Tradition</span><span class="pill pill-p">Matrilineal Lineage</span><span class="pill pill-b">Ancestral Continuation</span></div>
+      <div class="lang-body">The Akan people hold death as a transition rather than an ending. Funerary celebrations for elders are joyful community events: dress color varies with the deceased's age, and the one-year anniversary gathers family to celebrate what the person lived. A survey respondent described it: "The multi-day celebration in Ghana -- depending on the age of the person you dress in different colors to signify how they lived. It allows family to sit together and remember."</div>
+      <div class="lang-words">
+        <div class="lword"><div class="lword-n">mogya</div><div class="lword-g">blood / matrilineal lineage</div></div>
+        <div class="lword"><div class="lword-n">sunsum</div><div class="lword-g">personal spiritual self</div></div>
+        <div class="lword"><div class="lword-n">kra</div><div class="lword-g">divine life force</div></div>
+        <div class="lword"><div class="lword-n">nananom</div><div class="lword-g">the ancestors</div></div>
+        <div class="lword"><div class="lword-n">abusua</div><div class="lword-g">family clan (matrilineal)</div></div>
+      </div>
+      <div class="card-ex"><div class="card-ex-label">Sample Legacy card</div><div class="card-ex-text">"Biribi woo hoo a wopee see wugya -- mfaso anaasee obi a oowoo ho nyansa. Deen na wobeehu woo wo mogya mu?"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> The Akan distinction between <em>sunsum</em> (personal soul) and <em>kra</em> (divine life force) opens rich territory for Legacy and Reflection cards. Ghanaian funerary traditions already celebrate what Augmento Mori argues for -- that death, held communally and joyfully, can be one of life's most life-affirming acts.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAMIL -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="24" y1="42" x2="24" y2="16" stroke="url(#gg)" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M24 28L18 22" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M24 28L30 22" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M24 22L18 16" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M24 22L30 16" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M24 34L18 28" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M24 34L30 28" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round"/>
+        <path d="M20 14L24 10L28 14" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg></div><div><div class="lang-name">&#x0BA4;&#x0BAE;&#x0BBF;&#x0BB4;&#x0BCD; (Tamil)</div><div class="lang-native">Tamil &nbsp;&middot;&nbsp; South India and Sri Lanka &nbsp;&middot;&nbsp; ~80 million speakers</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">Thirukkural Philosophy</span><span class="pill pill-r">Karam Rites</span><span class="pill pill-p">Shaiva Siddhanta</span><span class="pill pill-b">2,000-Year Literary Tradition</span></div>
+      <div class="lang-body">Tamil is one of the world's oldest living classical languages, with an unbroken literary tradition spanning over 2,000 years. The <em>Thirukkural</em> by Thiruvalluvar contains profound couplets on mortality, right living, and the naturalness of death -- a cultural sensibility most Tamil speakers carry regardless of whether they know the source. The Tamil edition uses formal <em>niiṅkaḷ</em> throughout.</div>
+      <div class="lang-words">
+        <div class="lword"><div class="lword-n">&#x0B86;&#x0BB5;&#x0BBF;</div><div class="lword-g">avi: soul / spirit</div></div>
+        <div class="lword"><div class="lword-n">&#x0B95;&#x0BB0;&#x0BC1;&#x0BAE;</div><div class="lword-g">karam: funeral rites</div></div>
+        <div class="lword"><div class="lword-n">&#x0BA8;&#x0BBF;&#x0BA9;&#x0BC8;&#x0BB5;&#x0BC1;</div><div class="lword-g">ninaive: memory / remembrance</div></div>
+        <div class="lword"><div class="lword-n">&#x0B9A;&#x0BAE;&#x0BC2;&#x0B95;&#x0BAE;&#x0BCD;</div><div class="lword-g">camukam: community</div></div>
+        <div class="lword"><div class="lword-n">&#x0BAE;&#x0BB0;&#x0BAA;&#x0BC1;</div><div class="lword-g">marapu: heritage / legacy</div></div>
+      </div>
+      <div class="card-ex"><div class="card-ex-label">Sample Reflection card (Thirukkural-influenced)</div><div class="card-ex-text">"&#x0BA8;&#x0BBE;&#x0BB3;&#x0BC8; &#x0BAE;&#x0BB0;&#x0BA3;&#x0BAE;&#x0BCD; &#x0BB5;&#x0BA8;&#x0BCD;&#x0BA4;&#x0BBE;&#x0BB2;&#x0BCD;, &#x0B8E;&#x0BA9;&#x0BCD;&#x0BA9; &#x0BA4;&#x0BC0;&#x0BB0;&#x0BCD;&#x0B95;&#x0BCD;&#x0B95;&#x0BAA;&#x0BCD;&#x0BAA;&#x0B9F;&#x0BBE;&#x0BAE;&#x0BB2;&#x0BCD; &#x0B87;&#x0BB0;&#x0BC1;&#x0B95;&#x0BCD;&#x0B95;&#x0BC1;&#x0BAE;&#x0BCD;?"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> Tamil communities may span Hindu, Christian, Muslim, and secular traditions. Do not assume a single spiritual framework. The Ritual deck is valuable for surfacing which practices resonate personally, as distinct from what family or tradition expects. This distinction between personal meaning and inherited obligation is often where the most honest conversation lives.</div>
+    </div>
+  </div>
+</div>
+
+<!-- HINDI -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 38C24 38 8 28 8 18C8 13 12 10 16 10C19 10 22 12 24 15C26 12 29 10 32 10C36 10 40 13 40 18C40 28 24 38 24 38Z" stroke="url(#gg)" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M20 22C20 20 22 18 24 18C26 18 28 20 28 22" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".45"/>
+      </svg></div><div><div class="lang-name">&#x0939;&#x093F;&#x0928;&#x094D;&#x0926;&#x0940; (Hindi)</div><div class="lang-native">Hindi &nbsp;&middot;&nbsp; North India &nbsp;&middot;&nbsp; ~600 million speakers</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">Bhagavad Gita</span><span class="pill pill-r">Shraddha and Barsi</span><span class="pill pill-p">Pluralist Tradition</span><span class="pill pill-b">Mrityu Smriti Practice</span></div>
+      <div class="lang-body">Written in formal <em>ap</em> register, the Hindi edition addresses the immense plurality of the Hindi-speaking world -- encompassing Hindu, Muslim, Sikh, Christian, and secular participants. The Bhagavad Gita's teaching that <em>mrityu smriti</em> (awareness of death) leads to fuller presence in life is woven through the Reflection deck -- not as doctrine but as a cultural sensibility most Hindi speakers have absorbed regardless of personal faith.</div>
+      <div class="lang-words">
+        <div class="lword"><div class="lword-n">&#x0906;&#x0924;&#x094D;&#x092E;&#x093E;</div><div class="lword-g">atma: soul</div></div>
+        <div class="lword"><div class="lword-n">&#x0935;&#x093F;&#x0930;&#x093E;&#x0938;&#x0924;</div><div class="lword-g">viraasat: legacy / living heritage</div></div>
+        <div class="lword"><div class="lword-n">&#x0936;&#x094D;&#x0930;&#x093E;&#x0926;&#x094D;&#x0927;</div><div class="lword-g">shraddh: ancestral rites</div></div>
+        <div class="lword"><div class="lword-n">&#x092C;&#x0930;&#x0938;&#x0940;</div><div class="lword-g">barsi: death anniversary</div></div>
+        <div class="lword"><div class="lword-n">&#x092E;&#x0943;&#x0924;&#x094D;&#x092F;&#x0941; &#x0938;&#x094D;&#x092E;&#x0943;&#x0924;&#x093F;</div><div class="lword-g">mrityu smriti: death awareness as practice</div></div>
+      </div>
+      <div class="card-ex"><div class="card-ex-label">Sample Reflection card (Gita-influenced)</div><div class="card-ex-text">"&#x0905;&#x0917;&#x0930; &#x0915;&#x0932; &#x092E;&#x0943;&#x0924;&#x094D;&#x092F;&#x0941; &#x0906; &#x091C;&#x093E;&#x090F;, &#x0924;&#x094B; &#x0915;&#x094D;&#x092F;&#x093E; &#x0905;&#x0928;&#x0938;&#x0941;&#x0932;&#x091D;&#x093E; &#x0930;&#x0939; &#x091C;&#x093E;&#x090F;&#x0917;&#x093E;?"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> In mixed-faith Hindi groups, the Ritual deck often surfaces surprising differences -- participants may discover they hold very different beliefs from family members who have never directly asked each other. The game can open these conversations without forcing them.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHINESE -->
+<div class="lang">
+  <div class="lang-inner">
+    <div class="lang-main">
+      <div class="lang-head"><div class="lang-flag"><svg width="52" height="52" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="24" y1="42" x2="24" y2="26" stroke="url(#gg)" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M24 30C24 20 10 20 10 10C18 8 24 18 24 30Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/>
+        <path d="M24 30C24 20 38 20 38 10C30 8 24 18 24 30Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/>
+        <line x1="18" y1="42" x2="30" y2="42" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
+      </svg></div><div><div class="lang-name">&#x4E2D;&#x6587; (Chinese)</div><div class="lang-native">Simplified Mandarin &nbsp;&middot;&nbsp; ~1 billion speakers</div></div></div>
+      <div class="lang-pills"><span class="pill pill-r">Confucian Filial Piety</span><span class="pill pill-r">Qingming Festival</span><span class="pill pill-p">Daoist Transformation</span><span class="pill pill-b">Ancestor Veneration</span></div>
+      <div class="lang-body">The Chinese edition addresses one of the most profound cultural taboos in any language edition. Speaking directly about one's own death is widely considered to invite it. The character for death (&#x6b7b;, <em>si</em>) is avoided in many contexts; the number 4 is omitted from buildings. The Chinese edition navigates this with deliberate care, using Daoist language of <em>transformation</em> (&#x8F6C;&#x5316;, <em>zhuanhua</em>) rather than cessation, and Confucian frameworks of filial legacy. Zhuangzi's butterfly dream provides the philosophical frame: not ending, but transformation.</div>
+      <div class="lang-words">
+        <div class="lword"><div class="lword-n">&#x7075;&#x9B42;</div><div class="lword-g">linghun: soul</div></div>
+        <div class="lword"><div class="lword-n">&#x9057;&#x4EA7;</div><div class="lword-g">yichan: legacy / inheritance</div></div>
+        <div class="lword"><div class="lword-n">&#x6E05;&#x660E;&#x8282;</div><div class="lword-g">qingming jie: tomb-sweeping festival</div></div>
+        <div class="lword"><div class="lword-n">&#x8F6C;&#x5316;</div><div class="lword-g">zhuanhua: transformation</div></div>
+        <div class="lword"><div class="lword-n">&#x5B5D;</div><div class="lword-g">xiao: filial piety</div></div>
+      </div>
+      <div class="card-ex"><div class="card-ex-label">Sample Reflection card (Daoist-influenced)</div><div class="card-ex-text">"&#x5982;&#x679C;&#x6B7B;&#x4EA1;&#x660E;&#x5929;&#x5C31;&#x6765;&#x4E34;&#xFF0C;&#x4EC0;&#x4E48;&#x4F1A;&#x60AC;&#x800C;&#x672A;&#x51B3;&#xFF1F;"</div></div>
+      <div class="lang-note"><strong>Facilitation note:</strong> Begin Chinese-language sessions with the Legacy or Ritual decks -- approaching death through what one leaves and how one honors before arriving at what death itself means. Frame the experience through Qingming: we are doing what Chinese families have always done, tending to the relationship between the living and the dead. Transformation, not ending.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ 08. MODES OF PLAY ═══════════════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><path d="M10 24L20 14L30 24L20 34Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/><path d="M26 24L36 14L46 24L36 34Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round" opacity=".6"/><line x1="2" y1="24" x2="10" y2="24" stroke="url(#gg)" stroke-width="1.2" stroke-linecap="round" opacity=".4"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Eight</p>
+<h2 class="sec-title">Modes of <em>Play</em></h2>
+<p class="intro">Augmento Mori is designed to be flexible across contexts: alone at a kitchen table, between two people who love each other, in a community circle, or beside a bed where someone is dying. Each context asks something different of the cards -- and of you.</p>
+
+<!-- SOLO -->
+<div class="mode-block solo">
+  <div class="mode-header">
+    <svg class="mode-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="16" r="7" stroke="url(#gg)" stroke-width="1.4"/>
+      <path d="M10 40C10 32 16 26 24 26C32 26 38 32 38 40" stroke="url(#gg)" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    <div><div class="mode-label">Mode One</div><div class="mode-title">Solo Practice</div></div>
+  </div>
+  <div class="mode-body">Solo play is the most intimate form of Augmento Mori -- just you, a card, and what arises. It is best understood not as a game in the conventional sense but as a <strong>contemplative practice</strong>: a structured occasion for sitting with the questions that daily life tends to push aside.</div>
+  <div class="mode-body">The Anam Cara tradition encourages regular solo reflection on death not as an exercise in fear, but as a clarifying act. In the Celtic understanding, the soul friend -- the <em>anam cara</em> -- is sometimes one's own deepest self, and the practice of sitting with mortality questions is a way of coming into deeper relationship with that self.</div>
+  <div class="mode-tips">
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Draw one card per session. One is enough. Sit with it for the full session duration -- do not rush to the next.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Write in the diary before and after reading the card. Notice the difference.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Track your Mind, Body, Spirit response. Over time, patterns emerge about where your relationship with death lives in you.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>There is no obligation to arrive anywhere. The question is the destination.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>If strong emotion arises, let it. You are not alone in having these feelings -- millions of people sit with the same unasked questions.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Consider using the Library of Reflections as an ongoing personal document -- a record of your evolving relationship with mortality that can also serve as a foundation for advance care planning.</div></div>
+  </div>
+</div>
+
+<!-- DUO -->
+<div class="mode-block duo">
+  <div class="mode-header">
+    <svg class="mode-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="6" stroke="url(#gg)" stroke-width="1.3" opacity=".9"/>
+      <circle cx="32" cy="16" r="6" stroke="url(#gg)" stroke-width="1.3" opacity=".9"/>
+      <path d="M4 38C4 31 9 26 16 26C23 26 28 31 28 38" stroke="url(#gg)" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M20 38C20 31 25 26 32 26C39 26 44 31 44 38" stroke="url(#gg)" stroke-width="1.3" stroke-linecap="round" opacity=".65"/>
+    </svg>
+    <div><div class="mode-label">Mode Two</div><div class="mode-title">For Two People</div></div>
+  </div>
+  <div class="mode-body">The two-person format is one of the most powerful uses of the game -- often between partners, parent and adult child, or close friends who have never found the language for these conversations. Research found that even people who described their relationship as deeply intimate had rarely discussed death preferences, fears, or legacy wishes. The cards create permission for what love already wants to say.</div>
+  <div class="mode-body">The Anam Cara tradition holds that deep friendship involves the willingness to accompany someone into their darkness -- not to fix it, but to be present within it. This is the spirit of two-person play.</div>
+  <div class="mode-tips">
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Draw one card. Each person responds privately in writing first, then shares -- without interruption from the other.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>After each person has shared, sit in silence for at least 30 seconds before responding. Let the other person's words actually land.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>There is no requirement to agree, advise, or fix. The most powerful response is often: "Thank you for saying that."</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>If the conversation opens unexpected grief or conflict, slow down. Acknowledge. Do not push through. You can return to this card another day.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Couples and long-term partners: consider using the Legacy and Community decks first, which tend to open into love rather than fear.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Parent and adult child: the Reflection and Legacy decks often surface the conversations that neither party knew the other wanted to have.</div></div>
+  </div>
+</div>
+
+<!-- GROUP -->
+<div class="mode-block group">
+  <div class="mode-header">
+    <svg class="mode-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="12" r="5" stroke="url(#gg)" stroke-width="1.3"/>
+      <circle cx="10" cy="20" r="4.5" stroke="url(#gg)" stroke-width="1.2" opacity=".85"/>
+      <circle cx="38" cy="20" r="4.5" stroke="url(#gg)" stroke-width="1.2" opacity=".85"/>
+      <circle cx="14" cy="36" r="4" stroke="url(#gg)" stroke-width="1.1" opacity=".7"/>
+      <circle cx="34" cy="36" r="4" stroke="url(#gg)" stroke-width="1.1" opacity=".7"/>
+      <path d="M20 17C21 14 22 13 24 13C26 13 27 14 28 17" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+    </svg>
+    <div><div class="mode-label">Mode Three</div><div class="mode-title">Group Facilitation</div></div>
+  </div>
+  <div class="mode-body">Group play -- 3 to 8 participants -- is the form for which the facilitation sections of this guide are primarily written. A group creates something a solo or duo practice cannot: the experience of being witnessed. Research found that one of the most consistent effects of the game sessions was the surprise of <strong>not being alone</strong> in one's fears and hopes about death.</div>
+  <div class="mode-body">The group format is well-suited to community settings, healthcare team retreats, caregiver support groups, faith communities, and educational contexts. It works best when participants share some degree of existing trust or when the facilitator devotes sufficient time to establishing the container before play begins.</div>
+  <div class="mode-tips">
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Follow the 7-step facilitation protocol in Section 4. Do not shortcut the opening container-naming or the closing ritual.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>4 to 6 cards per 90-minute session is the recommended depth. Rushing is the enemy of this work.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>In groups larger than 6, consider a "popcorn" sharing format -- people speak when moved rather than going around the circle, which can feel mechanical with heavy material.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>One facilitator per group of up to 8. For larger gatherings, break into smaller groups with trained co-facilitators.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Plan a de-briefing conversation at the end: "What word or image is sitting with you right now?" This grounds the session before people re-enter ordinary life.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div>Multiple-session series deepen the work considerably. Consider a 4-session arc: Reflection, Legacy, Ritual, Community -- each session building on the previous one.</div></div>
+  </div>
+</div>
+
+<!-- HOSPICE -->
+<div class="mode-block hospice">
+  <div class="mode-header">
+    <svg class="mode-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 38C24 38 8 28 8 18C8 13 12 10 16 10C19 10 22 12 24 15C26 12 29 10 32 10C36 10 40 13 40 18C40 28 24 38 24 38Z" stroke="url(#gg)" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M20 22C20 20 22 18 24 18C26 18 28 20 28 22" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".45"/>
+      <line x1="24" y1="26" x2="24" y2="32" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+    </svg>
+    <div><div class="mode-label">Mode Four &nbsp;&mdash;&nbsp; Use with particular care</div><div class="mode-title">Hospice and Terminal Care</div></div>
+  </div>
+  <div class="mode-body">This mode requires the most care, the most training, and the most willingness to follow rather than lead. When Augmento Mori is used alongside someone in hospice or terminal care, it is no longer primarily a reflective exercise -- it becomes a form of <strong>legacy witness work</strong> and dignified accompaniment.</div>
+  <div class="mode-body">The Anam Cara apprenticeship teaches that the role of an end-of-life companion near death is not to process, fix, or facilitate in the conventional sense. It is to be fully present without agenda -- to witness the dying person as whole, complete, and worthy of unhurried attention. This is the spirit that governs this mode entirely.</div>
+  <div class="mode-body">Medical best practice in palliative care similarly emphasizes <strong>person-centered communication</strong>, the primacy of patient agency and pace, and the importance of open acknowledgment of prognosis when the patient initiates it. The <em>SPIKES</em> protocol (Setting, Perception, Invitation, Knowledge, Emotions, Summary and Strategy) used in clinical communication training reflects a similar spirit: follow the patient's lead, do not impose information, honor what they are ready to receive.</div>
+
+  <div class="notebox">
+    <div class="notebox-t">Essential Boundary</div>
+    <div class="notebox-b">Facilitators using this mode should have specific training in end-of-life accompaniment, death doula practice, hospice volunteering, or clinical palliative care. If you do not have this training, do not use this mode independently. Work in collaboration with the hospice team, a trained chaplain, or a certified death doula. Augmento Mori is a tool, not a credential.</div>
+  </div>
+
+  <div class="mode-tips">
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div><strong>Let the dying person set every parameter.</strong> Do they want to play? Do they want to use cards at all, or just talk? Is today even a day for conversation? Never assume.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div><strong>Use the Reflection and Legacy decks preferentially.</strong> In active dying, the cards most likely to serve are those that open into meaning, love, and what the person wants to be remembered for. The Body and Earth deck may or may not be welcome depending on the person's relationship with their dying body.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div><strong>One card, or none.</strong> In hospice settings, one card per visit is often more than enough. Sometimes no card is drawn at all -- the session becomes simply being together, which is its own form of the game.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div><strong>The diary becomes a legacy document.</strong> Entries made near the end of life carry particular weight. With the patient's permission, the Library of Reflections can be printed as a record for their family -- an ethical will, a legacy letter, a final set of reflections.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div><strong>Sitting in silence is the work.</strong> The Anam Cara tradition teaches that one of the most profound gifts we can offer someone who is dying is simply our unhurried, non-anxious presence. You do not need to fill the silence.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div><strong>Coordinate with the care team.</strong> Inform the hospice nurse, social worker, or chaplain that you are using the game. Document anything clinically relevant (unmet wishes, undisclosed fears) and share it with the appropriate team member rather than holding it alone.</div></div>
+    <div class="mode-tip"><div class="mode-tip-bar"></div><div><strong>After each visit, tend to yourself.</strong> End-of-life companion work takes something from you. This is not a weakness -- it is a sign that something real happened. See Section 9 on facilitator self-care.</div></div>
+  </div>
+
+  <div class="anam" style="margin-top:20px;">
+    <div class="anam-label">Anam Cara at the Threshold</div>
+    <div class="anam-body">The Anam Cara apprenticeship includes specific training in <strong>active dying presence</strong> -- the practice of being with someone in the final hours and days of life. This includes attending to the dying person's breathing, offering gentle verbal reassurance that they are not alone, facilitating completion of unfinished relational business, and supporting the family in what to say and how to be present. These practices are beyond the scope of Augmento Mori as a game -- but they live in the same tradition of care that shaped the game's design. Facilitators trained in Anam Cara or equivalent practices are well-suited to this mode. Others should seek that training before working in active dying contexts.</div>
+  </div>
+</div>
+
+
+<!-- ══ 09. FACILITATOR SELF-CARE ══════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><path d="M24 38C24 38 8 28 8 18C8 13 12 10 16 10C19 10 22 12 24 15C26 12 29 10 32 10C36 10 40 13 40 18C40 28 24 38 24 38Z" stroke="url(#gg)" stroke-width="1.5" stroke-linejoin="round"/><path d="M20 22C20 20 22 18 24 18C26 18 28 20 28 22" stroke="url(#gg)" stroke-width="1" stroke-linecap="round" opacity=".45"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Nine</p>
+<h2 class="sec-title">Facilitator <em>Self-Care</em></h2>
+<p class="intro">You cannot hold space for others' mortality if you are not in some honest relationship with your own. This work asks something of you. Name that.</p>
+
+<p class="body">Facilitating death conversations is meaningful work -- and it is also work that costs something. Facilitators often absorb the emotional weight of what is shared in a session. Over time, this accumulates. The Anam Cara tradition is explicit that those who accompany the dying and grieving must also tend to themselves with the same quality of care they bring to others. The practices below are not optional additions to this work. They are part of it.</p>
+
+<div class="cgrid">
+  <div class="icard"><div class="icard-title">Before Each Session</div><div class="icard-body">Spend a few minutes in quiet contact with your own mortality. Not anxiously -- simply. Breathe. Ask: what is alive in me about death today? Your groundedness is the first gift you bring into the room.</div></div>
+  <div class="icard"><div class="icard-title">During the Session</div><div class="icard-body">Notice when you want to speak to relieve your own discomfort, not the group's. The hardest facilitation skill is staying present with another person's unresolved grief without rushing to resolve it.</div></div>
+  <div class="icard"><div class="icard-title">After Each Session</div><div class="icard-body">Transition intentionally. Do not move from a session directly into routine activity. Walk, write, sit quietly. Let what was shared settle before you carry it into the rest of your day.</div></div>
+  <div class="icard"><div class="icard-title">Supervision and Peer Support</div><div class="icard-body">If you facilitate regularly, find a peer or supervisor with whom you can debrief. Name what you heard. Name what landed in you. This work should not be carried alone.</div></div>
+</div>
+
+<div class="pq">
+  "How we die shapes how we live. Valuing how we die changes how we live."
+  <cite>-- Lancet Commission on the Value of Death (2022)</cite>
+</div>
+
+
+<!-- ══ 10. QUICK REFERENCE ════════════════════════════════════════════════ -->
+<div class="div"><div class="div-line"></div>
+<svg width="28" height="28" viewBox="0 0 48 48" fill="none"><rect x="12" y="10" width="24" height="30" rx="2" stroke="url(#gg)" stroke-width="1.4"/><line x1="18" y1="19" x2="30" y2="19" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round" opacity=".7"/><line x1="18" y1="25" x2="30" y2="25" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round" opacity=".7"/><line x1="18" y1="31" x2="26" y2="31" stroke="url(#gg)" stroke-width="1.1" stroke-linecap="round" opacity=".5"/></svg>
+<div class="div-line"></div></div>
+
+<p class="eyebrow">Section Ten</p>
+<h2 class="sec-title">Quick <em>Reference</em></h2>
+
+<table class="gtable">
+  <thead><tr><th>Context</th><th>Mode</th><th>Start Here</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>First-time community group</td><td>Group</td><td>Reflection deck</td><td>Most accessible entry; builds trust before going deeper</td></tr>
+    <tr><td>Healthcare or clinical team</td><td>Group</td><td>Community or Reflection</td><td>Anchor in shared professional experience first</td></tr>
+    <tr><td>Caregivers or family members</td><td>Group or Duo</td><td>Legacy or Community</td><td>Already close to death; can move deeper faster</td></tr>
+    <tr><td>End-of-life doulas</td><td>Group</td><td>Any deck</td><td>Experienced; Body and Earth offers somatic grounding</td></tr>
+    <tr><td>Partners or spouses</td><td>Duo</td><td>Legacy or Community</td><td>Opens into love; creates advance care planning conversations</td></tr>
+    <tr><td>Personal practice</td><td>Solo</td><td>Reflection deck</td><td>One card per session; use diary and MBS tracking</td></tr>
+    <tr><td>Hospice or terminal care</td><td>Hospice (Mode 4)</td><td>Reflection or Legacy</td><td>Requires training; follow patient's lead entirely</td></tr>
+    <tr><td>Chinese-language group</td><td>Group</td><td>Legacy or Ritual</td><td>Approach death through legacy before naming it directly</td></tr>
+    <tr><td>Arabic / Muslim group</td><td>Group</td><td>Ritual or Community</td><td>Communal practices are rich; death is less taboo</td></tr>
+    <tr><td>Gullah Geechee / Black communities</td><td>Group</td><td>Community or Legacy</td><td>Acknowledge health equity context; center oral heritage</td></tr>
+  </tbody>
+</table>
+
+<table class="gtable">
+  <thead><tr><th>Signal</th><th>What It May Mean</th><th>Facilitator Response</th></tr></thead>
+  <tbody>
+    <tr><td>Long silence after a card is drawn</td><td>The question landed deeply</td><td>Wait. Silence is not empty -- it is working.</td></tr>
+    <tr><td>Laughter</td><td>Relief, recognition, or deflection</td><td>Welcome it. Then: "What does that laugh know?"</td></tr>
+    <tr><td>Tears</td><td>Contact with grief or love</td><td>Slow down. Offer presence. Passing is available.</td></tr>
+    <tr><td>Intellectualizing</td><td>Avoiding the personal</td><td>Invite: "What does that mean for <em>you</em>, personally?"</td></tr>
+    <tr><td>Someone wants to leave</td><td>Overwhelm or genuine need</td><td>Affirm their right. Offer to check in after.</td></tr>
+    <tr><td>A recent death enters the room</td><td>Live grief arriving</td><td>Slow everything down. This is the work. Be fully present.</td></tr>
+    <tr><td>Conflict between participants</td><td>Different values or grief styles</td><td>Witness both. There are no right answers here.</td></tr>
+  </tbody>
+</table>
+
+</div><!-- /.page -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <svg width="52" height="52" viewBox="0 0 48 48" fill="none" style="margin:0 auto 16px;display:block;">
+    <path d="M24 40L24 22" stroke="url(#gg)" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M24 28C18 24 12 26 10 32C16 34 22 31 24 28Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/>
+    <path d="M24 22C28 16 36 16 38 10C32 10 26 14 24 22Z" stroke="url(#gg)" stroke-width="1.3" stroke-linejoin="round"/>
+  </svg>
+  <div class="footer-logo">Augmento Mori</div>
+  <div class="footer-tag">A Facilitator's Guide to Mortality Reflection</div>
+  <div class="footer-credits">
+    Mona M. Hamdy &nbsp;&middot;&nbsp; M.F.A. Design for Sustainability<br>
+    Savannah College of Art and Design &nbsp;&middot;&nbsp; Spring 2026<br>
+    Committee: Scott Boylston &nbsp;&middot;&nbsp; David E. Meyers &nbsp;&middot;&nbsp; Dr. Satyakam Sharma<br>
+    Anam Cara Death Doula Apprenticeship &nbsp;&middot;&nbsp; 2-Year Training<br><br>
+    www.augmentomori.com &nbsp;&middot;&nbsp; @monamhamdy<br><br>
+    <em>"Valuing how we die changes how we live." -- Lancet Commission on the Value of Death, 2022</em>
+  </div>
+</div>
+
+</body>
+</html>
