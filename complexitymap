@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Death Complexity Map — Augmento Mori</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8e4d8;
+    --muted: #7a7570;
+    --am-core: #c4513a;
+    --am-glow: rgba(196, 81, 58, 0.18);
+    --hb-core: #4a8fa8;
+    --hb-glow: rgba(74, 143, 168, 0.18);
+    --neutral: #8a8060;
+    --system: rgba(200,190,160,0.12);
+    --loop-r: rgba(220, 100, 60, 0.35);
+    --loop-b: rgba(60, 140, 180, 0.35);
+    --gold: #c8a96e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  header {
+    padding: 32px 40px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .header-left h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    line-height: 1.1;
+  }
+
+  .header-left h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header-left p {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .legend {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .legend-line {
+    width: 24px;
+    height: 2px;
+    border-radius: 1px;
+  }
+
+  /* Main canvas */
+  .canvas {
+    position: relative;
+    width: 100%;
+    padding: 40px;
+  }
+
+  svg#map {
+    width: 100%;
+    height: 680px;
+    display: block;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    background: #1a1a22;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    max-width: 280px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 999;
+  }
+
+  .tooltip.visible { opacity: 1; }
+
+  .tooltip-tag {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .tooltip-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .tooltip-body {
+    font-size: 10.5px;
+    color: #9d9890;
+    line-height: 1.65;
+  }
+
+  .tooltip-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+  }
+
+  .tooltip-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* Panel below map */
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    border-top: 1px solid var(--border);
+    background: var(--border);
+  }
+
+  .panel {
+    background: var(--bg);
+    padding: 32px 40px;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .panel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .panel-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .panel-subtitle {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .panel-body {
+    font-size: 11px;
+    color: #9d9890;
+    line-height: 1.75;
+  }
+
+  .panel-body strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .touchpoints {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .touchpoint {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tp-arrow {
+    flex-shrink: 0;
+    margin-top: 2px;
+    opacity: 0.5;
+  }
+
+  .tp-text {
+    font-size: 10.5px;
+    color: #9d9890;
+    line-height: 1.55;
+  }
+
+  .tp-text span {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  footer {
+    padding: 16px 40px;
+    border-top: 1px solid var(--border);
+    font-size: 9.5px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Pulse animation for key nodes */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .node-interactive {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .node-interactive:hover circle:first-of-type {
+    filter: brightness(1.3);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1><em>Augmento Mori</em> — Death Complexity Map</h1>
+    <p>Kastenbaum / Lancet Commission Framework &nbsp;·&nbsp; Design Interventions Overlay &nbsp;·&nbsp; Mona M. Hamdy, SCAD MFA 2026</p>
+  </div>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--am-core);"></div>
+      Augmento Mori
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--hb-core);"></div>
+      HeartBloom
+    </div>
+    <div class="legend-item">
+      <div class="legend-line" style="background: var(--loop-r);"></div>
+      Reinforcing loop
+    </div>
+    <div class="legend-item">
+      <div class="legend-line" style="background: var(--loop-b);"></div>
+      Balancing loop
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: rgba(200,190,160,0.4);"></div>
+      System node
+    </div>
+  </div>
+</header>
+
+<div class="canvas">
+  <svg id="map" viewBox="0 0 1100 680">
+    <defs>
+      <!-- Gradients -->
+      <radialGradient id="am-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#c4513a" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#c4513a" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="hb-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#4a8fa8" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#4a8fa8" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="center-glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#c8a96e" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#c8a96e" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="bg-field" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#1a1820" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#0a0a0f" stop-opacity="1"/>
+      </radialGradient>
+
+      <!-- Arrowheads -->
+      <marker id="arrow-r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="rgba(220,100,60,0.5)"/>
+      </marker>
+      <marker id="arrow-b" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="rgba(60,140,180,0.5)"/>
+      </marker>
+      <marker id="arrow-n" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="rgba(200,190,160,0.3)"/>
+      </marker>
+      <marker id="arrow-am" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L7,3.5 L0,7 Z" fill="#c4513a"/>
+      </marker>
+      <marker id="arrow-hb" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+        <path d="M0,0 L7,3.5 L0,7 Z" fill="#4a8fa8"/>
+      </marker>
+
+      <!-- Blur filter -->
+      <filter id="glow-soft">
+        <feGaussianBlur stdDeviation="6" result="blur"/>
+        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+      </filter>
+      <filter id="glow-node">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+      </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1100" height="680" fill="url(#bg-field)"/>
+
+    <!-- Outer system boundary ellipse -->
+    <ellipse cx="550" cy="340" rx="500" ry="290" fill="none" stroke="rgba(200,190,160,0.06)" stroke-width="1" stroke-dasharray="4 6"/>
+    <ellipse cx="550" cy="340" rx="460" ry="255" fill="none" stroke="rgba(200,190,160,0.04)" stroke-width="1"/>
+
+    <!-- Zone labels -->
+    <text x="60" y="70" fill="rgba(200,190,160,0.18)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.12em" text-transform="uppercase">SOCIOCULTURAL SYSTEM</text>
+    <text x="60" y="84" fill="rgba(200,190,160,0.12)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.08em">beliefs · norms · taboo · policy · economics</text>
+
+    <!-- ======= REINFORCING LOOPS (red-orange arcs) ======= -->
+    <!-- Medicalization loop -->
+    <path d="M 380 190 Q 490 130 600 165 Q 680 190 720 255" fill="none" stroke="rgba(220,100,60,0.3)" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#arrow-r)"/>
+    <!-- Avoidance loop -->
+    <path d="M 280 290 Q 220 360 260 440 Q 300 500 380 490" fill="none" stroke="rgba(220,100,60,0.25)" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#arrow-r)"/>
+    <!-- Institutional reinforcement -->
+    <path d="M 720 255 Q 800 320 790 430 Q 780 490 720 510" fill="none" stroke="rgba(220,100,60,0.25)" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#arrow-r)"/>
+
+    <!-- ======= BALANCING LOOPS (blue arcs) ======= -->
+    <!-- Community care balancing -->
+    <path d="M 380 490 Q 450 550 550 540 Q 640 530 700 490" fill="none" stroke="rgba(60,140,180,0.3)" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#arrow-b)"/>
+    <!-- Death literacy balancing -->
+    <path d="M 280 290 Q 300 200 390 185" fill="none" stroke="rgba(60,140,180,0.25)" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#arrow-b)"/>
+
+    <!-- ======= SYSTEM NODES ======= -->
+    <!-- 1: Death Avoidance / Taboo -->
+    <g class="node-interactive" data-node="avoidance" transform="translate(250,280)">
+      <circle r="32" fill="rgba(200,190,160,0.06)" stroke="rgba(200,190,160,0.2)" stroke-width="1"/>
+      <circle r="16" fill="rgba(200,190,160,0.1)" stroke="rgba(200,190,160,0.3)" stroke-width="1"/>
+      <text y="-40" text-anchor="middle" fill="rgba(200,190,160,0.65)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.06em">DEATH AVOIDANCE</text>
+      <text y="-29" text-anchor="middle" fill="rgba(200,190,160,0.4)" font-family="DM Mono, monospace" font-size="8">taboo · silence · fear</text>
+    </g>
+
+    <!-- 2: Medicalization -->
+    <g class="node-interactive" data-node="medicalization" transform="translate(660,200)">
+      <circle r="36" fill="rgba(200,190,160,0.06)" stroke="rgba(200,190,160,0.2)" stroke-width="1"/>
+      <circle r="18" fill="rgba(200,190,160,0.1)" stroke="rgba(200,190,160,0.3)" stroke-width="1"/>
+      <text y="-46" text-anchor="middle" fill="rgba(200,190,160,0.65)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.06em">MEDICALIZATION</text>
+      <text y="-35" text-anchor="middle" fill="rgba(200,190,160,0.4)" font-family="DM Mono, monospace" font-size="8">hospital · clinical · detached</text>
+    </g>
+
+    <!-- 3: Institutional Care -->
+    <g class="node-interactive" data-node="institutional" transform="translate(790,380)">
+      <circle r="30" fill="rgba(200,190,160,0.06)" stroke="rgba(200,190,160,0.18)" stroke-width="1"/>
+      <circle r="15" fill="rgba(200,190,160,0.1)" stroke="rgba(200,190,160,0.3)" stroke-width="1"/>
+      <text y="-40" text-anchor="middle" fill="rgba(200,190,160,0.65)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.06em">INSTITUTIONAL CARE</text>
+      <text y="-29" text-anchor="middle" fill="rgba(200,190,160,0.4)" font-family="DM Mono, monospace" font-size="8">ICU · hospice · policy</text>
+    </g>
+
+    <!-- 4: Death Literacy -->
+    <g class="node-interactive" data-node="literacy" transform="translate(390,170)">
+      <circle r="28" fill="rgba(200,190,160,0.06)" stroke="rgba(200,190,160,0.18)" stroke-width="1"/>
+      <circle r="13" fill="rgba(200,190,160,0.1)" stroke="rgba(200,190,160,0.3)" stroke-width="1"/>
+      <text y="-38" text-anchor="middle" fill="rgba(200,190,160,0.65)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.06em">DEATH LITERACY</text>
+      <text y="-27" text-anchor="middle" fill="rgba(200,190,160,0.4)" font-family="DM Mono, monospace" font-size="8">education · awareness</text>
+    </g>
+
+    <!-- 5: Community Networks -->
+    <g class="node-interactive" data-node="community" transform="translate(500,510)">
+      <circle r="30" fill="rgba(200,190,160,0.06)" stroke="rgba(200,190,160,0.18)" stroke-width="1"/>
+      <circle r="14" fill="rgba(200,190,160,0.1)" stroke="rgba(200,190,160,0.3)" stroke-width="1"/>
+      <text y="44" text-anchor="middle" fill="rgba(200,190,160,0.65)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.06em">COMMUNITY NETWORKS</text>
+      <text y="55" text-anchor="middle" fill="rgba(200,190,160,0.4)" font-family="DM Mono, monospace" font-size="8">grief · ritual · belonging</text>
+    </g>
+
+    <!-- 6: Patient Autonomy -->
+    <g class="node-interactive" data-node="autonomy" transform="translate(700,490)">
+      <circle r="26" fill="rgba(200,190,160,0.06)" stroke="rgba(200,190,160,0.18)" stroke-width="1"/>
+      <circle r="12" fill="rgba(200,190,160,0.1)" stroke="rgba(200,190,160,0.3)" stroke-width="1"/>
+      <text y="36" text-anchor="middle" fill="rgba(200,190,160,0.65)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.06em">PATIENT AUTONOMY</text>
+      <text y="47" text-anchor="middle" fill="rgba(200,190,160,0.4)" font-family="DM Mono, monospace" font-size="8">dignity · agency · wishes</text>
+    </g>
+
+    <!-- 7: Caregiver Burden -->
+    <g class="node-interactive" data-node="caregiver" transform="translate(840,560)">
+      <circle r="22" fill="rgba(200,190,160,0.05)" stroke="rgba(200,190,160,0.15)" stroke-width="1"/>
+      <text y="32" text-anchor="middle" fill="rgba(200,190,160,0.55)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.05em">CAREGIVER BURDEN</text>
+    </g>
+
+    <!-- 8: Spiritual / Cultural -->
+    <g class="node-interactive" data-node="spiritual" transform="translate(165,450)">
+      <circle r="24" fill="rgba(200,190,160,0.05)" stroke="rgba(200,190,160,0.15)" stroke-width="1"/>
+      <text y="-33" text-anchor="middle" fill="rgba(200,190,160,0.55)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.05em">SPIRITUAL / CULTURAL</text>
+      <text y="-22" text-anchor="middle" fill="rgba(200,190,160,0.35)" font-family="DM Mono, monospace" font-size="8">ritual · meaning-making</text>
+    </g>
+
+    <!-- 9: Structural Inequity -->
+    <g class="node-interactive" data-node="inequity" transform="translate(920,250)">
+      <circle r="22" fill="rgba(200,190,160,0.04)" stroke="rgba(200,190,160,0.13)" stroke-width="1"/>
+      <text y="-31" text-anchor="middle" fill="rgba(200,190,160,0.5)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.05em">STRUCTURAL</text>
+      <text y="-20" text-anchor="middle" fill="rgba(200,190,160,0.5)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.05em">INEQUITY</text>
+    </g>
+
+    <!-- ======= CENTER: IMPENDING DEATH NODE ======= -->
+    <circle cx="550" cy="340" r="80" fill="url(#center-glow)" opacity="0.8"/>
+    <circle cx="550" cy="340" r="52" fill="rgba(200,180,130,0.05)" stroke="rgba(200,180,130,0.15)" stroke-width="1.5"/>
+    <circle cx="550" cy="340" r="32" fill="rgba(200,180,130,0.07)" stroke="rgba(200,180,130,0.25)" stroke-width="1"/>
+    <circle cx="550" cy="340" r="14" fill="rgba(200,180,130,0.12)" stroke="rgba(200,180,130,0.4)" stroke-width="1"/>
+    <text x="550" y="336" text-anchor="middle" fill="#c8a96e" font-family="Cormorant Garamond, serif" font-size="13" font-weight="400" letter-spacing="0.04em">IMPENDING</text>
+    <text x="550" y="352" text-anchor="middle" fill="#c8a96e" font-family="Cormorant Garamond, serif" font-size="13" font-style="italic" font-weight="300" letter-spacing="0.04em">death</text>
+
+    <!-- Connector lines from system nodes to center -->
+    <line x1="282" y1="280" x2="498" y2="338" stroke="rgba(200,190,160,0.12)" stroke-width="1" marker-end="url(#arrow-n)"/>
+    <line x1="624" y1="200" x2="575" y2="308" stroke="rgba(200,190,160,0.12)" stroke-width="1" marker-end="url(#arrow-n)"/>
+    <line x1="760" y1="380" x2="602" y2="353" stroke="rgba(200,190,160,0.12)" stroke-width="1" marker-end="url(#arrow-n)"/>
+    <line x1="418" y1="172" x2="519" y2="308" stroke="rgba(200,190,160,0.12)" stroke-width="1" marker-end="url(#arrow-n)"/>
+    <line x1="500" y1="480" x2="530" y2="392" stroke="rgba(200,190,160,0.12)" stroke-width="1" marker-end="url(#arrow-n)"/>
+    <line x1="674" y1="490" x2="596" y2="378" stroke="rgba(200,190,160,0.12)" stroke-width="1" marker-end="url(#arrow-n)"/>
+    <line x1="189" y1="450" x2="500" y2="360" stroke="rgba(200,190,160,0.08)" stroke-width="1" stroke-dasharray="2 3"/>
+
+    <!-- ======= AUGMENTO MORI NODE ======= -->
+    <!-- Glow halo -->
+    <circle cx="310" cy="420" r="70" fill="url(#am-glow)" opacity="0.9"/>
+    <!-- Outer ring animated -->
+    <circle cx="310" cy="420" r="48" fill="none" stroke="rgba(196,81,58,0.3)" stroke-width="1" stroke-dasharray="6 4">
+      <animateTransform attributeName="transform" type="rotate" from="0 310 420" to="360 310 420" dur="25s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="310" cy="420" r="36" fill="rgba(196,81,58,0.08)" stroke="#c4513a" stroke-width="1.5"/>
+    <circle cx="310" cy="420" r="18" fill="rgba(196,81,58,0.15)" stroke="#c4513a" stroke-width="1"/>
+    <!-- Icon: cards/game -->
+    <rect x="304" y="413" width="6" height="8" rx="1" fill="none" stroke="#c4513a" stroke-width="1" transform="rotate(-8 307 417)"/>
+    <rect x="307" y="412" width="6" height="8" rx="1" fill="none" stroke="#c4513a" stroke-width="1"/>
+    <!-- Label -->
+    <text x="310" y="473" text-anchor="middle" fill="#c4513a" font-family="Cormorant Garamond, serif" font-size="14" font-weight="400" letter-spacing="0.05em">Augmento Mori</text>
+    <text x="310" y="486" text-anchor="middle" fill="rgba(196,81,58,0.7)" font-family="DM Mono, monospace" font-size="8.5" letter-spacing="0.08em">UPSTREAM INTERVENTION</text>
+    <!-- Tag bubble -->
+    <rect x="250" y="494" width="120" height="14" rx="7" fill="rgba(196,81,58,0.1)" stroke="rgba(196,81,58,0.2)" stroke-width="0.5"/>
+    <text x="310" y="504" text-anchor="middle" fill="rgba(196,81,58,0.8)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.05em">death literacy · community</text>
+
+    <!-- AM connections to system nodes -->
+    <path d="M 310 384 Q 310 280 390 190" fill="none" stroke="rgba(196,81,58,0.5)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-am)"/>
+    <path d="M 346 402 Q 420 380 422 300" fill="none" stroke="rgba(196,81,58,0.4)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-am)"/>
+    <path d="M 310 456 Q 360 490 470 510" fill="none" stroke="rgba(196,81,58,0.5)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-am)"/>
+    <path d="M 274 420 Q 230 440 189 450" fill="none" stroke="rgba(196,81,58,0.4)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-am)"/>
+
+    <!-- AM to center -->
+    <path d="M 348 413 Q 430 385 498 345" fill="none" stroke="#c4513a" stroke-width="2" opacity="0.6" marker-end="url(#arrow-am)"/>
+
+    <!-- AM label: what it does -->
+    <text x="145" y="340" fill="rgba(196,81,58,0.55)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.05em">reduces taboo</text>
+    <text x="145" y="352" fill="rgba(196,81,58,0.4)" font-family="DM Mono, monospace" font-size="8">conversation → normalization</text>
+
+    <!-- ======= HEARTBLOOM NODE ======= -->
+    <circle cx="750" cy="400" r="70" fill="url(#hb-glow)" opacity="0.9"/>
+    <circle cx="750" cy="400" r="46" fill="none" stroke="rgba(74,143,168,0.3)" stroke-width="1" stroke-dasharray="5 5">
+      <animateTransform attributeName="transform" type="rotate" from="0 750 400" to="-360 750 400" dur="30s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="750" cy="400" r="35" fill="rgba(74,143,168,0.08)" stroke="#4a8fa8" stroke-width="1.5"/>
+    <circle cx="750" cy="400" r="18" fill="rgba(74,143,168,0.12)" stroke="#4a8fa8" stroke-width="1"/>
+    <!-- Icon: heart/care -->
+    <path d="M 750 407 Q 744 401 744 397 Q 744 393 748 393 Q 750 393 750 396 Q 750 393 752 393 Q 756 393 756 397 Q 756 401 750 407 Z" fill="#4a8fa8" opacity="0.8"/>
+    <!-- Label -->
+    <text x="750" y="452" text-anchor="middle" fill="#4a8fa8" font-family="Cormorant Garamond, serif" font-size="14" font-weight="400" letter-spacing="0.05em">HeartBloom</text>
+    <text x="750" y="465" text-anchor="middle" fill="rgba(74,143,168,0.7)" font-family="DM Mono, monospace" font-size="8.5" letter-spacing="0.08em">DOWNSTREAM INTERVENTION</text>
+    <rect x="688" y="473" width="124" height="14" rx="7" fill="rgba(74,143,168,0.1)" stroke="rgba(74,143,168,0.2)" stroke-width="0.5"/>
+    <text x="750" y="483" text-anchor="middle" fill="rgba(74,143,168,0.8)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.05em">dignity · agency · integration</text>
+
+    <!-- HB connections to system nodes -->
+    <path d="M 750 365 Q 750 290 715 220" fill="none" stroke="rgba(74,143,168,0.45)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-hb)"/>
+    <path d="M 785 400 Q 820 395 808 380" fill="none" stroke="rgba(74,143,168,0.45)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-hb)"/>
+    <path d="M 750 435 Q 745 460 720 490" fill="none" stroke="rgba(74,143,168,0.5)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-hb)"/>
+    <path d="M 760 433 Q 810 490 840 550" fill="none" stroke="rgba(74,143,168,0.4)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-hb)"/>
+
+    <!-- HB to center -->
+    <path d="M 715 393 Q 660 370 602 350" fill="none" stroke="#4a8fa8" stroke-width="2" opacity="0.6" marker-end="url(#arrow-hb)"/>
+
+    <!-- HB label: what it does -->
+    <text x="870" y="430" fill="rgba(74,143,168,0.55)" font-family="DM Mono, monospace" font-size="9" letter-spacing="0.05em">restores dignity</text>
+    <text x="870" y="442" fill="rgba(74,143,168,0.4)" font-family="DM Mono, monospace" font-size="8">agency → integration</text>
+
+    <!-- ======= R/B LOOP LABELS ======= -->
+    <!-- R1 label -->
+    <text x="560" y="145" text-anchor="middle" fill="rgba(220,100,60,0.5)" font-family="DM Mono, monospace" font-size="8.5" letter-spacing="0.06em">R1: Medicalization loop</text>
+    <!-- R2 label -->
+    <text x="190" y="410" text-anchor="middle" fill="rgba(220,100,60,0.45)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.06em">R2: Avoidance</text>
+    <!-- B1 label -->
+    <text x="545" y="590" text-anchor="middle" fill="rgba(60,140,180,0.5)" font-family="DM Mono, monospace" font-size="8.5" letter-spacing="0.06em">B1: Community care</text>
+    <!-- B2 label -->
+    <text x="295" y="220" text-anchor="middle" fill="rgba(60,140,180,0.45)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.06em">B2: Literacy</text>
+
+    <!-- ======= ANNOTATION: upstream vs downstream ======= -->
+    <line x1="330" y1="600" x2="740" y2="600" stroke="rgba(200,190,160,0.12)" stroke-width="1"/>
+    <text x="330" y="596" text-anchor="middle" fill="rgba(200,190,160,0.3)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.06em">UPSTREAM (cultural shift)</text>
+    <text x="740" y="596" text-anchor="middle" fill="rgba(200,190,160,0.3)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.06em">DOWNSTREAM (clinical dignity)</text>
+    <line x1="330" y1="600" x2="330" y2="606" stroke="rgba(200,190,160,0.2)" stroke-width="1"/>
+    <line x1="740" y1="600" x2="740" y2="606" stroke="rgba(200,190,160,0.2)" stroke-width="1"/>
+    <text x="535" y="614" text-anchor="middle" fill="rgba(200,190,160,0.2)" font-family="DM Mono, monospace" font-size="8" letter-spacing="0.06em">complementary intervention spectrum</text>
+
+    <!-- ======= ANAM CARA indicator ======= -->
+    <circle cx="420" cy="420" r="16" fill="rgba(196,81,58,0.05)" stroke="rgba(196,81,58,0.2)" stroke-width="1" stroke-dasharray="2 2"/>
+    <text x="420" y="414" text-anchor="middle" fill="rgba(196,81,58,0.5)" font-family="Cormorant Garamond, serif" font-size="9" font-style="italic">Anam</text>
+    <text x="420" y="426" text-anchor="middle" fill="rgba(196,81,58,0.5)" font-family="Cormorant Garamond, serif" font-size="9" font-style="italic">Cara</text>
+    <line x1="390" y1="420" x2="348" y2="420" stroke="rgba(196,81,58,0.25)" stroke-width="1" stroke-dasharray="2 2"/>
+
+  </svg>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-tag" id="tt-tag"></div>
+  <div class="tooltip-title" id="tt-title"></div>
+  <div class="tooltip-body" id="tt-body"></div>
+  <div class="tooltip-tags" id="tt-pills"></div>
+</div>
+
+<div class="panels">
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-dot" style="background: #c4513a;"></div>
+      <div>
+        <div class="panel-title" style="color: #c4513a;">Augmento Mori</div>
+        <div class="panel-subtitle">Upstream intervention · Cultural system lever</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <strong>Where it sits:</strong> At the intersection of Death Avoidance, Death Literacy, and Community Networks. Augmento Mori operates <em>before</em> the clinical encounter — in homes, classrooms, community centers, and faith spaces. It is a cultural intervention that targets the reinforcing feedback loop sustaining death as taboo (R2).
+    </div>
+    <hr class="divider">
+    <div class="touchpoints">
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Breaks R2:</span> By creating structured, psychologically safe spaces for mortality conversation, it disrupts the avoidance loop before medicalization takes hold.</div>
+      </div>
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Feeds B2:</span> Builds death literacy across four cohorts — Community, Medical, Deathcare, Caregivers — activating the balancing loop that counteracts taboo reinforcement.</div>
+      </div>
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Strengthens B1:</span> Game-based peer interaction builds community networks and shared grief frameworks, reinforcing communal care over institutional death.</div>
+      </div>
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Anam Cara methodology:</span> The accompaniment-based facilitation tradition embedded in the game design carries the spiritual and relational layer of the Celtic "soul friend" tradition directly into the system.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-dot" style="background: #4a8fa8;"></div>
+      <div>
+        <div class="panel-title" style="color: #4a8fa8;">HeartBloom</div>
+        <div class="panel-subtitle">Downstream intervention · Clinical system lever</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <strong>Where it sits:</strong> At the intersection of Institutional Care, Patient Autonomy, and Caregiver Burden. HeartBloom operates <em>inside</em> the clinical encounter — within the hospital, palliative unit, or hospice context. It is a service design intervention that targets the reinforcing loop that depersonalizes dying within medical systems (R1).
+    </div>
+    <hr class="divider">
+    <div class="touchpoints">
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Disrupts R1:</span> By giving the dying person agency over their environment, communication, and care preferences, HeartBloom rehumanizes the institutional context — slowing the medicalization reinforcing loop from within.</div>
+      </div>
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Restores Patient Autonomy:</span> HIPAA-compliant tiered consent model, environmental controls, and spiritual care integration directly address the dignity gap identified across all four research cohorts.</div>
+      </div>
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Reduces Caregiver Burden:</span> Distributes the invisible labor of caregiving across a shared-visibility care network — family, medical team, spiritual care, and community.</div>
+      </div>
+      <div class="touchpoint">
+        <div class="tp-arrow">→</div>
+        <div class="tp-text"><span>Grounded in EBD:</span> Built on Ulrich's Theory of Supportive Design — perceived environmental control, social support, and positive distraction — as clinically validated end-of-life care mechanisms.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Hamdy, M. M. — <em>Augmento Mori: Reconnecting Death into Human Life</em> — SCAD MFA Design for Sustainability, 2026</span>
+  <span>System framework adapted from Kastenbaum (1972) &amp; Lancet Commission on the Value of Death (Sallnow et al., 2022)</span>
+</footer>
+
+<script>
+  const nodeData = {
+    avoidance: {
+      color: '#b0a888',
+      tag: 'System Node · Reinforcing',
+      title: 'Death Avoidance & Cultural Taboo',
+      body: 'The primary driver of cultural silence around mortality. 78% of survey respondents avoid death conversations; early exclusion from death rituals (ages 4–12) creates lifelong communication barriers. Feeds R2 — the avoidance reinforcing loop.',
+      pills: ['Cultural silence', 'Fear', 'Euphemism', '78% avoidance']
+    },
+    medicalization: {
+      color: '#b0a888',
+      tag: 'System Node · Reinforcing',
+      title: 'Medicalization of Death',
+      body: 'Over-medicalized end-of-life care removes death from homes and communities into clinical institutions. Creates overtreatment, moral distress among providers, and depersonalized dying. Central to R1 — the medicalization reinforcing loop.',
+      pills: ['ICU overtreatment', 'Moral distress', 'De-personalization']
+    },
+    institutional: {
+      color: '#b0a888',
+      tag: 'System Node',
+      title: 'Institutional Care Systems',
+      body: 'Hospitals, hospice facilities, insurance structures, and policy frameworks that shape where and how people die. The Lancet Commission identifies institutional deaths as a key feedback driver — fewer home deaths means fewer witnesses, reducing community death literacy.',
+      pills: ['Hospital death', 'Hospice', 'Insurance', 'Policy']
+    },
+    literacy: {
+      color: '#b0a888',
+      tag: 'System Node · Balancing',
+      title: 'Death Literacy',
+      body: 'Understanding, comfort, and knowledge about death and dying. 85% of survey respondents agree that open discussion reduces death-related fear. Activating this node creates B2 — the balancing loop that counters cultural avoidance.',
+      pills: ['Education', '85% agree', 'Death positivity', 'Awareness']
+    },
+    community: {
+      color: '#b0a888',
+      tag: 'System Node · Balancing',
+      title: 'Community Networks',
+      body: 'Relational care networks — families, neighbors, grief groups, faith communities — that support dying and grieving outside institutional settings. Central to Kellehear\'s Public Health Palliative Care model. Feeds B1 — community care as systemic counterweight.',
+      pills: ['Public health model', 'Grief rituals', 'Belonging', 'Relational care']
+    },
+    autonomy: {
+      color: '#b0a888',
+      tag: 'System Node',
+      title: 'Patient Autonomy & Dignity',
+      body: 'The dying person\'s capacity to make decisions, express preferences, and maintain identity. Only 42% of survey respondents have discussed end-of-life plans — exposing the communication gap between stated values and enacted behavior.',
+      pills: ['Advance directives', 'Dignity', 'Agency', '42% plan gap']
+    },
+    caregiver: {
+      color: '#b0a888',
+      tag: 'System Node',
+      title: 'Caregiver Burden',
+      body: 'The invisible emotional, logistical, and physical labor borne by informal caregivers — family members who become sole communicators between patient and system. Distributed burden is a core design target for HeartBloom.',
+      pills: ['Invisible labor', 'Burnout', 'Communication weight']
+    },
+    spiritual: {
+      color: '#b0a888',
+      tag: 'System Node',
+      title: 'Spiritual & Cultural Dimensions',
+      body: '79% of survey respondents report that spiritual or religious beliefs influence end-of-life decisions. Cultural death systems (Kastenbaum) include symbols, rituals, meaning-making practices. Anam Cara — Celtic soul-friend accompaniment — sits here as both methodology and design influence.',
+      pills: ['79% influence', 'Ritual', 'Anam Cara', 'Meaning-making']
+    },
+    inequity: {
+      color: '#b0a888',
+      tag: 'System Node',
+      title: 'Structural Inequity',
+      body: 'Structural barriers — racial, economic, geographic — that determine differential access to quality end-of-life care. Dancing for Della workshop (Emory, Aug 2024) revealed how historical medical mistrust shapes Black communities\' palliative care engagement.',
+      pills: ['Racial inequity', 'Tuskegee legacy', 'Access gap', 'Dancing for Della']
+    }
+  };
+
+  const tooltip = document.getElementById('tooltip');
+  const ttTag = document.getElementById('tt-tag');
+  const ttTitle = document.getElementById('tt-title');
+  const ttBody = document.getElementById('tt-body');
+  const ttPills = document.getElementById('tt-pills');
+
+  document.querySelectorAll('.node-interactive').forEach(node => {
+    node.addEventListener('mouseenter', (e) => {
+      const key = node.getAttribute('data-node');
+      const data = nodeData[key];
+      if (!data) return;
+      ttTag.textContent = data.tag;
+      ttTag.style.color = data.color;
+      ttTitle.textContent = data.title;
+      ttBody.textContent = data.body;
+      ttPills.innerHTML = data.pills.map(p => `<span class="tooltip-pill">${p}</span>`).join('');
+      tooltip.classList.add('visible');
+    });
+
+    node.addEventListener('mousemove', (e) => {
+      let x = e.clientX + 16;
+      let y = e.clientY + 16;
+      if (x + 290 > window.innerWidth) x = e.clientX - 296;
+      if (y + 200 > window.innerHeight) y = e.clientY - 200;
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = y + 'px';
+    });
+
+    node.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible');
+    });
+  });
+</script>
+</body>
+</html>
