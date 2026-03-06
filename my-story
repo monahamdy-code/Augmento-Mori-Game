@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Augmento Mori: Mona M. Hamdy, MFA Thesis Defense 2026</title>
+<title>Augmento Mori: Mona M. Hamdy, MFA Thesis Defense 6 March 02026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1500,17 +1500,17 @@ em { font-style: italic; color: var(--mauve); }
       </svg>
     </div>
     <div class="label" style="text-align:center;margin-bottom:18px;">In the Anam Cara Tradition &nbsp; A Closing</div>
-    <h2 style="font-size:clamp(2rem,4.5vw,3.6rem);max-width:680px;margin:0 auto 24px;">A word of transition<br>and <em>release forward</em></h2>
+    <h2 style="font-size:clamp(2rem,4.5vw,3.6rem);max-width:680px;margin:0 auto 24px;">A word of transition<br>and <em>blessing </em></h2>
     <div class="rule" style="margin:22px auto;"></div>
-    <p class="lead" style="text-align:center;margin:0 auto 24px;max-width:560px;">What you have accompanied today is not a thesis.<br>It is a reckoning with how we care for each other at the threshold.</p>
-    <p style="color:rgba(245,238,232,0.5);line-height:2.2;font-size:1rem;margin-bottom:22px;">May those who are dying die well.<br>May those who are grieving be held.<br>May those who are designing do so with humility and love.</p>
-    <div class="pq" style="text-align:center;border:none;padding:0;margin:0 auto 24px;font-size:clamp(1.3rem,2.4vw,1.8rem);">For Mother Nature and for Mama.</div>
-    <p class="arabic" style="text-align:center;font-size:1.3rem;margin-top:10px;">بكل ما أعطيتموني، أعطيكم هذا العمل.</p>
-    <p style="margin-top:7px;color:var(--muted);font-style:italic;font-size:0.88rem;">With all you have given me, I give you this work.</p>
+    <p class="lead" style="text-align:center;margin:0 auto 24px;max-width:560px;">Thank you for accompanying me through my thesis.<br>It is a reckoning with how we care for each other at the threshold.</p>
+    <p style="color:rgba(245,238,232,0.5);line-height:2.2;font-size:1rem;margin-bottom:22px;">May those who are dying die well.(Plot twist, that's all of us!)<br>May those who are grieving be held.<br>May those who are designing do so with humility and love.</p>
+    <div class="pq" style="text-align:center;border:none;padding:0;margin:0 auto 24px;font-size:clamp(1.3rem,2.4vw,1.8rem);">For Mother Nature and for Mama. Always.</div>
+    <p class="arabic" style="text-align:center;font-size:1.3rem;margin-top:10px;">يعدونني مجنوناً لأنني لا أبيع أيامي بالذهب، وأعدهم مجانين لأنهم يظنون أن لأيامي ثمناً.</p>
+    <p style="margin-top:7px;color:var(--muted);font-style:italic;font-size:0.88rem;">They deem me mad because I will not sell my days for gold; and I deem them mad because they think my days have a price.</p>
     <div class="iris" style="max-width:260px;margin:40px auto 0;opacity:0.4;"></div>
     <div style="margin-top:32px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap;">
       <div><p class="mono" style="font-size:9px;">Mona M. Hamdy</p></div>
-      <div><p class="mono" style="font-size:9px;">M.F.A. Design for Sustainability &nbsp; SCAD 2026</p></div>
+      <div><p class="mono" style="font-size:9px;">M.F.A. Design for Sustainability &nbsp; SCAD 6 March 02026</p></div>
       <div><p class="mono" style="font-size:9px;">www.augmentomori.com</p></div>
     </div>
   </div>
