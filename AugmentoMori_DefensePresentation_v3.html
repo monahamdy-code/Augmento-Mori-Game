@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Augmento Mori: Mona M. Hamdy, MFA Thesis Defense 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Brand palette from images */
+  --coral:   #E8403A;
+  --fuchsia: #D4376E;
+  --mauve:   #C4607A;
+  --violet:  #4A2D6B;
+  --indigo:  #1A1A5E;
+  --nearblk: #0D0B18;
+  --ink:     #110E1D;
+  --parch:   #F5EEE8;
+  --warm:    #FAF4EE;
+  --muted:   #9A7A88;
+  --gold:    #D4A46A;
+  --teal:    #3D8FA8;
+  --sage:    #6A9A7E;
+  --lmuted:  #C8B4B8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--nearblk);
+  color: var(--parch);
+  overflow-x: hidden;
+}
+
+/* ── GRAIN OVERLAY (global) ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 40px;
+  background: rgba(13,11,24,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(212,55,110,0.14);
+}
+.nav-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.22em;
+  color: rgba(212,55,110,0.75);
+  text-transform: uppercase;
+}
+.nav-dots { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(245,238,232,0.14); cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.nav-dot:hover, .nav-dot.active { background: var(--fuchsia); transform: scale(1.35); }
+.nav-count {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: rgba(245,238,232,0.25); letter-spacing: 0.1em;
+}
+
+/* ── PROGRESS ── */
+.progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 1001;
+  background: linear-gradient(90deg, var(--coral), var(--fuchsia), var(--mauve));
+  transition: width 0.2s;
+}
+
+/* ── SLIDE BASE ── */
+.slide {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 88px 64px 64px;
+  position: relative; overflow: hidden;
+}
+.si { width: 100%; max-width: 1120px; position: relative; z-index: 2; }
+
+/* ── AURORA BACKGROUND SYSTEM ── */
+.ab {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+}
+
+/* ── TYPOGRAPHY ── */
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: clamp(3.5rem, 8vw, 8rem);
+  line-height: 0.95; letter-spacing: -0.02em;
+}
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: clamp(2rem, 4.5vw, 3.8rem);
+  line-height: 1.08; margin-bottom: 28px;
+}
+h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500; font-size: 1.4rem; margin-bottom: 10px;
+}
+p, li {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.95rem; line-height: 1.8;
+  color: rgba(245,238,232,0.78);
+}
+.lead {
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  line-height: 1.7; color: rgba(245,238,232,0.88);
+  max-width: 680px;
+}
+.mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82rem; letter-spacing: 0.06em;
+  color: rgba(245,238,232,0.38);
+}
+em { font-style: italic; color: var(--mauve); }
+
+/* ── LABEL ── */
+.label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(212,55,110,0.65);
+  margin-bottom: 20px;
+}
+
+/* ── RULE ── */
+.rule {
+  width: 56px; height: 1px;
+  background: linear-gradient(90deg, var(--fuchsia), transparent);
+  margin: 24px 0; opacity: 0.6;
+}
+
+/* ── GRID ── */
+.two   { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; }
+@media (max-width: 860px) {
+  .two, .three { grid-template-columns: 1fr; }
+  .slide { padding: 88px 28px 48px; }
+}
+
+/* ── GLASS CARD ── */
+.glass {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(212,55,110,0.18);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  padding: 28px 28px;
+  transition: border-color 0.3s;
+}
+.glass:hover { border-color: rgba(212,55,110,0.38); }
+
+/* ── PILL TAGS ── */
+.tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace; font-size: 8.5px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 4px 11px; border-radius: 100px; margin: 3px 3px 3px 0;
+  background: rgba(212,55,110,0.1);
+  color: rgba(196,96,122,0.85);
+  border: 1px solid rgba(212,55,110,0.22);
+}
+.tag-c { background: rgba(232,64,58,0.1); color: #e88070; border-color: rgba(232,64,58,0.25); }
+.tag-t { background: rgba(61,143,168,0.1); color: #7abcd0; border-color: rgba(61,143,168,0.25); }
+.tag-g { background: rgba(212,164,106,0.1); color: #d4a46a; border-color: rgba(212,164,106,0.25); }
+
+/* ── PULL QUOTE ── */
+.pq {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-weight: 300; font-style: italic; line-height: 1.5;
+  color: var(--parch);
+  border-left: 2px solid var(--fuchsia);
+  padding-left: 28px; margin: 28px 0; max-width: 760px;
+}
+
+/* ── STAT ── */
+.stat-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 300; line-height: 1; margin-bottom: 6px;
+}
+.stat-l {
+  font-family: 'DM Mono', monospace; font-size: 9.5px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(245,238,232,0.38);
+}
+
+/* ── NUM RING ── */
+.ring {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid rgba(212,55,110,0.35);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 13px;
+  color: var(--fuchsia); margin-bottom: 14px; flex-shrink: 0;
+}
+
+/* ── BAR CHART ── */
+.bar-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.bar-lbl { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,238,232,0.4); }
+.bar-trk { height: 24px; background: rgba(255,255,255,0.04); border-radius: 1px; overflow: hidden; }
+.bar-fill {
+  height: 100%; display: flex; align-items: center; padding-left: 10px;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: rgba(245,238,232,0.92); border-radius: 1px;
+  width: 0; transition: width 1.6s cubic-bezier(.22,.68,0,1.2);
+}
+.bf-c { background: linear-gradient(90deg, #E8403A, rgba(232,64,58,0.3)); }
+.bf-f { background: linear-gradient(90deg, #D4376E, rgba(212,55,110,0.3)); }
+.bf-t { background: linear-gradient(90deg, #3D8FA8, rgba(61,143,168,0.3)); }
+.bf-g { background: linear-gradient(90deg, #D4A46A, rgba(212,164,106,0.3)); }
+.bf-s { background: linear-gradient(90deg, #6A9A7E, rgba(106,154,126,0.3)); }
+
+/* ── IRIDESCENT BAR ── */
+.iris {
+  height: 3px;
+  background: linear-gradient(90deg,
+    #1a6640, #45b06a, #a8d840, #f0c020,
+    #e07030, #c03055, #8030a0, #3060d0, #1a8098);
+  border-radius: 2px; opacity: 0.55; margin: 18px 0;
+}
+
+/* ── HIGHLIGHT BOX ── */
+.hbox {
+  background: rgba(212,55,110,0.07);
+  border: 1px solid rgba(212,55,110,0.18);
+  padding: 22px 26px; margin: 22px 0;
+}
+
+/* ── FOOTER ── */
+.foot {
+  position: absolute; bottom: 22px; left: 64px; right: 64px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.ft {
+  font-family: 'DM Mono', monospace; font-size: 8.5px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(245,238,232,0.16);
+}
+
+/* ── ARABIC ── */
+.arabic {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; direction: rtl;
+  color: rgba(245,238,232,0.5); line-height: 2.2;
+}
+
+/* ── BREATHE CIRCLE ── */
+.breathe {
+  width: 160px; height: 160px; border-radius: 50%;
+  border: 1px solid rgba(212,55,110,0.28);
+  margin: 0 auto 36px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  animation: bth 6s ease-in-out infinite;
+}
+.breathe::before {
+  content: ''; position: absolute; inset: 14px; border-radius: 50%;
+  border: 1px solid rgba(212,55,110,0.12);
+  animation: bth 6s ease-in-out infinite 0.6s;
+}
+@keyframes bth {
+  0%,100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ── FADE ANIMATION ── */
+.fi { opacity: 0; transform: translateY(22px); transition: opacity 0.75s ease, transform 0.75s ease; }
+.fi.vis { opacity: 1; transform: translateY(0); }
+
+/* ── COMMUNITY ROW ── */
+.crow {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: 16px 20px; margin-bottom: 12px;
+  background: rgba(255,255,255,0.03);
+  border-left: 2px solid rgba(232,64,58,0.5);
+}
+
+/* ── FUTURE ARC ── */
+.farc { position: relative; padding: 32px 0; margin-top: 24px; }
+.farc::before {
+  content: ''; position: absolute;
+  left: 22px; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(61,143,168,0.4), transparent);
+}
+.fitem { padding: 16px 22px 16px 52px; margin-bottom: 14px; position: relative; }
+.fitem::before {
+  content: ''; position: absolute; left: 16px; top: 24px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: rgba(61,143,168,0.55);
+}
+
+/* ── LEVERAGE GRID ── */
+.lgrid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 24px; }
+.litem {
+  text-align: center; padding: 20px 14px;
+  border: 1px solid rgba(232,64,58,0.18);
+  background: rgba(232,64,58,0.04);
+}
+.lnum { font-size: 2rem; font-weight: 300; color: var(--coral); line-height: 1; margin-bottom: 6px; }
+
+/* ── SVG CHAMELEON GLYPH ── */
+.cham-glyph { opacity: 0.22; }
+</style>
+</head>
+<body>
+<div class="progress" id="pgbar"></div>
+<nav>
+  <div class="nav-logo">Augmento Mori &mdash; M. Hamdy</div>
+  <div class="nav-dots" id="ndots"></div>
+  <div class="nav-count" id="ncnt">1 / 24</div>
+</nav>
+
+<!-- ===================== S1: COVER ===================== -->
+<section class="slide" id="s1" style="background:var(--nearblk);">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 90% 80% at 70% 30%, rgba(232,64,58,0.38) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 25% 65%, rgba(212,55,110,0.32) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 70% at 80% 75%, rgba(74,45,107,0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(26,26,94,0.7) 0%, transparent 75%),
+    linear-gradient(160deg, #0D0B18 0%, #1A1A5E 50%, #0D0B18 100%);"></div>
+  <!-- Chameleon glyph watermark -->
+  <svg class="ab cham-glyph" viewBox="0 0 400 400" style="top:auto;bottom:0;right:0;width:480px;height:480px;left:auto;" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="rgba(212,55,110,0.9)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="200" cy="180" rx="70" ry="55"/>
+      <path d="M200,125 Q220,90 240,75 Q260,60 270,50"/>
+      <circle cx="268" cy="52" r="8"/>
+      <circle cx="264" cy="48" r="3" fill="rgba(212,55,110,0.5)"/>
+      <path d="M200,125 Q190,100 195,80 Q200,60 210,50"/>
+      <path d="M270,180 Q320,160 360,170 Q390,178 400,195"/>
+      <path d="M130,200 Q80,220 50,210 Q20,200 10,185"/>
+      <path d="M200,235 Q210,280 230,310 Q245,330 250,350 Q252,370 240,385"/>
+      <path d="M160,220 Q140,260 120,290 Q105,310 100,330"/>
+      <path d="M230,165 Q250,155 270,158"/>
+      <path d="M170,165 Q150,155 130,158"/>
+      <path d="M160,190 Q140,195 125,200 Q110,205 100,215"/>
+      <path d="M240,190 Q260,195 275,200 Q290,205 300,215"/>
+      <ellipse cx="245" cy="165" rx="5" ry="6"/>
+      <ellipse cx="155" cy="165" rx="5" ry="6"/>
+    </g>
+  </svg>
+  <div class="si fi">
+    <div class="mono" style="color:rgba(212,55,110,0.6);margin-bottom:14px;font-size:9px;letter-spacing:0.28em;">MFA THESIS DEFENSE &nbsp; SPRING 2026</div>
+    <h1 style="color:var(--parch);">
+      Augmento<br>
+      <span style="background:linear-gradient(90deg,#E8403A,#D4376E,#C4607A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Mori</span>
+    </h1>
+    <div style="width:1px;height:72px;background:linear-gradient(to bottom,transparent,rgba(212,55,110,0.5),transparent);margin:28px 0;opacity:0.6;"></div>
+    <p class="lead" style="max-width:540px;">Reconnecting Death into Human Life</p>
+    <div class="rule" style="margin-top:28px;"></div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;margin-top:8px;">
+      <div><div class="mono" style="margin-bottom:5px;">Candidate</div><p style="font-size:1.05rem;color:var(--parch);">Mona M. Hamdy</p></div>
+      <div><div class="mono" style="margin-bottom:5px;">Program</div><p style="font-size:1.05rem;color:var(--parch);">M.F.A. Design for Sustainability &nbsp; SCAD</p></div>
+      <div><div class="mono" style="margin-bottom:5px;">Committee</div><p style="font-size:0.9rem;color:rgba(245,238,232,0.6);">Scott Boylston (Chair)<br>David E. Meyers &nbsp; Dr. Satyakam Sharma</p></div>
+    </div>
+    <div class="iris" style="margin-top:48px;width:180px;"></div>
+  </div>
+  <div class="foot"><div class="ft">For Mother Nature and for Mama</div><div class="ft">01 / 24</div></div>
+</section>
+
+<!-- ===================== S2: DISCLAIMER ===================== -->
+<section class="slide" id="s2" style="background:var(--ink);">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 50% 50% at 80% 20%, rgba(74,45,107,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 10% 80%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Before We Begin</div>
+    <h2>A moment of<br>orientation</h2>
+    <div style="border:1px solid rgba(212,55,110,0.22);padding:44px;max-width:700px;position:relative;">
+      <div style="position:absolute;top:-11px;left:44px;background:var(--ink);padding:0 12px;font-family:'DM Mono',monospace;font-size:11px;color:rgba(212,55,110,0.5);">content note</div>
+      <p class="lead" style="margin-bottom:22px;">This presentation explores themes of <em>death, dying, grief, and end-of-life care</em>. Images and language related to mortality appear throughout.</p>
+      <p style="margin-bottom:18px;font-size:0.9rem;">You are welcome to:</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:26px;">
+        <span class="tag">Step away at any time without explanation</span>
+        <span class="tag">Not participate in moments of reflection</span>
+        <span class="tag">Take breaks as needed</span>
+        <span class="tag">Reach out to a support person if something arises</span>
+      </div>
+      <p style="color:rgba(245,238,232,0.45);font-size:0.88rem;">This research was conducted with the same care and dignity it advocates for.<br>Your presence here is a gift.</p>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Augmento Mori &nbsp; Mona M. Hamdy &nbsp; SCAD 2026</div><div class="ft">02 / 24</div></div>
+</section>
+
+<!-- ===================== S3: ANAM CARA PAUSE ===================== -->
+<section class="slide" id="s3" style="background:var(--nearblk);text-align:center;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(74,45,107,0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 80% at 50% 50%, rgba(26,26,94,0.6) 0%, transparent 75%);"></div>
+  <div class="si fi" style="text-align:center;">
+    <div class="label" style="text-align:center;">In the Anam Cara Tradition</div>
+    <div class="breathe">
+      <div style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:0.22em;color:rgba(212,55,110,0.6);">BREATHE</div>
+    </div>
+    <h2 style="font-size:clamp(1.7rem,3.2vw,2.6rem);max-width:560px;margin:0 auto 22px;">A moment to arrive<br>in the body</h2>
+    <div class="rule" style="margin:18px auto;"></div>
+    <p class="lead" style="text-align:center;margin:0 auto;max-width:480px;">Before we speak of death, let us feel ourselves alive.<br><br>Notice your breath. Notice your feet on the floor.<br>Notice who is in this room with you.</p>
+    <p class="arabic" style="margin-top:28px;">اجلس معي. أنا هنا معك.</p>
+    <p style="margin-top:7px;color:var(--muted);font-style:italic;font-size:0.88rem;">Sit with me. I am here with you.</p>
+  </div>
+  <div class="foot"><div class="ft">Anam Cara &nbsp; Soul Friend &nbsp; Celtic Accompaniment Tradition</div><div class="ft">03 / 24</div></div>
+</section>
+
+<!-- ===================== S4: ORIGIN ===================== -->
+<section class="slide" id="s4" style="background:#110E1D;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 65% 55% at 85% 40%, rgba(232,64,58,0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 15% 60%, rgba(74,45,107,0.4) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Where It Began</div>
+    <div class="two">
+      <div>
+        <h2>Like most drawn to<br><em>thanatology</em>, I lost<br>someone I loved.</h2>
+        <div class="rule"></div>
+        <p class="lead">My mother died in a place that was technically competent and entirely wrong for her. The rooms were efficient, the staff were kind, but nothing about that space was meant for a human being leaving this world with dignity.</p>
+        <p style="margin-top:18px;">That gap between clinical excellence and human dignity became the question that drove this research. <em>What would a good death look like, if it were designed for?</em></p>
+      </div>
+      <div>
+        <div class="pq">"Death is not the opposite of life, but a part of it."</div>
+        <div style="margin-top:28px;padding-top:22px;border-top:1px solid rgba(245,238,232,0.07);">
+          <div class="mono" style="margin-bottom:10px;">Research trajectory</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <span class="tag">Personal loss as primary catalyst</span>
+            <span class="tag">Inadequacy of clinical environments</span>
+            <span class="tag">Design as instrument of dignity</span>
+            <span class="tag">Death as a design problem worth solving</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Origin &nbsp; Augmento Mori</div><div class="ft">04 / 24</div></div>
+</section>
+
+<!-- ===================== S5: LIT REVIEW ===================== -->
+<section class="slide" id="s5" style="background:var(--ink);">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 55% 45% at 90% 15%, rgba(74,45,107,0.45) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 50% at 5% 85%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Systematic Literature Review</div>
+    <h2>Six domains of<br>secondary research</h2>
+    <p style="margin-bottom:6px;color:rgba(245,238,232,0.38);font-size:0.88rem;">400+ sources reviewed across intersecting fields</p>
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:36px;align-items:start;margin-top:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+        <div style="padding:18px;border-top:2px solid rgba(232,64,58,0.6);background:rgba(255,255,255,0.025);">
+          <h3 style="color:rgba(232,64,58,0.85);font-size:1rem;margin-bottom:8px;">Death &amp; Culture</h3>
+          <p style="font-size:0.85rem;">Historical medicalization; death avoidance as cultural construction; Kastenbaum's death systems; Death Positivity.</p>
+          <div style="margin-top:10px;"><span class="tag-c tag">Ariès</span><span class="tag-c tag">Kellehear</span></div>
+        </div>
+        <div style="padding:18px;border-top:2px solid rgba(61,143,168,0.6);background:rgba(255,255,255,0.025);">
+          <h3 style="color:rgba(61,143,168,0.85);font-size:1rem;margin-bottom:8px;">Palliative Care</h3>
+          <p style="font-size:0.85rem;">Public Health models; hospice design; dignity-centered frameworks; the care ecosystem home to hospital.</p>
+          <div style="margin-top:10px;"><span class="tag-t tag">Cherny</span><span class="tag-t tag">Kellehear</span></div>
+        </div>
+        <div style="padding:18px;border-top:2px solid rgba(212,164,106,0.6);background:rgba(255,255,255,0.025);">
+          <h3 style="color:rgba(212,164,106,0.85);font-size:1rem;margin-bottom:8px;">Evidence-Based Design</h3>
+          <p style="font-size:0.85rem;">Environmental impact on healing; biophilic principles; sensory clinical environments; spatial dignity.</p>
+          <div style="margin-top:10px;"><span class="tag-g tag">Ulrich 2001</span></div>
+        </div>
+        <div style="padding:18px;border-top:2px solid rgba(106,154,126,0.6);background:rgba(255,255,255,0.025);">
+          <h3 style="color:rgba(106,154,126,0.85);font-size:1rem;margin-bottom:8px;">Biomimicry &amp; Systems</h3>
+          <p style="font-size:0.85rem;">Benyus adaptive systems; chameleon iridophore mechanics; Living Building Challenge; regenerative design.</p>
+          <div style="margin-top:10px;"><span class="tag">Benyus</span><span class="tag">LBC</span></div>
+        </div>
+        <div style="padding:18px;border-top:2px solid rgba(232,64,58,0.4);background:rgba(255,255,255,0.025);">
+          <h3 style="color:rgba(232,64,58,0.7);font-size:1rem;margin-bottom:8px;">Service Design</h3>
+          <p style="font-size:0.85rem;">Service blueprinting; touchpoint design; stakeholder ecosystems; equity and access in care delivery.</p>
+          <div style="margin-top:10px;"><span class="tag-c tag">Stickdorn</span></div>
+        </div>
+        <div style="padding:18px;border-top:2px solid rgba(61,143,168,0.4);background:rgba(255,255,255,0.025);">
+          <h3 style="color:rgba(61,143,168,0.7);font-size:1rem;margin-bottom:8px;">Structural Inequity</h3>
+          <p style="font-size:0.85rem;">Tuskegee legacy; racial disparities in hospice access; Black communities and medical mistrust.</p>
+          <div style="margin-top:10px;"><span class="tag-t tag">Byrd &amp; Clayton</span></div>
+        </div>
+      </div>
+      <!-- radial map -->
+      <svg viewBox="0 0 280 280" style="width:280px;" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="140" cy="140" r="36" fill="rgba(212,55,110,0.12)" stroke="rgba(212,55,110,0.35)" stroke-width="1.2"/>
+        <text x="140" y="136" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(212,55,110,0.75)" text-anchor="middle">THESIS</text>
+        <text x="140" y="148" font-family="'DM Mono',monospace" font-size="7" fill="rgba(212,55,110,0.45)" text-anchor="middle">DESIGN</text>
+        <circle cx="140" cy="140" r="100" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="140" y1="104" x2="140" y2="52" stroke="rgba(232,64,58,0.25)" stroke-width="1"/>
+        <circle cx="140" cy="44" r="24" fill="rgba(232,64,58,0.09)" stroke="rgba(232,64,58,0.3)" stroke-width="1"/>
+        <text x="140" y="40" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.7)" text-anchor="middle">DEATH</text>
+        <text x="140" y="51" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.5)" text-anchor="middle">&amp; CULTURE</text>
+        <line x1="172" y1="116" x2="214" y2="82" stroke="rgba(61,143,168,0.25)" stroke-width="1"/>
+        <circle cx="228" cy="70" r="24" fill="rgba(61,143,168,0.08)" stroke="rgba(61,143,168,0.3)" stroke-width="1"/>
+        <text x="228" y="66" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.7)" text-anchor="middle">PALLIATIVE</text>
+        <text x="228" y="77" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.5)" text-anchor="middle">CARE</text>
+        <line x1="180" y1="140" x2="228" y2="140" stroke="rgba(212,164,106,0.25)" stroke-width="1"/>
+        <circle cx="252" cy="140" r="24" fill="rgba(212,164,106,0.07)" stroke="rgba(212,164,106,0.28)" stroke-width="1"/>
+        <text x="252" y="136" font-family="'DM Mono',monospace" font-size="7" fill="rgba(212,164,106,0.7)" text-anchor="middle">EBD</text>
+        <text x="252" y="147" font-family="'DM Mono',monospace" font-size="7" fill="rgba(212,164,106,0.45)" text-anchor="middle">DESIGN</text>
+        <line x1="172" y1="164" x2="214" y2="198" stroke="rgba(106,154,126,0.25)" stroke-width="1"/>
+        <circle cx="228" cy="212" r="24" fill="rgba(106,154,126,0.07)" stroke="rgba(106,154,126,0.28)" stroke-width="1"/>
+        <text x="228" y="208" font-family="'DM Mono',monospace" font-size="7" fill="rgba(106,154,126,0.7)" text-anchor="middle">BIOMIMICRY</text>
+        <text x="228" y="219" font-family="'DM Mono',monospace" font-size="7" fill="rgba(106,154,126,0.5)" text-anchor="middle">SYSTEMS</text>
+        <line x1="108" y1="164" x2="66" y2="198" stroke="rgba(232,64,58,0.2)" stroke-width="1"/>
+        <circle cx="52" cy="212" r="24" fill="rgba(232,64,58,0.07)" stroke="rgba(232,64,58,0.22)" stroke-width="1"/>
+        <text x="52" y="208" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.6)" text-anchor="middle">SERVICE</text>
+        <text x="52" y="219" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.45)" text-anchor="middle">DESIGN</text>
+        <line x1="100" y1="140" x2="52" y2="140" stroke="rgba(61,143,168,0.2)" stroke-width="1"/>
+        <circle cx="28" cy="140" r="24" fill="rgba(61,143,168,0.07)" stroke="rgba(61,143,168,0.22)" stroke-width="1"/>
+        <text x="28" y="136" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.6)" text-anchor="middle">STRUCTURAL</text>
+        <text x="28" y="147" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.45)" text-anchor="middle">EQUITY</text>
+        <text x="140" y="272" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,238,232,0.16)" text-anchor="middle" letter-spacing="1.5">400+ SOURCES</text>
+      </svg>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Literature Review &nbsp; Chapter 2</div><div class="ft">05 / 24</div></div>
+</section>
+
+<!-- ===================== S6: LANCET ===================== -->
+<section class="slide" id="s6" style="background:#0E0D1A;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 65% 55% at 15% 30%, rgba(26,26,94,0.6) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 85% 70%, rgba(74,45,107,0.4) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">The Turning Point in the Literature</div>
+    <h2>The Lancet Commission<br>on the <em>Value of Death</em>, 2022</h2>
+    <div style="border:1px solid rgba(61,143,168,0.25);padding:36px;position:relative;">
+      <div style="position:absolute;bottom:-10px;right:24px;background:#0E0D1A;padding:0 10px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.18em;color:rgba(61,143,168,0.5);">THE LANCET COMMISSION, 2022</div>
+      <p class="lead" style="margin-bottom:28px;">A major medical coalition making an unprecedented call: that death had been over-medicalized, stripped of meaning, and that <em>design intervention</em> was part of the answer.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px;margin-bottom:28px;">
+        <div style="text-align:center;padding:18px 10px;background:rgba(61,143,168,0.07);border:1px solid rgba(61,143,168,0.18);">
+          <div class="stat-n" style="color:rgba(61,143,168,0.85);">60M</div>
+          <div class="stat-l">Die without adequate care</div>
+        </div>
+        <div style="text-align:center;padding:18px 10px;background:rgba(212,164,106,0.07);border:1px solid rgba(212,164,106,0.18);">
+          <div class="stat-n" style="color:rgba(212,164,106,0.85);">80%</div>
+          <div class="stat-l">Die outside their wished setting</div>
+        </div>
+        <div style="text-align:center;padding:18px 10px;background:rgba(232,64,58,0.07);border:1px solid rgba(232,64,58,0.18);">
+          <div class="stat-n" style="color:rgba(232,64,58,0.85);">45M</div>
+          <div class="stat-l">Lack pain relief access</div>
+        </div>
+        <div style="text-align:center;padding:18px 10px;background:rgba(74,45,107,0.1);border:1px solid rgba(74,45,107,0.3);">
+          <div class="stat-n" style="color:rgba(196,96,122,0.85);">Now</div>
+          <div class="stat-l">Commission calls for design-level systems change</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;">
+        <div class="mono" style="font-size:8px;letter-spacing:0.18em;margin-bottom:12px;color:rgba(61,143,168,0.5);">WHERE PEOPLE DIE vs. WHERE THEY WISH TO DIE</div>
+        <div class="bar-row"><div class="bar-lbl">Die in hospital (actual)</div><div class="bar-trk"><div class="bar-fill bf-c" data-w="70" style="width:70%">70%</div></div></div>
+        <div class="bar-row"><div class="bar-lbl">Prefer to die at home (expressed wish)</div><div class="bar-trk"><div class="bar-fill bf-t" data-w="76" style="width:76%">76%</div></div></div>
+      </div>
+    </div>
+    <div class="hbox" style="margin-top:24px;">
+      <p style="font-style:italic;color:var(--parch);">"Dying has been turned over to medicine, removed from families and communities, and stripped of meaning. It does not have to be this way."</p>
+      <p class="mono" style="margin-top:7px;font-size:8.5px;">The Lancet Commission on the Value of Death, 2022</p>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Lancet Commission &nbsp; 2022</div><div class="ft">06 / 24</div></div>
+</section>
+
+<!-- ===================== S7: REALISTIC UTOPIA ===================== -->
+<section class="slide" id="s7" style="background:#0E0D1A;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(74,45,107,0.45) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 10% 80%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Lancet Commission &nbsp; The Framework</div>
+    <h2>Toward a <em>Realistic Utopia</em><br>of Dying</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;">
+      <div>
+        <p style="color:rgba(245,238,232,0.38);margin-bottom:18px;font-size:0.88rem;">Five conditions the Commission identifies as essential to dignified death</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:16px;align-items:flex-start;padding:14px 18px;background:rgba(61,143,168,0.06);border-left:2px solid rgba(61,143,168,0.5);">
+            <div><h3 style="font-size:0.92rem;margin-bottom:3px;color:rgba(61,143,168,0.85);">Relational</h3><p style="font-size:0.82rem;">Death as a communal event, not an isolated medical procedure</p></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start;padding:14px 18px;background:rgba(61,143,168,0.06);border-left:2px solid rgba(61,143,168,0.4);">
+            <div><h3 style="font-size:0.92rem;margin-bottom:3px;color:rgba(61,143,168,0.85);">Home-Centered</h3><p style="font-size:0.82rem;">Death returned to familiar environments when possible and wished</p></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start;padding:14px 18px;background:rgba(61,143,168,0.06);border-left:2px solid rgba(61,143,168,0.4);">
+            <div><h3 style="font-size:0.92rem;margin-bottom:3px;color:rgba(61,143,168,0.85);">Agency-Preserving</h3><p style="font-size:0.82rem;">Advance care planning; patient voice; dignity-centered decisions</p></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start;padding:14px 18px;background:rgba(61,143,168,0.06);border-left:2px solid rgba(61,143,168,0.4);">
+            <div><h3 style="font-size:0.92rem;margin-bottom:3px;color:rgba(61,143,168,0.85);">Equitable</h3><p style="font-size:0.82rem;">Universal access regardless of race, income, or geography</p></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start;padding:14px 18px;background:rgba(61,143,168,0.06);border-left:2px solid rgba(61,143,168,0.4);">
+            <div><h3 style="font-size:0.92rem;margin-bottom:3px;color:rgba(61,143,168,0.85);">Regenerative</h3><p style="font-size:0.82rem;">Death as contribution to community and meaning, not just biological endpoint</p></div>
+          </div>
+        </div>
+      </div>
+      <!-- alignment matrix -->
+      <div>
+        <div class="mono" style="color:rgba(212,164,106,0.55);font-size:8px;letter-spacing:0.2em;margin-bottom:14px;">THESIS INTERVENTIONS x LANCET PILLARS</div>
+        <svg viewBox="0 0 360 270" style="width:100%;max-width:360px;" xmlns="http://www.w3.org/2000/svg">
+          <text x="90" y="18" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(232,64,58,0.65)" text-anchor="middle">AUG MORI</text>
+          <text x="170" y="18" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.65)" text-anchor="middle">HEARTBLOOM</text>
+          <text x="250" y="18" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(106,154,126,0.65)" text-anchor="middle">HAVEN</text>
+          <text x="330" y="18" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(212,164,106,0.65)" text-anchor="middle">TAPESTRY</text>
+          <text x="4" y="52" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.35)">Relational</text>
+          <text x="4" y="100" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.35)">Home</text>
+          <text x="4" y="148" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.35)">Agency</text>
+          <text x="4" y="196" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.35)">Equity</text>
+          <text x="4" y="244" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.35)">Regen.</text>
+          <line x1="70" y1="24" x2="355" y2="24" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <line x1="70" y1="72" x2="355" y2="72" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <line x1="70" y1="120" x2="355" y2="120" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <line x1="70" y1="168" x2="355" y2="168" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <line x1="70" y1="216" x2="355" y2="216" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <circle cx="90" cy="46" r="9" fill="rgba(232,64,58,0.65)"/>
+          <circle cx="90" cy="94" r="6" fill="rgba(232,64,58,0.3)" stroke="rgba(232,64,58,0.5)" stroke-width="1"/>
+          <circle cx="90" cy="142" r="9" fill="rgba(232,64,58,0.65)"/>
+          <circle cx="90" cy="190" r="9" fill="rgba(232,64,58,0.65)"/>
+          <circle cx="90" cy="238" r="6" fill="rgba(232,64,58,0.3)" stroke="rgba(232,64,58,0.5)" stroke-width="1"/>
+          <circle cx="170" cy="46" r="9" fill="rgba(61,143,168,0.65)"/>
+          <circle cx="170" cy="94" r="9" fill="rgba(61,143,168,0.65)"/>
+          <circle cx="170" cy="142" r="9" fill="rgba(61,143,168,0.65)"/>
+          <circle cx="170" cy="190" r="9" fill="rgba(61,143,168,0.65)"/>
+          <circle cx="170" cy="238" r="6" fill="rgba(61,143,168,0.3)" stroke="rgba(61,143,168,0.5)" stroke-width="1"/>
+          <circle cx="250" cy="46" r="6" fill="rgba(106,154,126,0.3)" stroke="rgba(106,154,126,0.5)" stroke-width="1"/>
+          <circle cx="250" cy="94" r="9" fill="rgba(106,154,126,0.65)"/>
+          <circle cx="250" cy="142" r="6" fill="rgba(106,154,126,0.3)" stroke="rgba(106,154,126,0.5)" stroke-width="1"/>
+          <circle cx="250" cy="190" r="6" fill="rgba(106,154,126,0.3)" stroke="rgba(106,154,126,0.5)" stroke-width="1"/>
+          <circle cx="250" cy="238" r="9" fill="rgba(106,154,126,0.65)"/>
+          <circle cx="330" cy="46" r="9" fill="rgba(212,164,106,0.55)"/>
+          <circle cx="330" cy="94" r="9" fill="rgba(212,164,106,0.55)"/>
+          <circle cx="330" cy="142" r="6" fill="rgba(212,164,106,0.28)" stroke="rgba(212,164,106,0.48)" stroke-width="1"/>
+          <circle cx="330" cy="190" r="9" fill="rgba(212,164,106,0.55)"/>
+          <circle cx="330" cy="238" r="9" fill="rgba(212,164,106,0.55)"/>
+          <circle cx="78" cy="256" r="6" fill="rgba(245,238,232,0.5)"/>
+          <text x="88" y="260" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.3)">Primary alignment</text>
+          <circle cx="185" cy="256" r="4" fill="none" stroke="rgba(245,238,232,0.4)" stroke-width="1"/>
+          <text x="193" y="260" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.3)">Partial</text>
+        </svg>
+      </div>
+    </div>
+    <p class="mono" style="margin-top:16px;font-size:9px;">The Lancet framework became the scaffolding against which each design intervention was evaluated.</p>
+  </div>
+  <div class="foot"><div class="ft">Lancet Commission &nbsp; Realistic Utopia Framework</div><div class="ft">07 / 24</div></div>
+</section>
+
+<!-- ===================== S8: CAUSAL LOOP ===================== -->
+<section class="slide" id="s8" style="background:#0B0A14;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(26,26,94,0.5) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 10%, rgba(74,45,107,0.35) 0%, transparent 50%);"></div>
+  <div class="si fi">
+    <div class="label">Systems Thinking &nbsp; Causal Loop Diagram</div>
+    <h2>The complexity<br>of dying</h2>
+    <p class="lead" style="margin-bottom:24px;">Death is not a medical event. It is a <em>system</em> with reinforcing loops that perpetuate avoidance, and balancing loops that create the conditions for dignity.</p>
+    <div style="padding:20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);">
+      <svg viewBox="0 0 900 360" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arC" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="rgba(232,64,58,0.7)"/></marker>
+          <marker id="arT" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="rgba(61,143,168,0.7)"/></marker>
+          <marker id="arG" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="rgba(212,164,106,0.5)"/></marker>
+        </defs>
+        <rect width="900" height="360" fill="#0B0A14"/>
+        <!-- NODES -->
+        <rect x="15" y="55" width="148" height="42" rx="3" fill="rgba(232,64,58,0.1)" stroke="rgba(232,64,58,0.4)" stroke-width="1.2"/>
+        <text x="89" y="72" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.88)" text-anchor="middle">Death Denial /</text>
+        <text x="89" y="86" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.88)" text-anchor="middle">Cultural Silence</text>
+        <rect x="376" y="24" width="148" height="42" rx="3" fill="rgba(232,64,58,0.12)" stroke="rgba(232,64,58,0.48)" stroke-width="1.3"/>
+        <text x="450" y="42" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.9)" text-anchor="middle">Medicalization</text>
+        <text x="450" y="56" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.9)" text-anchor="middle">of Death</text>
+        <rect x="737" y="55" width="148" height="42" rx="3" fill="rgba(232,64,58,0.09)" stroke="rgba(232,64,58,0.35)" stroke-width="1"/>
+        <text x="811" y="72" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.85)" text-anchor="middle">Institutional</text>
+        <text x="811" y="86" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.85)" text-anchor="middle">Control of Dying</text>
+        <rect x="15" y="195" width="148" height="42" rx="3" fill="rgba(212,164,106,0.08)" stroke="rgba(212,164,106,0.3)" stroke-width="1"/>
+        <text x="89" y="212" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">Loss of Death</text>
+        <text x="89" y="226" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">Literacy</text>
+        <rect x="376" y="195" width="148" height="42" rx="3" fill="rgba(212,164,106,0.06)" stroke="rgba(212,164,106,0.25)" stroke-width="1"/>
+        <text x="450" y="212" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">Community /</text>
+        <text x="450" y="226" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">Family Exclusion</text>
+        <rect x="737" y="195" width="148" height="42" rx="3" fill="rgba(212,164,106,0.05)" stroke="rgba(212,164,106,0.22)" stroke-width="1"/>
+        <text x="811" y="212" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">Grief Complexity /</text>
+        <text x="811" y="226" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">Death Anxiety</text>
+        <rect x="376" y="300" width="148" height="42" rx="3" fill="rgba(106,154,126,0.07)" stroke="rgba(106,154,126,0.25)" stroke-width="1"/>
+        <text x="450" y="318" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">Caregiver Burnout /</text>
+        <text x="450" y="332" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.82)" text-anchor="middle">System Overload</text>
+        <!-- ARROWS -->
+        <path d="M163,76 Q264,44 376,42" stroke="rgba(232,64,58,0.5)" stroke-width="1.5" fill="none" marker-end="url(#arC)"/>
+        <text x="267" y="38" font-family="'DM Mono',monospace" font-size="8" fill="rgba(232,64,58,0.5)" text-anchor="middle">+</text>
+        <path d="M524,46 Q626,46 737,68" stroke="rgba(232,64,58,0.45)" stroke-width="1.4" fill="none" marker-end="url(#arC)"/>
+        <text x="630" y="38" font-family="'DM Mono',monospace" font-size="8" fill="rgba(232,64,58,0.45)" text-anchor="middle">+</text>
+        <path d="M811,97 L811,195" stroke="rgba(212,164,106,0.4)" stroke-width="1.3" fill="none" marker-end="url(#arG)"/>
+        <path d="M737,216 Q590,240 524,216" stroke="rgba(212,164,106,0.38)" stroke-width="1.2" fill="none" marker-end="url(#arG)"/>
+        <path d="M376,216 Q248,240 163,216" stroke="rgba(232,64,58,0.32)" stroke-width="1.2" fill="none" marker-end="url(#arC)" stroke-dasharray="4,3"/>
+        <text x="267" y="248" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(232,64,58,0.38)" text-anchor="middle">R1 Silence Loop</text>
+        <path d="M89,97 L89,195" stroke="rgba(212,164,106,0.38)" stroke-width="1.2" fill="none" marker-end="url(#arG)"/>
+        <path d="M163,216 Q264,210 376,216" stroke="rgba(212,164,106,0.38)" stroke-width="1.2" fill="none" marker-end="url(#arG)"/>
+        <path d="M450,237 L450,300" stroke="rgba(106,154,126,0.42)" stroke-width="1.2" fill="none" marker-end="url(#arT)"/>
+        <path d="M450,237 Q620,280 811,237" stroke="rgba(232,64,58,0.22)" stroke-width="1" fill="none" stroke-dasharray="3,4"/>
+        <text x="632" y="275" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(232,64,58,0.3)" text-anchor="middle">R2 Avoidance Loop</text>
+        <!-- INTERVENTION OVERLAYS -->
+        <rect x="8" y="165" width="164" height="84" rx="3" fill="rgba(232,64,58,0.05)" stroke="rgba(232,64,58,0.28)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="90" y="160" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(232,64,58,0.55)" text-anchor="middle" letter-spacing="1">AUGMENTO MORI</text>
+        <rect x="362" y="268" width="176" height="82" rx="3" fill="rgba(61,143,168,0.05)" stroke="rgba(61,143,168,0.25)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="450" y="263" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.55)" text-anchor="middle" letter-spacing="1">HEARTBLOOM</text>
+        <text x="264" y="292" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.35)" text-anchor="middle">B2 Literacy</text>
+        <text x="700" y="168" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.35)" text-anchor="middle">B1 Community</text>
+      </svg>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Systems Thinking &nbsp; Causal Loop Model</div><div class="ft">08 / 24</div></div>
+</section>
+
+<!-- ===================== S9: CHAMELEON ===================== -->
+<section class="slide" id="s9" style="background:#0D0E0D;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 65% 55% at 75% 30%, rgba(106,154,126,0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 60% at 20% 70%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Biological Inspiration</div>
+    <div class="two">
+      <div>
+        <h2>I met the<br><em>chameleon</em>.</h2>
+        <!-- spectrum bar -->
+        <div style="height:5px;background:linear-gradient(to right,#1a4a2e,#2d7a4f,#6aab6a,#c9d840,#f0a500,#e06030,#c43050,#7a3090,#3050c0);border-radius:2px;margin:24px 0;opacity:0.7;"></div>
+        <p class="lead">Labord's chameleons of Madagascar display an involuntary, chaotic explosion of color as they die. Their nervous systems send uncontrolled signals to nanocrystals in their skin, producing the most vivid display of their lives in their final moments.</p>
+        <div class="rule"></div>
+        <p>It was not a metaphor I sought. It found me. Here was a creature whose death was its most expressive act, not a failure, but a final, full utterance of life. I knew this was the biological frame for everything I was trying to design.</p>
+      </div>
+      <div>
+        <!-- Chameleon SVG art -->
+        <div style="display:flex;align-items:center;justify-content:center;margin-bottom:22px;">
+          <svg viewBox="0 0 220 220" style="width:180px;height:180px;" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(74,45,107,0.6)"/>
+                <stop offset="100%" stop-color="rgba(13,11,24,0)"/>
+              </radialGradient>
+            </defs>
+            <circle cx="110" cy="110" r="95" fill="url(#cg)"/>
+            <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <ellipse cx="110" cy="105" rx="52" ry="42" stroke="rgba(212,55,110,0.75)" stroke-width="2"/>
+              <path d="M110,63 Q126,38 142,28 Q158,18 165,10" stroke="rgba(212,55,110,0.65)" stroke-width="2"/>
+              <circle cx="163" cy="12" r="7" stroke="rgba(212,55,110,0.75)" stroke-width="1.5"/>
+              <circle cx="160" cy="9" r="2.5" fill="rgba(212,55,110,0.6)"/>
+              <path d="M110,63 Q104,42 108,25 Q112,10 120,5" stroke="rgba(196,96,122,0.5)" stroke-width="1.8"/>
+              <path d="M162,104 Q188,92 208,98 Q222,104 224,115" stroke="rgba(212,55,110,0.55)" stroke-width="1.8"/>
+              <path d="M58,112 Q32,126 14,118 Q0,110 -2,98" stroke="rgba(196,96,122,0.45)" stroke-width="1.8"/>
+              <path d="M110,147 Q118,176 134,198 Q146,214 148,228" stroke="rgba(212,55,110,0.55)" stroke-width="1.8"/>
+              <path d="M72,130 Q52,158 36,182 Q24,198 20,212" stroke="rgba(196,96,122,0.4)" stroke-width="1.6"/>
+              <ellipse cx="140" cy="98" rx="4.5" ry="5.5" stroke="rgba(232,64,58,0.7)" stroke-width="1.5"/>
+              <ellipse cx="80" cy="98" rx="4.5" ry="5.5" stroke="rgba(232,64,58,0.65)" stroke-width="1.5"/>
+              <path d="M64,114 Q46,120 32,128" stroke="rgba(212,55,110,0.35)" stroke-width="1.5"/>
+              <path d="M156,114 Q174,120 188,128" stroke="rgba(212,55,110,0.35)" stroke-width="1.5"/>
+            </g>
+          </svg>
+        </div>
+        <div style="padding:24px;background:rgba(106,154,126,0.08);border:1px solid rgba(106,154,126,0.2);margin-bottom:16px;">
+          <h3 style="color:rgba(106,154,126,0.85);margin-bottom:12px;">The Colorful Farewell</h3>
+          <p style="font-size:0.88rem;margin-bottom:14px;">Dying neurons send involuntary signals to iridophores, light-reflecting nanocrystals, creating an unrepeatable final display.</p>
+          <svg viewBox="0 0 260 56" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="14" width="96" height="22" rx="2" fill="rgba(212,164,106,0.14)" stroke="rgba(212,164,106,0.32)" stroke-width="1"/>
+            <text x="48" y="28" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(212,164,106,0.7)" text-anchor="middle">EGG 8-9 months</text>
+            <path d="M96,25 L106,25" stroke="rgba(245,238,232,0.18)" stroke-width="1"/>
+            <rect x="108" y="14" width="76" height="22" rx="2" fill="rgba(106,154,126,0.14)" stroke="rgba(106,154,126,0.38)" stroke-width="1"/>
+            <text x="146" y="28" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(106,154,126,0.75)" text-anchor="middle">LIFE 4-5 months</text>
+            <path d="M184,25 L194,25" stroke="rgba(245,238,232,0.18)" stroke-width="1"/>
+            <rect x="196" y="10" width="62" height="30" rx="2" fill="rgba(232,64,58,0.12)" stroke="rgba(232,64,58,0.48)" stroke-width="1.3"/>
+            <text x="227" y="22" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(232,64,58,0.85)" text-anchor="middle">COLORFUL</text>
+            <text x="227" y="34" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(232,64,58,0.85)" text-anchor="middle">FAREWELL</text>
+            <text x="48" y="52" font-family="'DM Mono',monospace" font-size="6" fill="rgba(245,238,232,0.2)" text-anchor="middle">More time unborn</text>
+            <text x="227" y="52" font-family="'DM Mono',monospace" font-size="6" fill="rgba(232,64,58,0.45)" text-anchor="middle">Peak expression</text>
+          </svg>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="glass"><div class="stat-n" style="font-size:2.2rem;color:rgba(106,154,126,0.8);">4-5</div><div class="stat-l">months alive</div></div>
+          <div class="glass"><div class="stat-n" style="font-size:2.2rem;color:rgba(106,154,126,0.8);">inf.</div><div class="stat-l">unique colors</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Biomimicry &nbsp; Labord's Chameleon &nbsp; Furcifer labordi</div><div class="ft">09 / 24</div></div>
+</section>
+
+<!-- ===================== S10: RESEARCH METHODS ===================== -->
+<section class="slide" id="s10" style="background:var(--ink);">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(74,45,107,0.4) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 5% 80%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Primary Research &nbsp; Mixed Methods</div>
+    <h2>I asked. I listened.<br>I was <em>present</em>.</h2>
+    <div style="margin:22px 0 28px;padding:18px 24px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.05);">
+      <div class="mono" style="font-size:8px;letter-spacing:0.2em;color:rgba(212,164,106,0.55);margin-bottom:12px;">RESEARCH TIMELINE</div>
+      <svg viewBox="0 0 860 70" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="35" x2="842" y2="35" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+        <rect x="18" y="22" width="162" height="22" rx="2" fill="rgba(212,164,106,0.1)" stroke="rgba(212,164,106,0.22)" stroke-width="1"/>
+        <text x="99" y="36" font-family="'DM Mono',monospace" font-size="7" fill="rgba(212,164,106,0.7)" text-anchor="middle">Survey Design Feb-Mar 2025</text>
+        <rect x="194" y="22" width="220" height="22" rx="2" fill="rgba(232,64,58,0.1)" stroke="rgba(232,64,58,0.22)" stroke-width="1"/>
+        <text x="304" y="36" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.7)" text-anchor="middle">Data Collection Mar-Oct 2025</text>
+        <rect x="430" y="22" width="186" height="22" rx="2" fill="rgba(106,154,126,0.1)" stroke="rgba(106,154,126,0.22)" stroke-width="1"/>
+        <text x="523" y="36" font-family="'DM Mono',monospace" font-size="7" fill="rgba(106,154,126,0.7)" text-anchor="middle">Conferences Autumn 2024</text>
+        <rect x="630" y="22" width="212" height="22" rx="2" fill="rgba(61,143,168,0.1)" stroke="rgba(61,143,168,0.22)" stroke-width="1"/>
+        <text x="736" y="36" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.7)" text-anchor="middle">Analysis + Synthesis 2025-2026</text>
+        <text x="18" y="12" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.18)">FEB 2025</text>
+        <text x="430" y="12" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.18)">OCT 2025</text>
+        <text x="800" y="12" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.18)">MAR 2026</text>
+        <text x="99" y="58" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(212,164,106,0.38)" text-anchor="middle">4 cohorts 25 items</text>
+        <text x="304" y="58" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(232,64,58,0.38)" text-anchor="middle">60+ respondents 700+ hours</text>
+        <text x="736" y="58" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(61,143,168,0.38)" text-anchor="middle">Consecutive triangulation</text>
+      </svg>
+    </div>
+    <div class="three" style="gap:18px;">
+      <div class="glass"><div class="ring">01</div><h3>Surveys &nbsp; 4 Cohorts</h3><p style="font-size:0.85rem;">60+ participants across General Community, Medical/Palliative Providers, Deathcare Professionals, and Caregivers.</p></div>
+      <div class="glass"><div class="ring">02</div><h3>Expert Interviews</h3><p style="font-size:0.85rem;">Physicians, chaplains, death doulas, and community leaders including Dr. Joshua Black on death dreams.</p></div>
+      <div class="glass"><div class="ring">03</div><h3>Cultural Probes</h3><p style="font-size:0.85rem;">Diaries, photo prompts, and storyboards to surface the sensory and emotional texture of how people experience death.</p></div>
+      <div class="glass"><div class="ring">04</div><h3>Ethnographic Work</h3><p style="font-size:0.85rem;">Immersive fieldwork in ICU and palliative settings. Observation of lived experiences at real end-of-life encounters.</p></div>
+      <div class="glass"><div class="ring">05</div><h3>Game Sessions</h3><p style="font-size:0.85rem;">The card game as a research instrument, generating both behavioral data and qualitative insight through facilitated reflection.</p></div>
+      <div class="glass"><div class="ring">06</div><h3>Participatory Charrettes</h3><p style="font-size:0.85rem;">Collaborative design sessions with multidisciplinary stakeholders, co-prototyping interventions in real time.</p></div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Methodology &nbsp; Chapter 3 &nbsp; Mixed Methods Consecutive Design</div><div class="ft">10 / 24</div></div>
+</section>
+
+<!-- ===================== S11: ANAM CARA ===================== -->
+<section class="slide" id="s11" style="background:#12101C;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 70% 60% at 85% 50%, rgba(74,45,107,0.38) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 15% 50%, rgba(212,55,110,0.14) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Methodological Foundation</div>
+    <div class="two">
+      <div>
+        <div style="font-size:2rem;color:rgba(212,164,106,0.28);margin-bottom:18px;">&#10022;</div>
+        <h2><em>Anam Cara</em><br>Soul Friend</h2>
+        <div class="rule"></div>
+        <p class="lead">From the Celtic tradition: the concept of the <em>anam cara</em>, the soul friend who accompanies another through the most profound transitions of life, including death.</p>
+        <p style="margin-top:18px;">Over two years, I completed an apprenticeship in accompaniment-based care through the Sacred Art of Living Center. This was not background research. It was a practice, one that shaped every design decision that followed.</p>
+        <p style="margin-top:14px;">To accompany someone dying is to sit at the threshold between what we understand and what we cannot. Design, at its most human, asks for the same.</p>
+      </div>
+      <div>
+        <div style="padding:28px;border:1px solid rgba(212,164,106,0.2);">
+          <div class="mono" style="color:rgba(212,164,106,0.5);margin-bottom:16px;font-size:8.5px;letter-spacing:0.22em;">SACRED ART OF LIVING CENTER</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="padding:12px 14px;background:rgba(255,255,255,0.03);"><div class="stat-l" style="margin-bottom:3px;">Duration</div><p style="font-size:0.92rem;">Two-year formal apprenticeship</p></div>
+            <div style="padding:12px 14px;background:rgba(255,255,255,0.03);"><div class="stat-l" style="margin-bottom:3px;">Deaths Accompanied</div><p style="font-size:0.92rem;">Present for five deaths during research phase</p></div>
+            <div style="padding:12px 14px;background:rgba(255,255,255,0.03);"><div class="stat-l" style="margin-bottom:3px;">Role in Thesis</div><p style="font-size:0.92rem;">Methodological foundation and design influence, embedded in Chapters 2, 3, 5, and 6</p></div>
+          </div>
+          <div class="mono" style="color:rgba(212,164,106,0.42);margin:18px 0 12px;font-size:8px;letter-spacing:0.18em;">THREE PRINCIPLES</div>
+          <svg viewBox="0 0 270 92" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="45" cy="46" r="36" fill="rgba(212,164,106,0.06)" stroke="rgba(212,164,106,0.22)" stroke-width="1"/>
+            <text x="45" y="42" font-family="'Cormorant Garamond',serif" font-size="10" fill="rgba(212,164,106,0.8)" text-anchor="middle" font-style="italic">Presence</text>
+            <text x="45" y="55" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.3)" text-anchor="middle">without agenda</text>
+            <circle cx="135" cy="46" r="36" fill="rgba(212,164,106,0.06)" stroke="rgba(212,164,106,0.22)" stroke-width="1"/>
+            <text x="135" y="42" font-family="'Cormorant Garamond',serif" font-size="10" fill="rgba(212,164,106,0.8)" text-anchor="middle" font-style="italic">Listening</text>
+            <text x="135" y="55" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.3)" text-anchor="middle">without fixing</text>
+            <circle cx="225" cy="46" r="36" fill="rgba(212,164,106,0.06)" stroke="rgba(212,164,106,0.22)" stroke-width="1"/>
+            <text x="225" y="42" font-family="'Cormorant Garamond',serif" font-size="10" fill="rgba(212,164,106,0.8)" text-anchor="middle" font-style="italic">Release</text>
+            <text x="225" y="55" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.3)" text-anchor="middle">without loss</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Anam Cara &nbsp; Celtic Accompaniment &nbsp; Two-Year Apprenticeship</div><div class="ft">11 / 24</div></div>
+</section>
+
+<!-- ===================== S12: COMMUNITY FIELDWORK ===================== -->
+<section class="slide" id="s12" style="background:#0E0B14;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 60% 55% at 80% 25%, rgba(232,64,58,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 10% 75%, rgba(74,45,107,0.4) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Community Fieldwork</div>
+    <div class="two">
+      <div>
+        <h2>I went to where<br>death lives in<br><em>community</em>.</h2>
+        <div class="rule"></div>
+        <p class="lead">The research did not stay in the survey. It walked into ICUs, sat in living rooms, attended "Dancing for Della," and bore witness to how structural inequity shapes who dies well in America.</p>
+        <div class="hbox" style="margin-top:22px;">
+          <div class="mono" style="color:rgba(232,64,58,0.55);font-size:8px;letter-spacing:0.2em;margin-bottom:10px;">HOSPICE ACCESS DISPARITY</div>
+          <div class="bar-row"><div class="bar-lbl">White patients receiving hospice care</div><div class="bar-trk"><div class="bar-fill bf-c" data-w="68" style="width:68%;">68%</div></div></div>
+          <div class="bar-row"><div class="bar-lbl">Black patients receiving hospice care</div><div class="bar-trk"><div class="bar-fill bf-f" data-w="39" style="width:39%;">39%</div></div></div>
+          <p class="mono" style="margin-top:10px;font-size:8px;color:rgba(245,238,232,0.22);">NHPCO 2021 Data</p>
+        </div>
+      </div>
+      <div>
+        <div class="crow"><div><div class="stat-l" style="margin-bottom:3px;">ICU Observation</div><p style="font-size:0.88rem;">Observed clinical environments and how space, silence, and protocol shape dying. The dignity gap is physical.</p></div></div>
+        <div class="crow"><div><div class="stat-l" style="margin-bottom:3px;">Dancing for Della</div><p style="font-size:0.88rem;">Community healing event for Black families navigating grief. Named for Della, who died alone. A structural story told through one life.</p></div></div>
+        <div class="crow"><div><div class="stat-l" style="margin-bottom:3px;">Home Deathcare</div><p style="font-size:0.88rem;">Accompanied families managing dying outside institutions. Documented the emotional and logistical gaps design could address.</p></div></div>
+        <div class="crow"><div><div class="stat-l" style="margin-bottom:3px;">Tuskegee Legacy</div><p style="font-size:0.88rem;">Medical mistrust in Black communities is not irrational. It is documented history. Design must answer to this.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Community Fieldwork &nbsp; Structural Equity &nbsp; Death Access</div><div class="ft">12 / 24</div></div>
+</section>
+
+<!-- ===================== S13: PERSONAS ===================== -->
+<section class="slide" id="s13" style="background:#0C0B15;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 55% 60% at 85% 60%, rgba(74,45,107,0.38) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 45% at 15% 30%, rgba(212,55,110,0.15) 0%, transparent 50%);"></div>
+  <div class="si fi">
+    <div class="label">Research Findings &nbsp; Composite Personas</div>
+    <h2>Amina and Carl.<br>Two people <em>the system</em><br>is failing.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;">
+      <div style="padding:32px;border:1px solid rgba(212,55,110,0.2);background:rgba(212,55,110,0.04);">
+        <div class="label" style="color:rgba(212,55,110,0.6);margin-bottom:14px;">Amina, 54</div>
+        <h3 style="margin-bottom:12px;">Caregiver of a terminally ill spouse.</h3>
+        <p style="font-size:0.9rem;margin-bottom:16px;">She coordinates medications, medical appointments, insurance claims, overnight care, and emotional support for her husband while managing her own grief invisibility. No one asks how she is doing.</p>
+        <div style="padding:16px;background:rgba(212,55,110,0.07);border-left:2px solid rgba(212,55,110,0.5);margin-bottom:14px;">
+          <p style="font-style:italic;font-size:0.92rem;">"I don't have time to fall apart. There is no one to fall apart to."</p>
+        </div>
+        <div><span class="tag">Invisible labor</span><span class="tag">Caregiver burnout</span><span class="tag">No support map</span></div>
+      </div>
+      <div style="padding:32px;border:1px solid rgba(232,64,58,0.18);background:rgba(232,64,58,0.03);">
+        <div class="label" style="color:rgba(232,64,58,0.6);margin-bottom:14px;">Carl, 78</div>
+        <h3 style="margin-bottom:12px;">Patient in an acute care facility. No family nearby.</h3>
+        <p style="font-size:0.9rem;margin-bottom:16px;">Carl has expressed wishes for a quiet death at home, surrounded by familiar things. He is dying in a fluorescent ward he has never felt comfortable in. His chart has no record of this preference.</p>
+        <div style="padding:16px;background:rgba(232,64,58,0.07);border-left:2px solid rgba(232,64,58,0.45);margin-bottom:14px;">
+          <p style="font-style:italic;font-size:0.92rem;">"I just want the window open. I want to hear the birds."</p>
+        </div>
+        <div style="padding:14px;background:rgba(232,64,58,0.06);border:1px solid rgba(232,64,58,0.16);margin-bottom:14px;text-align:center;">
+          <div class="stat-n" style="font-size:3rem;color:rgba(232,64,58,0.75);">1 in 4</div>
+          <div class="stat-l">Americans die alone</div>
+        </div>
+        <div><span class="tag-c tag">Isolation in dying</span><span class="tag-c tag">Wish not documented</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Composite Personas &nbsp; Research Synthesis &nbsp; Systems Failure</div><div class="ft">13 / 24</div></div>
+</section>
+
+<!-- ===================== S14: KEY FINDING ===================== -->
+<section class="slide" id="s14" style="background:#0B0A13;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 80% 70% at 50% 50%, rgba(232,64,58,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 15% 15%, rgba(74,45,107,0.4) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 85% 85%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi" style="text-align:center;">
+    <div class="label" style="text-align:center;">Core Research Finding</div>
+    <h2 style="max-width:720px;margin:0 auto 28px;">The paradox at the<br>center of everything.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:800px;margin:0 auto 28px;">
+      <div style="padding:40px 36px;background:rgba(106,154,126,0.08);border:1px solid rgba(106,154,126,0.25);text-align:center;">
+        <div class="stat-n" style="font-size:5.5rem;color:rgba(106,154,126,0.85);">94%</div>
+        <div class="stat-l">View death as a natural part of life</div>
+        <p style="margin-top:16px;font-size:0.88rem;color:rgba(245,238,232,0.55);">Across all four cohorts, near-universal agreement that death is natural and not to be feared at the conceptual level.</p>
+      </div>
+      <div style="padding:40px 36px;background:rgba(232,64,58,0.08);border:1px solid rgba(232,64,58,0.25);text-align:center;">
+        <div class="stat-n" style="font-size:5.5rem;color:rgba(232,64,58,0.85);">58%</div>
+        <div class="stat-l">Have not discussed end-of-life plans</div>
+        <p style="margin-top:16px;font-size:0.88rem;color:rgba(245,238,232,0.55);">A 36-point gap between belief and action. Death is "natural" in theory, unspeakable in practice.</p>
+      </div>
+    </div>
+    <div class="pq" style="text-align:left;max-width:700px;margin:0 auto 24px;">The majority of respondents believe death is natural. The majority have not had the conversation. <em>That gap is where design lives.</em></div>
+    <div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;">
+      <div style="padding:14px 20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);text-align:center;">
+        <div class="stat-n" style="font-size:2.4rem;color:rgba(212,55,110,0.75);">88%</div>
+        <div class="stat-l">Prioritize comfort over life extension</div>
+      </div>
+      <div style="padding:14px 20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);text-align:center;">
+        <div class="stat-n" style="font-size:2.4rem;color:rgba(212,55,110,0.75);">82%</div>
+        <div class="stat-l">Want to die at home or in community</div>
+      </div>
+      <div style="padding:14px 20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);text-align:center;">
+        <div class="stat-n" style="font-size:2.4rem;color:rgba(212,55,110,0.75);">76%</div>
+        <div class="stat-l">Have never used an advance directive</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Core Finding &nbsp; Survey Data &nbsp; The Design Opportunity</div><div class="ft">14 / 24</div></div>
+</section>
+
+<!-- ===================== S15: DESIGN CRITERIA ===================== -->
+<section class="slide" id="s15" style="background:#0E0C18;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 60% 55% at 90% 30%, rgba(74,45,107,0.42) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 5% 70%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">From Research to Design &nbsp; Chapter 5</div>
+    <h2>What the findings<br>demanded of the <em>design</em>.</h2>
+    <p style="color:rgba(245,238,232,0.38);margin-bottom:24px;font-size:0.9rem;">Research-derived design criteria that governed all subsequent intervention development</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px;">
+      <div style="padding:22px;border-top:2px solid rgba(232,64,58,0.6);background:rgba(232,64,58,0.04);">
+        <h3 style="color:rgba(232,64,58,0.85);font-size:1rem;margin-bottom:8px;">Normalize conversation</h3>
+        <p style="font-size:0.85rem;">58% planning gap demands tools that make the conversation accessible, not clinical, not morbid, and not optional.</p>
+      </div>
+      <div style="padding:22px;border-top:2px solid rgba(61,143,168,0.6);background:rgba(61,143,168,0.04);">
+        <h3 style="color:rgba(61,143,168,0.85);font-size:1rem;margin-bottom:8px;">Center dignity</h3>
+        <p style="font-size:0.85rem;">88% comfort preference demands environments and systems designed for the whole person, not the diagnosis.</p>
+      </div>
+      <div style="padding:22px;border-top:2px solid rgba(212,164,106,0.6);background:rgba(212,164,106,0.04);">
+        <h3 style="color:rgba(212,164,106,0.85);font-size:1rem;margin-bottom:8px;">Support the caregiver</h3>
+        <p style="font-size:0.85rem;">72% caregiver burden rate demands tools that treat the family system as the unit of care, not just the patient.</p>
+      </div>
+      <div style="padding:22px;border-top:2px solid rgba(106,154,126,0.6);background:rgba(106,154,126,0.04);">
+        <h3 style="color:rgba(106,154,126,0.85);font-size:1rem;margin-bottom:8px;">Build death literacy</h3>
+        <p style="font-size:0.85rem;">Cultural silence demands upstream tools that expand community fluency around mortality before crisis arrives.</p>
+      </div>
+      <div style="padding:22px;border-top:2px solid rgba(196,96,122,0.6);background:rgba(196,96,122,0.04);">
+        <h3 style="color:rgba(196,96,122,0.85);font-size:1rem;margin-bottom:8px;">Design for equity</h3>
+        <p style="font-size:0.85rem;">29-point hospice access gap demands explicit centering of underserved communities, beginning with co-design.</p>
+      </div>
+      <div style="padding:22px;border-top:2px solid rgba(74,45,107,0.7);background:rgba(74,45,107,0.06);">
+        <h3 style="color:rgba(196,96,122,0.75);font-size:1rem;margin-bottom:8px;">Honor community</h3>
+        <p style="font-size:0.85rem;">82% home preference demands systems that return dying to families and communities, not just institutions.</p>
+      </div>
+    </div>
+    <div style="height:3px;background:linear-gradient(90deg,rgba(232,64,58,0.6),rgba(212,55,110,0.5),rgba(61,143,168,0.4),rgba(106,154,126,0.4),rgba(212,164,106,0.4));border-radius:2px;opacity:0.5;"></div>
+    <p class="mono" style="margin-top:12px;font-size:8.5px;color:rgba(245,238,232,0.18);">Each criterion directly traceable to primary research findings &nbsp; Chapter 4 to Chapter 5 bridge</p>
+  </div>
+  <div class="foot"><div class="ft">Design Criteria &nbsp; Research to Design Bridge</div><div class="ft">15 / 24</div></div>
+</section>
+
+<!-- ===================== S16: BIOMIMICRY BRIDGE ===================== -->
+<section class="slide" id="s16" style="background:#0D0E0C;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 70% 55% at 75% 35%, rgba(106,154,126,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 55% at 20% 65%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">From Biology to Design</div>
+    <h2>What the <em>chameleon</em><br>taught me to build.</h2>
+    <div style="margin:28px 0;">
+      <svg viewBox="0 0 880 120" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="bArr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0,0 L0,8 L8,4 z" fill="rgba(106,154,126,0.5)"/>
+          </marker>
+        </defs>
+        <rect x="0" y="28" width="148" height="52" rx="4" fill="rgba(106,154,126,0.08)" stroke="rgba(106,154,126,0.28)" stroke-width="1.2"/>
+        <text x="74" y="50" font-family="'DM Mono',monospace" font-size="8" fill="rgba(106,154,126,0.65)" text-anchor="middle">BIOLOGY</text>
+        <text x="74" y="64" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.8)" text-anchor="middle">Iridophore</text>
+        <text x="74" y="76" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.8)" text-anchor="middle">nanocrystals</text>
+        <path d="M148,54 L180,54" stroke="rgba(106,154,126,0.3)" stroke-width="1.5" fill="none" marker-end="url(#bArr)"/>
+        <rect x="183" y="28" width="148" height="52" rx="4" fill="rgba(106,154,126,0.06)" stroke="rgba(106,154,126,0.22)" stroke-width="1"/>
+        <text x="257" y="50" font-family="'DM Mono',monospace" font-size="8" fill="rgba(106,154,126,0.55)" text-anchor="middle">PRINCIPLE</text>
+        <text x="257" y="64" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.75)" text-anchor="middle">Adaptive</text>
+        <text x="257" y="76" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.75)" text-anchor="middle">identity</text>
+        <path d="M331,54 L363,54" stroke="rgba(212,164,106,0.3)" stroke-width="1.5" fill="none" marker-end="url(#bArr)"/>
+        <rect x="366" y="28" width="148" height="52" rx="4" fill="rgba(212,164,106,0.06)" stroke="rgba(212,164,106,0.22)" stroke-width="1"/>
+        <text x="440" y="50" font-family="'DM Mono',monospace" font-size="8" fill="rgba(212,164,106,0.55)" text-anchor="middle">ETHIC</text>
+        <text x="440" y="64" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.75)" text-anchor="middle">Regenerative</text>
+        <text x="440" y="76" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.75)" text-anchor="middle">expression</text>
+        <path d="M514,54 L546,54" stroke="rgba(232,64,58,0.3)" stroke-width="1.5" fill="none" marker-end="url(#bArr)"/>
+        <rect x="549" y="28" width="148" height="52" rx="4" fill="rgba(232,64,58,0.06)" stroke="rgba(232,64,58,0.22)" stroke-width="1"/>
+        <text x="623" y="50" font-family="'DM Mono',monospace" font-size="8" fill="rgba(232,64,58,0.55)" text-anchor="middle">SPACE</text>
+        <text x="623" y="64" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.75)" text-anchor="middle">Responsive</text>
+        <text x="623" y="76" font-family="'Cormorant Garamond',serif" font-size="12" fill="rgba(245,238,232,0.75)" text-anchor="middle">biophilic env.</text>
+        <path d="M697,54 L729,54" stroke="rgba(61,143,168,0.3)" stroke-width="1.5" fill="none" marker-end="url(#bArr)"/>
+        <rect x="732" y="18" width="148" height="72" rx="4" fill="rgba(61,143,168,0.08)" stroke="rgba(61,143,168,0.3)" stroke-width="1.3"/>
+        <text x="806" y="40" font-family="'DM Mono',monospace" font-size="8" fill="rgba(61,143,168,0.65)" text-anchor="middle">OUTCOME</text>
+        <text x="806" y="56" font-family="'Cormorant Garamond',serif" font-size="13" fill="rgba(245,238,232,0.9)" text-anchor="middle">Dignified</text>
+        <text x="806" y="72" font-family="'Cormorant Garamond',serif" font-size="13" fill="rgba(245,238,232,0.9)" text-anchor="middle">dying</text>
+        <text x="440" y="110" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(245,238,232,0.14)" text-anchor="middle" letter-spacing="1.5">CHAMELEON BIOMIMICRY DESIGN PRINCIPLE</text>
+      </svg>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div class="glass">
+        <h3 style="color:rgba(106,154,126,0.85);margin-bottom:10px;">What biomimicry gave the thesis</h3>
+        <p style="font-size:0.88rem;">A framework for designing systems that are adaptive, context-responsive, and regenerative rather than static and standardized. The chameleon does not perform. It simply responds truthfully to its conditions.</p>
+      </div>
+      <div class="glass">
+        <h3 style="color:rgba(212,164,106,0.85);margin-bottom:10px;">The Colorful Farewell as design brief</h3>
+        <p style="font-size:0.88rem;">If a chameleon's most vivid expression is its last, then design should create the conditions for a person's dying to be equally full, equally expressive, and equally their own.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Biomimicry &nbsp; Labord's Chameleon &nbsp; Design Principle</div><div class="ft">16 / 24</div></div>
+</section>
+
+<!-- ===================== S17: INTERVENTION ECOSYSTEM ===================== -->
+<section class="slide" id="s17" style="background:#0C0B14;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 65% 55% at 50% 20%, rgba(74,45,107,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 55% at 50% 90%, rgba(26,26,94,0.4) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Design for Sustainability &nbsp; Intervention Ecosystem</div>
+    <h2>Six interventions.<br>One <em>connected</em> argument.</h2>
+    <div style="margin:22px 0;">
+      <svg viewBox="0 0 940 320" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="290" width="940" height="26" rx="2" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+        <text x="470" y="306" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(245,238,232,0.2)" text-anchor="middle" letter-spacing="2">FOUNDATION: ANAM CARA . LANCET COMMISSION . BIOMIMICRY . DIGNITY FRAMEWORK</text>
+        <rect x="30" y="20" width="180" height="98" rx="4" fill="rgba(232,64,58,0.08)" stroke="rgba(232,64,58,0.32)" stroke-width="1.4"/>
+        <text x="120" y="44" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(232,64,58,0.6)" text-anchor="middle">UPSTREAM</text>
+        <text x="120" y="62" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.92)" text-anchor="middle">Augmento</text>
+        <text x="120" y="78" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.92)" text-anchor="middle">Mori</text>
+        <text x="120" y="96" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(232,64,58,0.45)" text-anchor="middle">Community Card Game</text>
+        <rect x="258" y="20" width="180" height="98" rx="4" fill="rgba(212,164,106,0.06)" stroke="rgba(212,164,106,0.25)" stroke-width="1.2"/>
+        <text x="348" y="44" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(212,164,106,0.55)" text-anchor="middle">BRIDGE</text>
+        <text x="348" y="62" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.88)" text-anchor="middle">Legacy</text>
+        <text x="348" y="78" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.88)" text-anchor="middle">Ledger</text>
+        <text x="348" y="96" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(212,164,106,0.42)" text-anchor="middle">Advance Care Planning</text>
+        <rect x="486" y="20" width="180" height="98" rx="4" fill="rgba(61,143,168,0.07)" stroke="rgba(61,143,168,0.28)" stroke-width="1.3"/>
+        <text x="576" y="44" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.6)" text-anchor="middle">DOWNSTREAM</text>
+        <text x="576" y="62" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.92)" text-anchor="middle">Heart</text>
+        <text x="576" y="78" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.92)" text-anchor="middle">Bloom</text>
+        <text x="576" y="96" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(61,143,168,0.45)" text-anchor="middle">Agentic Digital Companion</text>
+        <rect x="714" y="20" width="180" height="98" rx="4" fill="rgba(106,154,126,0.06)" stroke="rgba(106,154,126,0.22)" stroke-width="1.2"/>
+        <text x="804" y="44" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(106,154,126,0.55)" text-anchor="middle">SPACE</text>
+        <text x="804" y="62" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.85)" text-anchor="middle">Haven</text>
+        <text x="804" y="78" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.85)" text-anchor="middle">Suite</text>
+        <text x="804" y="96" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(106,154,126,0.42)" text-anchor="middle">Biophilic Palliative Env.</text>
+        <rect x="30" y="162" width="180" height="98" rx="4" fill="rgba(196,96,122,0.06)" stroke="rgba(196,96,122,0.22)" stroke-width="1"/>
+        <text x="120" y="186" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(196,96,122,0.5)" text-anchor="middle">GRIEF</text>
+        <text x="120" y="204" font-family="'Cormorant Garamond',serif" font-size="14" fill="rgba(245,238,232,0.85)" text-anchor="middle">Remembering</text>
+        <text x="120" y="220" font-family="'Cormorant Garamond',serif" font-size="14" fill="rgba(245,238,232,0.85)" text-anchor="middle">Rituals</text>
+        <text x="120" y="238" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(196,96,122,0.38)" text-anchor="middle">Teen Grief Support</text>
+        <rect x="258" y="162" width="180" height="98" rx="4" fill="rgba(61,143,168,0.05)" stroke="rgba(61,143,168,0.18)" stroke-width="1"/>
+        <text x="348" y="186" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.45)" text-anchor="middle">NETWORK</text>
+        <text x="348" y="204" font-family="'Cormorant Garamond',serif" font-size="14" fill="rgba(245,238,232,0.82)" text-anchor="middle">Life</text>
+        <text x="348" y="220" font-family="'Cormorant Garamond',serif" font-size="14" fill="rgba(245,238,232,0.82)" text-anchor="middle">Tapestry</text>
+        <text x="348" y="238" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(61,143,168,0.38)" text-anchor="middle">Community Service Blueprint</text>
+        <!-- connecting lines -->
+        <line x1="210" y1="69" x2="258" y2="69" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+        <line x1="438" y1="69" x2="486" y2="69" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+        <line x1="666" y1="69" x2="714" y2="69" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+        <line x1="120" y1="118" x2="120" y2="162" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+        <line x1="348" y1="118" x2="348" y2="162" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+        <line x1="120" y1="260" x2="120" y2="290" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="348" y1="260" x2="348" y2="290" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="576" y1="118" x2="576" y2="290" stroke="rgba(61,143,168,0.08)" stroke-width="1"/>
+        <line x1="804" y1="118" x2="804" y2="290" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      </svg>
+    </div>
+    <p class="mono" style="font-size:9px;color:rgba(245,238,232,0.18);">Each intervention is designed to function independently and in concert. Together they span pre-death, active dying, and post-death across community and clinical settings.</p>
+  </div>
+  <div class="foot"><div class="ft">Intervention Ecosystem &nbsp; Design Chapter 5</div><div class="ft">17 / 24</div></div>
+</section>
+
+<!-- ===================== S18: AUGMENTO MORI DEEP DIVE ===================== -->
+<section class="slide" id="s18" style="background:#100B10;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 65% 55% at 15% 30%, rgba(232,64,58,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 85% 70%, rgba(74,45,107,0.38) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Primary Intervention &nbsp; Design Deep Dive</div>
+    <h2>The Augmento Mori<br><em>Card Game</em></h2>
+    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:start;">
+      <div>
+        <p style="margin-bottom:18px;">A play-mediated, facilitated conversation tool using 42 reflective prompts across five domains to lower psychological barriers and open end-of-life conversations <em>before crisis arrives</em>.</p>
+        <!-- Five-domain radial -->
+        <svg viewBox="0 0 320 290" style="width:100%;max-width:340px;" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="160" cy="140" r="44" fill="rgba(232,64,58,0.1)" stroke="rgba(232,64,58,0.38)" stroke-width="1.5"/>
+          <text x="160" y="136" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.8)" text-anchor="middle" font-style="italic">Augmento</text>
+          <text x="160" y="150" font-family="'Cormorant Garamond',serif" font-size="11" fill="rgba(245,238,232,0.8)" text-anchor="middle" font-style="italic">Mori</text>
+          <line x1="160" y1="96" x2="160" y2="42" stroke="rgba(232,64,58,0.2)" stroke-width="1"/>
+          <circle cx="160" cy="33" r="30" fill="rgba(232,64,58,0.08)" stroke="rgba(232,64,58,0.3)" stroke-width="1"/>
+          <text x="160" y="29" font-family="'DM Mono',monospace" font-size="8" fill="rgba(232,64,58,0.7)" text-anchor="middle">REFLECTION</text>
+          <text x="160" y="42" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,238,232,0.3)" text-anchor="middle">9 cards</text>
+          <line x1="198" y1="118" x2="246" y2="84" stroke="rgba(212,164,106,0.2)" stroke-width="1"/>
+          <circle cx="270" cy="68" r="30" fill="rgba(212,164,106,0.07)" stroke="rgba(212,164,106,0.28)" stroke-width="1"/>
+          <text x="270" y="64" font-family="'DM Mono',monospace" font-size="8" fill="rgba(212,164,106,0.65)" text-anchor="middle">LEGACY</text>
+          <text x="270" y="77" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,238,232,0.3)" text-anchor="middle">8 cards</text>
+          <line x1="198" y1="162" x2="246" y2="196" stroke="rgba(106,154,126,0.2)" stroke-width="1"/>
+          <circle cx="270" cy="212" r="30" fill="rgba(106,154,126,0.07)" stroke="rgba(106,154,126,0.28)" stroke-width="1"/>
+          <text x="270" y="208" font-family="'DM Mono',monospace" font-size="8" fill="rgba(106,154,126,0.65)" text-anchor="middle">RITUAL</text>
+          <text x="270" y="221" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,238,232,0.3)" text-anchor="middle">9 cards</text>
+          <line x1="122" y1="162" x2="74" y2="196" stroke="rgba(212,55,110,0.2)" stroke-width="1"/>
+          <circle cx="50" cy="212" r="30" fill="rgba(212,55,110,0.07)" stroke="rgba(212,55,110,0.28)" stroke-width="1"/>
+          <text x="50" y="208" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(212,55,110,0.65)" text-anchor="middle">COMMUNITY</text>
+          <text x="50" y="221" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,238,232,0.3)" text-anchor="middle">8 cards</text>
+          <line x1="122" y1="118" x2="74" y2="84" stroke="rgba(61,143,168,0.2)" stroke-width="1"/>
+          <circle cx="50" cy="68" r="30" fill="rgba(61,143,168,0.07)" stroke="rgba(61,143,168,0.28)" stroke-width="1"/>
+          <text x="50" y="60" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.65)" text-anchor="middle">BODY</text>
+          <text x="50" y="72" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.55)" text-anchor="middle">&amp; EARTH</text>
+          <text x="50" y="82" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,238,232,0.3)" text-anchor="middle">8 cards</text>
+          <text x="160" y="272" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(245,238,232,0.16)" text-anchor="middle">42 PROMPTS &nbsp; 5 DOMAINS &nbsp; 8 LANGUAGE EDITIONS</text>
+        </svg>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+          <span class="tag-c tag">Group play</span>
+          <span class="tag-c tag">Solo reflection</span>
+          <span class="tag-c tag">Bedside / hospice</span>
+          <span class="tag-c tag">Upstream cultural lever</span>
+        </div>
+      </div>
+      <div>
+        <div class="mono" style="color:rgba(232,64,58,0.5);font-size:8px;letter-spacing:0.2em;margin-bottom:14px;">THE PARADOX THE GAME ADDRESSES</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:20px;">
+          <div style="padding:28px 24px;background:rgba(106,154,126,0.08);border:1px solid rgba(106,154,126,0.22);text-align:center;">
+            <div class="stat-n" style="font-size:4rem;color:rgba(106,154,126,0.85);">94%</div>
+            <div class="stat-l">Death is natural</div>
+          </div>
+          <div style="padding:28px 24px;background:rgba(232,64,58,0.08);border:1px solid rgba(232,64,58,0.22);text-align:center;">
+            <div class="stat-n" style="font-size:4rem;color:rgba(232,64,58,0.85);">58%</div>
+            <div class="stat-l">Haven't planned</div>
+          </div>
+        </div>
+        <div class="mono" style="color:rgba(232,64,58,0.5);font-size:8px;letter-spacing:0.2em;margin-bottom:12px;">ADDITIONAL SURVEY FINDINGS</div>
+        <div class="bar-row"><div class="bar-lbl">View death as natural</div><div class="bar-trk"><div class="bar-fill bf-s" data-w="94" style="width:94%;">94%</div></div></div>
+        <div class="bar-row"><div class="bar-lbl">Prioritize comfort over extension</div><div class="bar-trk"><div class="bar-fill bf-s" data-w="88" style="width:88%;">88%</div></div></div>
+        <div class="bar-row"><div class="bar-lbl">Want community presence at death</div><div class="bar-trk"><div class="bar-fill bf-s" data-w="85" style="width:85%;">85%</div></div></div>
+        <div class="bar-row"><div class="bar-lbl">Prefer home / non-clinical setting</div><div class="bar-trk"><div class="bar-fill bf-s" data-w="82" style="width:82%;">82%</div></div></div>
+        <div class="bar-row"><div class="bar-lbl">Have NOT discussed end-of-life plans</div><div class="bar-trk"><div class="bar-fill bf-c" data-w="58" style="width:58%;">58%</div></div></div>
+        <p class="mono" style="font-size:8px;color:rgba(245,238,232,0.2);margin-top:10px;">Primary research &nbsp; N = 60+ &nbsp; Four cohorts</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Augmento Mori Card Game &nbsp; Primary Intervention &nbsp; 42 Prompts</div><div class="ft">18 / 24</div></div>
+</section>
+
+<!-- ===================== S19: LEVERAGE POINTS ===================== -->
+<section class="slide" id="s19" style="background:#0C0B14;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 60% 55% at 75% 25%, rgba(74,45,107,0.4) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 10% 75%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Systems Thinking &nbsp; Meadows Leverage Points</div>
+    <h2>Where Augmento Mori<br>enters the <em>system</em>.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+      <!-- Iceberg SVG -->
+      <div>
+        <svg viewBox="0 0 400 380" style="width:100%;max-width:420px;" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(26,26,94,0.0)"/>
+              <stop offset="100%" stop-color="rgba(26,26,94,0.3)"/>
+            </linearGradient>
+          </defs>
+          <!-- waterline -->
+          <line x1="0" y1="138" x2="400" y2="138" stroke="rgba(61,143,168,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <text x="342" y="130" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.45)">VISIBLE</text>
+          <text x="330" y="148" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.35)">HIDDEN</text>
+          <!-- iceberg visible -->
+          <polygon points="200,18 288,138 112,138" fill="rgba(232,64,58,0.06)" stroke="rgba(232,64,58,0.28)" stroke-width="1.3"/>
+          <text x="200" y="68" font-family="'Cormorant Garamond',serif" font-size="13" fill="rgba(245,238,232,0.8)" text-anchor="middle" font-style="italic">Events</text>
+          <text x="200" y="86" font-family="'DM Mono',monospace" font-size="7" fill="rgba(245,238,232,0.28)" text-anchor="middle">What we see</text>
+          <!-- hidden layers -->
+          <polygon points="112,138 288,138 320,198 80,198" fill="rgba(212,55,110,0.06)" stroke="rgba(212,55,110,0.2)" stroke-width="1"/>
+          <text x="200" y="174" font-family="'Cormorant Garamond',serif" font-size="13" fill="rgba(245,238,232,0.75)" text-anchor="middle" font-style="italic">Patterns</text>
+          <polygon points="80,198 320,198 352,268 48,268" fill="rgba(212,164,106,0.06)" stroke="rgba(212,164,106,0.2)" stroke-width="1"/>
+          <text x="200" y="240" font-family="'Cormorant Garamond',serif" font-size="13" fill="rgba(245,238,232,0.75)" text-anchor="middle" font-style="italic">Structures</text>
+          <polygon points="48,268 352,268 380,348 20,348" fill="rgba(74,45,107,0.12)" stroke="rgba(74,45,107,0.35)" stroke-width="1.3"/>
+          <text x="200" y="310" font-family="'Cormorant Garamond',serif" font-size="15" fill="rgba(245,238,232,0.9)" text-anchor="middle" font-style="italic">Mental Models</text>
+          <text x="200" y="328" font-family="'DM Mono',monospace" font-size="7" fill="rgba(74,45,107,0.65)" text-anchor="middle">Paradigm Shift</text>
+          <!-- AM indicator -->
+          <path d="M-12,308 Q8,308 40,308" stroke="rgba(232,64,58,0.55)" stroke-width="1.5" fill="none" marker-end="url(#arC)"/>
+          <text x="62" y="302" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.6)" text-anchor="end">AUGMENTO</text>
+          <text x="62" y="313" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.55)" text-anchor="end">MORI acts here</text>
+        </svg>
+      </div>
+      <div>
+        <p style="margin-bottom:20px;">According to Donella Meadows, the most powerful place to intervene in a system is at the level of paradigms, the beliefs and assumptions that create the rules in the first place.</p>
+        <div class="lgrid">
+          <div class="litem"><div class="lnum">1</div><div class="mono" style="font-size:7.5px;color:rgba(245,238,232,0.35);margin-bottom:6px;">MINDSET</div><p style="font-size:0.82rem;">Reframes death as natural and communal, not as medical failure</p></div>
+          <div class="litem"><div class="lnum">2</div><div class="mono" style="font-size:7.5px;color:rgba(245,238,232,0.35);margin-bottom:6px;">GOALS</div><p style="font-size:0.82rem;">Redefines success as dignified dying with communal presence, not life extension</p></div>
+          <div class="litem"><div class="lnum">3</div><div class="mono" style="font-size:7.5px;color:rgba(245,238,232,0.35);margin-bottom:6px;">RULES</div><p style="font-size:0.82rem;">Normalizes mortality conversation in community settings</p></div>
+          <div class="litem"><div class="lnum">4</div><div class="mono" style="font-size:7.5px;color:rgba(245,238,232,0.35);margin-bottom:6px;">INFO</div><p style="font-size:0.82rem;">Creates channels for end-of-life preferences before crisis arrives</p></div>
+        </div>
+        <div class="hbox" style="margin-top:18px;">
+          <p style="font-size:0.9rem;font-style:italic;">Augmento Mori operates at multiple leverage points simultaneously, making it a high-impact, upstream cultural intervention. Change at the level of paradigm is more durable than structural tweaks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Systems Thinking &nbsp; Meadows' Leverage Points &nbsp; Augmento Mori</div><div class="ft">19 / 24</div></div>
+</section>
+
+<!-- ===================== S20: HEARTBLOOM ===================== -->
+<section class="slide" id="s20" style="background:#0A0C12;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 65% 55% at 80% 30%, rgba(61,143,168,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 55% at 15% 70%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Secondary Intervention &nbsp; Downstream Clinical</div>
+    <div class="two">
+      <div>
+        <h2 style="color:var(--parch);">Heart<span style="background:linear-gradient(90deg,#3D8FA8,#6ABCD0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Bloom</span></h2>
+        <p class="lead" style="margin-top:14px;">An AI-driven agentic companion for patients, caregivers, and clinical teams at the intersection of dying and dignity.</p>
+        <div class="rule"></div>
+        <p style="margin-bottom:20px;">Where Augmento Mori works upstream in community, HeartBloom works downstream inside the clinical system, at the point where dying is actively happening. It bridges the gap between what patients want and what systems know how to deliver.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:12px 16px;background:rgba(61,143,168,0.08);border-left:2px solid rgba(61,143,168,0.5);"><p style="font-size:0.88rem;"><strong>Patient</strong> &mdash; communicate preferences, comfort levels, and wishes when words become difficult</p></div>
+          <div style="padding:12px 16px;background:rgba(61,143,168,0.06);border-left:2px solid rgba(61,143,168,0.35);"><p style="font-size:0.88rem;"><strong>Caregiver</strong> &mdash; alleviates invisible labor, provides guidance, reduces burnout and isolation</p></div>
+          <div style="padding:12px 16px;background:rgba(61,143,168,0.04);border-left:2px solid rgba(61,143,168,0.25);"><p style="font-size:0.88rem;"><strong>Clinical</strong> &mdash; connects social workers, reduces gap-bridging burden, flags dignity preferences</p></div>
+        </div>
+        <div style="margin-top:22px;padding:18px;border:1px solid rgba(61,143,168,0.15);">
+          <p class="mono" style="font-size:8px;color:rgba(61,143,168,0.5);margin-bottom:10px;">AMINA'S INFLUENCE</p>
+          <p style="font-size:0.9rem;font-style:italic;color:rgba(245,238,232,0.65);">"Hi, Amina. I am here for you."</p>
+          <p style="font-size:0.82rem;color:rgba(245,238,232,0.35);margin-top:4px;">The first words HeartBloom speaks to its user</p>
+        </div>
+      </div>
+      <!-- Service Blueprint SVG -->
+      <div>
+        <div class="mono" style="color:rgba(61,143,168,0.5);font-size:8px;letter-spacing:0.2em;margin-bottom:14px;">SERVICE BLUEPRINT &nbsp; THREE VIEWS</div>
+        <svg viewBox="0 0 420 310" style="width:100%;" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="bA2" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgba(61,143,168,0.5)"/></marker>
+          </defs>
+          <rect x="0" y="0" width="420" height="60" fill="rgba(61,143,168,0.05)"/>
+          <rect x="0" y="64" width="420" height="60" fill="rgba(106,154,126,0.04)"/>
+          <rect x="0" y="128" width="420" height="60" fill="rgba(232,64,58,0.04)"/>
+          <text x="8" y="20" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.6)">PATIENT</text>
+          <text x="8" y="84" font-family="'DM Mono',monospace" font-size="7" fill="rgba(106,154,126,0.6)">CAREGIVER</text>
+          <text x="8" y="148" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.6)">CLINICAL</text>
+          <!-- HB center -->
+          <rect x="170" y="4" width="80" height="180" rx="2" fill="rgba(61,143,168,0.1)" stroke="rgba(61,143,168,0.3)" stroke-width="1.2"/>
+          <text x="210" y="90" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.7)" text-anchor="middle">HEART</text>
+          <text x="210" y="102" font-family="'DM Mono',monospace" font-size="7.5" fill="rgba(61,143,168,0.7)" text-anchor="middle">BLOOM</text>
+          <text x="210" y="116" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.25)" text-anchor="middle">AI Agent</text>
+          <!-- left boxes -->
+          <rect x="4" y="18" width="160" height="28" rx="2" fill="rgba(61,143,168,0.07)" stroke="rgba(61,143,168,0.2)" stroke-width="1"/>
+          <text x="84" y="30" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.6)" text-anchor="middle">Dignity Dashboard</text>
+          <text x="84" y="42" font-family="'DM Mono',monospace" font-size="6" fill="rgba(245,238,232,0.25)" text-anchor="middle">Preferences . Comfort . Legacy</text>
+          <path d="M164,32 L170,32" stroke="rgba(61,143,168,0.35)" stroke-width="1" marker-end="url(#bA2)"/>
+          <rect x="4" y="82" width="160" height="28" rx="2" fill="rgba(106,154,126,0.06)" stroke="rgba(106,154,126,0.2)" stroke-width="1"/>
+          <text x="84" y="94" font-family="'DM Mono',monospace" font-size="7" fill="rgba(106,154,126,0.6)" text-anchor="middle">Support Interface</text>
+          <text x="84" y="106" font-family="'DM Mono',monospace" font-size="6" fill="rgba(245,238,232,0.25)" text-anchor="middle">Guidance . Burnout Alerts</text>
+          <path d="M164,96 L170,96" stroke="rgba(106,154,126,0.35)" stroke-width="1" marker-end="url(#bA2)"/>
+          <rect x="4" y="146" width="160" height="28" rx="2" fill="rgba(232,64,58,0.06)" stroke="rgba(232,64,58,0.2)" stroke-width="1"/>
+          <text x="84" y="158" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.6)" text-anchor="middle">Care Coordination</text>
+          <text x="84" y="170" font-family="'DM Mono',monospace" font-size="6" fill="rgba(245,238,232,0.25)" text-anchor="middle">Dignity Flags . Cultural Prefs</text>
+          <path d="M164,160 L170,160" stroke="rgba(232,64,58,0.35)" stroke-width="1" marker-end="url(#bA2)"/>
+          <!-- right boxes -->
+          <rect x="256" y="18" width="160" height="28" rx="2" fill="rgba(61,143,168,0.05)" stroke="rgba(61,143,168,0.15)" stroke-width="1"/>
+          <text x="336" y="34" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.4)" text-anchor="middle">Care wishes surfaced</text>
+          <path d="M250,32 L256,32" stroke="rgba(61,143,168,0.25)" stroke-width="1" marker-end="url(#bA2)"/>
+          <rect x="256" y="82" width="160" height="28" rx="2" fill="rgba(106,154,126,0.05)" stroke="rgba(106,154,126,0.15)" stroke-width="1"/>
+          <text x="336" y="98" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.4)" text-anchor="middle">Burnout buffer</text>
+          <path d="M250,96 L256,96" stroke="rgba(106,154,126,0.25)" stroke-width="1" marker-end="url(#bA2)"/>
+          <rect x="256" y="146" width="160" height="28" rx="2" fill="rgba(232,64,58,0.04)" stroke="rgba(232,64,58,0.14)" stroke-width="1"/>
+          <text x="336" y="162" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.4)" text-anchor="middle">Dignity in real time</text>
+          <path d="M250,160 L256,160" stroke="rgba(232,64,58,0.25)" stroke-width="1" marker-end="url(#bA2)"/>
+          <!-- outcome -->
+          <rect x="0" y="200" width="420" height="34" rx="2" fill="rgba(61,143,168,0.06)" stroke="rgba(61,143,168,0.18)" stroke-width="1"/>
+          <text x="210" y="220" font-family="'Cormorant Garamond',serif" font-size="13" fill="rgba(245,238,232,0.8)" text-anchor="middle" font-style="italic">Outcome: Death with dignity, held by a living system</text>
+          <!-- stats -->
+          <rect x="0" y="248" width="136" height="50" rx="1" fill="rgba(255,255,255,0.02)"/>
+          <text x="68" y="272" font-family="'Cormorant Garamond',serif" font-size="24" fill="rgba(61,143,168,0.65)" text-anchor="middle">72%</text>
+          <text x="68" y="288" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.25)" text-anchor="middle">Caregiver burden rate</text>
+          <rect x="142" y="248" width="136" height="50" rx="1" fill="rgba(255,255,255,0.02)"/>
+          <text x="210" y="272" font-family="'Cormorant Garamond',serif" font-size="24" fill="rgba(61,143,168,0.65)" text-anchor="middle">48h</text>
+          <text x="210" y="288" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.25)" text-anchor="middle">Avg wish-to-action delay</text>
+          <rect x="284" y="248" width="136" height="50" rx="1" fill="rgba(255,255,255,0.02)"/>
+          <text x="352" y="272" font-family="'Cormorant Garamond',serif" font-size="24" fill="rgba(61,143,168,0.65)" text-anchor="middle">0h</text>
+          <text x="352" y="288" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.25)" text-anchor="middle">HeartBloom target</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">HeartBloom &nbsp; Agentic Companion &nbsp; Palliative Service Design</div><div class="ft">20 / 24</div></div>
+</section>
+
+<!-- ===================== S21: LIMITATIONS ===================== -->
+<section class="slide" id="s21" style="background:#0E0D18;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 55% 50% at 80% 20%, rgba(74,45,107,0.4) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 50% at 10% 80%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Honest Accounting</div>
+    <h2>Limitations and<br><em>considerations</em></h2>
+    <div class="three" style="margin-top:28px;">
+      <div class="glass"><div style="width:28px;height:2px;background:rgba(232,64,58,0.6);margin-bottom:14px;"></div><h3>Sample Scope</h3><p style="font-size:0.86rem;">Survey sample of 60+ respondents, primarily English-speaking and US-based, limits global generalizability. Cultural findings are contextually rich and intentionally so.</p></div>
+      <div class="glass"><div style="width:28px;height:2px;background:rgba(212,164,106,0.6);margin-bottom:14px;"></div><h3>Research Proximity</h3><p style="font-size:0.86rem;">Personal loss, Anam Cara practice, and direct death accompaniment create methodological richness and potential bias simultaneously. This is named throughout, not minimized.</p></div>
+      <div class="glass"><div style="width:28px;height:2px;background:rgba(61,143,168,0.6);margin-bottom:14px;"></div><h3>Prototype Stage</h3><p style="font-size:0.86rem;">Both primary interventions are at prototype and concept validation stage. Clinical implementation requires regulatory review, accessibility testing, and longitudinal outcomes study.</p></div>
+      <div class="glass"><div style="width:28px;height:2px;background:rgba(106,154,126,0.6);margin-bottom:14px;"></div><h3>Digital Equity</h3><p style="font-size:0.86rem;">HeartBloom's platform requires device access and literacy. Rural, elderly, and under-resourced populations may face access barriers requiring deliberate design attention.</p></div>
+      <div class="glass"><div style="width:28px;height:2px;background:rgba(196,96,122,0.5);margin-bottom:14px;"></div><h3>Cultural Specificity</h3><p style="font-size:0.86rem;">Eight language editions represent an aspiration toward cultural inclusion, not a claim of completion. Each edition requires validation by cultural insiders, which is initiated but not concluded.</p></div>
+      <div class="glass"><div style="width:28px;height:2px;background:rgba(74,45,107,0.7);margin-bottom:14px;"></div><h3>Measuring Dignity</h3><p style="font-size:0.86rem;">Dignity is the central design criterion and the hardest to measure. Developing dignity-specific evaluation frameworks is a research gap this work flags and does not fully resolve.</p></div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Limitations &nbsp; Methodological Considerations &nbsp; Honest Accounting</div><div class="ft">21 / 24</div></div>
+</section>
+
+<!-- ===================== S22: FUTURE DIRECTIONS ===================== -->
+<section class="slide" id="s22" style="background:#0A0B12;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 65% 55% at 75% 25%, rgba(61,143,168,0.2) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 60% at 15% 75%, rgba(74,45,107,0.38) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Where This Work Goes</div>
+    <div class="two" style="gap:52px;align-items:start;">
+      <div>
+        <h2>Future extensions<br>and <em>visions</em>.</h2>
+        <div class="farc">
+          <div class="fitem">
+            <h3 style="color:rgba(61,143,168,0.85);font-size:1rem;margin-bottom:6px;">Augmento Mori linked to HeartBloom</h3>
+            <p style="font-size:0.87rem;">An agentic AI layer carries the person from the community conversation phase into the clinical companion, preferences and values traveling from kitchen table to bedside.</p>
+          </div>
+          <div class="fitem">
+            <h3 style="color:rgba(61,143,168,0.85);font-size:1rem;margin-bottom:6px;">Haven suite with responsive environment</h3>
+            <p style="font-size:0.87rem;">The palliative space augmented by HeartBloom through environmental sensors, adaptive lighting, and biophilic responsive design. Spaces that know the patient.</p>
+          </div>
+          <div class="fitem">
+            <h3 style="color:rgba(61,143,168,0.85);font-size:1rem;margin-bottom:6px;">Global community editions</h3>
+            <p style="font-size:0.87rem;">Expanding cultural editions through co-design with communities, not translation but genuine cultural authorship. Every community deserves this conversation in their own death language.</p>
+          </div>
+          <div class="fitem">
+            <h3 style="color:rgba(61,143,168,0.85);font-size:1rem;margin-bottom:6px;">Structural equity work</h3>
+            <p style="font-size:0.87rem;">Deepening the Dancing for Della thread, building tools specifically for communities with justified medical mistrust, with community advocates as co-designers from the beginning.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <!-- Horizon arc SVG -->
+        <svg viewBox="0 0 400 210" style="width:100%;margin-bottom:22px;" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,190 Q200,30 380,190" stroke="rgba(61,143,168,0.25)" stroke-width="1.5" fill="rgba(61,143,168,0.04)"/>
+          <circle cx="20" cy="190" r="9" fill="rgba(232,64,58,0.45)" stroke="rgba(232,64,58,0.7)" stroke-width="1.3"/>
+          <text x="20" y="206" font-family="'DM Mono',monospace" font-size="7" fill="rgba(232,64,58,0.55)" text-anchor="middle">DEFENSE</text>
+          <circle cx="120" cy="84" r="8" fill="rgba(212,164,106,0.45)" stroke="rgba(212,164,106,0.7)" stroke-width="1"/>
+          <text x="120" y="70" font-family="'DM Mono',monospace" font-size="7" fill="rgba(212,164,106,0.55)" text-anchor="middle">NEAR</text>
+          <text x="120" y="100" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.25)" text-anchor="middle">Integration</text>
+          <circle cx="220" cy="38" r="8" fill="rgba(106,154,126,0.45)" stroke="rgba(106,154,126,0.7)" stroke-width="1"/>
+          <text x="220" y="24" font-family="'DM Mono',monospace" font-size="7" fill="rgba(106,154,126,0.55)" text-anchor="middle">MID</text>
+          <text x="220" y="54" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.25)" text-anchor="middle">Global editions</text>
+          <circle cx="380" cy="190" r="9" fill="rgba(61,143,168,0.45)" stroke="rgba(61,143,168,0.7)" stroke-width="1.3"/>
+          <text x="380" y="206" font-family="'DM Mono',monospace" font-size="7" fill="rgba(61,143,168,0.55)" text-anchor="middle">FAR</text>
+          <text x="350" y="175" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.25)" text-anchor="middle">Good death</text>
+          <text x="350" y="185" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.2)" text-anchor="middle">culturally designed</text>
+          <text x="200" y="196" font-family="'DM Mono',monospace" font-size="6.5" fill="rgba(245,238,232,0.1)" text-anchor="middle" letter-spacing="1.5">NEAR . . . . . . . . . . . . . . . . . . . FAR</text>
+        </svg>
+        <div style="padding:24px;background:rgba(106,154,126,0.05);border:1px solid rgba(106,154,126,0.15);">
+          <div class="mono" style="color:rgba(106,154,126,0.5);font-size:8px;margin-bottom:12px;letter-spacing:0.18em;">THE VISION</div>
+          <p style="font-size:0.9rem;font-style:italic;line-height:1.75;">A world where the question "what does a good death look like?" is answered by communities, not algorithms, and where design has done its work quietly, building the conditions for that answer to be possible.</p>
+          <div style="margin-top:12px;"><span class="tag">Death literacy</span><span class="tag">Cultural shift</span><span class="tag">Design as infrastructure</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Future Directions &nbsp; Research Extensions</div><div class="ft">22 / 24</div></div>
+</section>
+
+<!-- ===================== S23: CONTRIBUTION ===================== -->
+<section class="slide" id="s23" style="background:#0B0A14;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 70% 65% at 50% 50%, rgba(74,45,107,0.3) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 85% 15%, rgba(232,64,58,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 15% 85%, rgba(26,26,94,0.5) 0%, transparent 55%);"></div>
+  <div class="si fi">
+    <div class="label">Contribution to Knowledge</div>
+    <h2>What this thesis<br><em>adds</em> to the field.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:22px;align-items:start;">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.05);">
+            <div class="ring" style="flex-shrink:0;width:36px;height:36px;font-size:11px;">01</div>
+            <div><h3 style="font-size:0.95rem;margin-bottom:5px;">Original primary research</h3><p style="font-size:0.84rem;">Survey data across four unique cohorts, including deathcare professionals, on contemporary attitudes toward death, with findings not previously synthesized in design literature.</p></div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.05);">
+            <div class="ring" style="flex-shrink:0;width:36px;height:36px;font-size:11px;">02</div>
+            <div><h3 style="font-size:0.95rem;margin-bottom:5px;">Biomimicry applied to deathcare</h3><p style="font-size:0.84rem;">First application of Labord's chameleon "Colorful Farewell" as a design biomimicry framework for dignified dying environments and service design.</p></div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.05);">
+            <div class="ring" style="flex-shrink:0;width:36px;height:36px;font-size:11px;">03</div>
+            <div><h3 style="font-size:0.95rem;margin-bottom:5px;">Anam Cara as design methodology</h3><p style="font-size:0.84rem;">Formalization of Celtic accompaniment practice as a research and design methodology for dignity-centered work, documented with peer-reviewed sources and primary practice.</p></div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.05);">
+            <div class="ring" style="flex-shrink:0;width:36px;height:36px;font-size:11px;">04</div>
+            <div><h3 style="font-size:0.95rem;margin-bottom:5px;">A connected intervention ecosystem</h3><p style="font-size:0.84rem;">Six interventions designed to span pre-death through post-death, upstream through clinical, community through individual, unified by a shared theoretical framework.</p></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="pq">Design can be the bridge between what people believe about death and how they are able to meet it.</div>
+        <div style="margin-top:24px;padding:28px;background:rgba(74,45,107,0.08);border:1px solid rgba(74,45,107,0.25);">
+          <div class="mono" style="color:rgba(196,96,122,0.5);font-size:8px;margin-bottom:14px;letter-spacing:0.18em;">THESIS STATEMENT</div>
+          <p style="font-size:0.95rem;line-height:1.85;">Design interventions rooted in community wisdom, biomimicry, and dignity-centered frameworks can shift cultural relationships with mortality, moving away from over-medicalized, clinically detached approaches toward regenerative, relational end-of-life experiences.</p>
+        </div>
+        <div style="margin-top:18px;">
+          <div class="iris"></div>
+          <p class="mono" style="font-size:8.5px;color:rgba(245,238,232,0.2);">Design for Sustainability &nbsp; SCAD &nbsp; Spring 2026</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Contribution to Knowledge &nbsp; Thesis Statement</div><div class="ft">23 / 24</div></div>
+</section>
+
+<!-- ===================== S24: CLOSING ===================== -->
+<section class="slide" id="s24" style="background:var(--nearblk);min-height:100vh;justify-content:center;">
+  <div class="ab" style="background:
+    radial-gradient(ellipse 90% 80% at 70% 30%, rgba(232,64,58,0.32) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 25% 65%, rgba(212,55,110,0.28) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 70% at 80% 75%, rgba(74,45,107,0.5) 0%, transparent 55%),
+    linear-gradient(160deg, #0D0B18 0%, #1A1A5E 50%, #0D0B18 100%);"></div>
+  <!-- large circle glyph from brand mark -->
+  <div style="position:absolute;right:-80px;top:50%;transform:translateY(-50%);opacity:0.06;pointer-events:none;z-index:1;">
+    <svg viewBox="0 0 400 400" width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" r="170" stroke="rgba(245,238,232,1)" stroke-width="14" fill="none"/>
+      <circle cx="200" cy="200" r="36" fill="rgba(245,238,232,1)"/>
+    </svg>
+  </div>
+  <div class="si fi" style="text-align:center;position:relative;z-index:2;">
+    <div style="margin-bottom:32px;opacity:0.4;">
+      <!-- small chameleon glyph -->
+      <svg viewBox="0 0 80 80" width="72" height="72" style="margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="rgba(212,55,110,1)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="40" cy="36" rx="18" ry="14"/>
+          <path d="M40,22 Q46,14 52,10 Q57,7 59,4"/>
+          <circle cx="58" cy="4" r="3.5"/>
+          <circle cx="56.5" cy="2.5" r="1.2" fill="rgba(212,55,110,0.7)"/>
+          <path d="M40,22 Q37,14 38.5,8 Q40,3 43,1"/>
+          <path d="M58,36 Q70,32 78,34 Q84,36 85,40"/>
+          <path d="M22,40 Q10,46 4,42 Q-2,38 -3,34"/>
+          <path d="M40,50 Q43,62 48,72 Q52,78 52.5,84"/>
+          <path d="M30,46 Q24,56 20,64 Q16,70 15,76"/>
+          <ellipse cx="52" cy="32" rx="2.5" ry="3"/>
+          <ellipse cx="28" cy="32" rx="2.5" ry="3"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label" style="text-align:center;margin-bottom:18px;">In the Anam Cara Tradition &nbsp; A Closing</div>
+    <h2 style="font-size:clamp(2rem,4.5vw,3.6rem);max-width:680px;margin:0 auto 24px;">A word of transition<br>and <em>release forward</em></h2>
+    <div class="rule" style="margin:22px auto;"></div>
+    <p class="lead" style="text-align:center;margin:0 auto 24px;max-width:560px;">What you have accompanied today is not a thesis.<br>It is a reckoning with how we care for each other at the threshold.</p>
+    <p style="color:rgba(245,238,232,0.5);line-height:2.2;font-size:1rem;margin-bottom:22px;">May those who are dying die well.<br>May those who are grieving be held.<br>May those who are designing do so with humility and love.</p>
+    <div class="pq" style="text-align:center;border:none;padding:0;margin:0 auto 24px;font-size:clamp(1.3rem,2.4vw,1.8rem);">For Mother Nature and for Mama.</div>
+    <p class="arabic" style="text-align:center;font-size:1.3rem;margin-top:10px;">بكل ما أعطيتموني، أعطيكم هذا العمل.</p>
+    <p style="margin-top:7px;color:var(--muted);font-style:italic;font-size:0.88rem;">With all you have given me, I give you this work.</p>
+    <div class="iris" style="max-width:260px;margin:40px auto 0;opacity:0.4;"></div>
+    <div style="margin-top:32px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap;">
+      <div><p class="mono" style="font-size:9px;">Mona M. Hamdy</p></div>
+      <div><p class="mono" style="font-size:9px;">M.F.A. Design for Sustainability &nbsp; SCAD 2026</p></div>
+      <div><p class="mono" style="font-size:9px;">www.augmentomori.com</p></div>
+    </div>
+  </div>
+  <div class="foot"><div class="ft">Anam Cara &nbsp; Closing &nbsp; Augmento Mori</div><div class="ft">24 / 24</div></div>
+</section>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const ndots  = document.getElementById('ndots');
+const pgbar  = document.getElementById('pgbar');
+const ncnt   = document.getElementById('ncnt');
+const total  = slides.length;
+
+slides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'nav-dot';
+  d.title = 'Slide ' + (i+1);
+  d.addEventListener('click', () => slides[i].scrollIntoView({behavior:'smooth'}));
+  ndots.appendChild(d);
+});
+const dots = document.querySelectorAll('.nav-dot');
+
+// Intersection-based active + fade-in
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.fi').forEach((el,i) => {
+        setTimeout(() => el.classList.add('vis'), i * 100);
+      });
+    }
+  });
+}, {threshold: 0.15});
+slides.forEach(s => io.observe(s));
+
+// scroll progress + nav counter
+let cur = 0;
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  const dh = document.documentElement.scrollHeight - window.innerHeight;
+  pgbar.style.width = Math.round((sy / dh) * 100) + '%';
+  slides.forEach((slide, i) => {
+    const r = slide.getBoundingClientRect();
+    if (r.top <= window.innerHeight * 0.5 && r.bottom >= window.innerHeight * 0.5) {
+      if (cur !== i) {
+        dots[cur]?.classList.remove('active');
+        dots[i]?.classList.add('active');
+        ncnt.textContent = (i+1) + ' / ' + total;
+        cur = i;
+      }
+    }
+  });
+}, {passive: true});
+dots[0]?.classList.add('active');
+</script>
+</body>
+</html>
